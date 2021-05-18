@@ -1,6 +1,7 @@
 package com.kyleduo.aladdin
 
 import android.app.Application
+import com.kyleduo.aladdin.genies.IGenie
 
 /**
  * Entry point of Aladdin library.
@@ -15,14 +16,17 @@ import android.app.Application
  *
  * @author kyleduo on 2021/5/18
  */
-class Aladdin(private val application: Application) {
-    companion object {
-        fun with(application: Application): Aladdin {
-            return Aladdin(application)
+@Suppress("unused")
+object Aladdin {
+    internal lateinit var context: AladdinContext
+
+    fun with(application: Application): AladdinContext {
+        return AladdinContext(application).also {
+            context = it
         }
     }
 
-    fun install() {
-        // install and enable aladdin instance to application
+    fun genie(key: String): IGenie? {
+        return context.genieManager.findGenie(key)
     }
 }
