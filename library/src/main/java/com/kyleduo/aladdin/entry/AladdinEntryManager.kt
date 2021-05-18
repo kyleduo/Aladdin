@@ -25,7 +25,7 @@ class AladdinEntryManager : IAladdinManager, OnAppBackgroundListener, OnAppForeg
         if (!PermissionUtils.hasAlertWindowPermission()) {
             PermissionUtils.requestAlertWindowPermission()
         } else {
-            // TODO: 2021/5/18 kyleduo add view
+            entry.show()
         }
     }
 
