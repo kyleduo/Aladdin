@@ -1,7 +1,9 @@
 package com.kyleduo.aladdin.entry
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
+import android.view.Gravity
 import android.view.View
 import android.view.WindowManager
 import android.widget.RelativeLayout
@@ -20,7 +22,9 @@ class AladdinEntry {
     }
 
     private val view: View by lazy {
-        RelativeLayout(Aladdin.app)
+        RelativeLayout(Aladdin.app).apply {
+            setBackgroundColor(Color.CYAN)
+        }
     }
 
     private val layoutParams: WindowManager.LayoutParams by lazy {
@@ -31,6 +35,7 @@ class AladdinEntry {
                 it.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
             }
             it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            it.gravity = Gravity.START or Gravity.CENTER_VERTICAL
             it.width = 100
             it.height = 100
         }
