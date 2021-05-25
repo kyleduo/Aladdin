@@ -10,6 +10,9 @@ class GenieManager : IAladdinManager {
     private val genies = mutableMapOf<String, IGenie>()
 
     override fun attach() {
+        genies.forEach {
+            it.value.onStart()
+        }
     }
 
     fun addGenie(genie: IGenie) {
