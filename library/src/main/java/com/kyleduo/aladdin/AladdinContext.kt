@@ -1,10 +1,11 @@
 package com.kyleduo.aladdin
 
 import android.app.Application
-import com.kyleduo.aladdin.entry.AladdinEntryManager
+import com.kyleduo.aladdin.entry.EntryGenie
 import com.kyleduo.aladdin.genies.GenieManager
 import com.kyleduo.aladdin.genies.IGenie
 import com.kyleduo.aladdin.lifecycle.ActivityLifecycleManager
+import com.kyleduo.aladdin.view.AladdinViewManager
 
 /**
  * Context during Aladdin runtime.
@@ -15,11 +16,15 @@ import com.kyleduo.aladdin.lifecycle.ActivityLifecycleManager
  */
 @Suppress("MemberVisibilityCanBePrivate")
 class AladdinContext(val application: Application) {
-    val entryManager = AladdinEntryManager()
     val activityLifecycleManager = ActivityLifecycleManager()
     val genieManager = GenieManager()
+    val viewManager = AladdinViewManager()
 
     private var installed = false
+
+    init {
+        addGenie(EntryGenie())
+    }
 
     fun addGenie(genie: IGenie): AladdinContext {
         genieManager.addGenie(genie)
@@ -31,8 +36,14 @@ class AladdinContext(val application: Application) {
             return
         }
         installed = true
-        entryManager.attach()
-        activityLifecycleManager.attach()
-        genieManager.attach()
+
+        val managers = listOf(
+            activityLifecycleManager,
+            genieManager,
+            viewManager,
+        )
+
+        managers.forEach { it.attach() }
+        managers.forEach { it.ready() }
     }
 }

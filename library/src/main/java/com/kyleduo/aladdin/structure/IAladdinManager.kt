@@ -7,5 +7,13 @@ package com.kyleduo.aladdin.structure
  */
 interface IAladdinManager {
 
+    /**
+     * Invoked while managers was being install.
+     */
     fun attach()
+
+    /**
+     * Invoked when all managers has been installed properly.
+     */
+    fun ready()
 }

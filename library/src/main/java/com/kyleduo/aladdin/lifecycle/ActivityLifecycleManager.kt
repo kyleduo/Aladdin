@@ -22,6 +22,10 @@ class ActivityLifecycleManager : IAladdinManager, Application.ActivityLifecycleC
         Aladdin.context.application.registerActivityLifecycleCallbacks(this)
     }
 
+    override fun ready() {
+
+    }
+
     fun addOnAppForegroundListener(onAppForegroundListener: OnAppForegroundListener) {
         if (onAppForegroundListeners.contains(onAppForegroundListener)) {
             onAppForegroundListeners.add(onAppForegroundListener)
