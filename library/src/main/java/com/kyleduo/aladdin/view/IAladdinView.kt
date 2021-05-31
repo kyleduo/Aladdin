@@ -16,7 +16,7 @@ abstract class IAladdinView {
     abstract val view: View
     abstract val tag: Any
 
-    protected lateinit var agent: IAladdinViewAgent
+    lateinit var agent: IAladdinViewAgent
 
     fun bindAgent(agent: IAladdinViewAgent) {
         this.agent = agent

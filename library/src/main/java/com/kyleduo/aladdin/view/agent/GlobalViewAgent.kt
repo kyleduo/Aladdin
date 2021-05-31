@@ -32,6 +32,8 @@ class GlobalViewAgent(
         it.height = ViewGroup.LayoutParams.WRAP_CONTENT
     }
     private lateinit var view: IAladdinView
+    private var isActive = true
+    private var isShown = false
 
     override fun bind(view: IAladdinView) {
         this.view = view
@@ -61,16 +63,35 @@ class GlobalViewAgent(
     }
 
     override fun show() {
-        windowManager.addView(view.view, layoutParams)
+        isShown = true
+        if (isActive) {
+            windowManager.addView(view.view, layoutParams)
+        }
     }
 
     override fun dismiss() {
+        isShown = false
+        isActive = false
         windowManager.removeView(view.view)
     }
 
     private fun updateLayout() {
         if (view.view.parent != null) {
             windowManager.updateViewLayout(view.view, layoutParams)
+        }
+    }
+
+    override fun deactivate() {
+        if (view.view.parent != null) {
+            isActive = false
+            windowManager.removeView(view.view)
+        }
+    }
+
+    override fun activate() {
+        isActive = true
+        if (isShown && view.view.parent == null) {
+            windowManager.addView(view.view, layoutParams)
         }
     }
 }

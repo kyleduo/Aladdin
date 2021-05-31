@@ -55,4 +55,12 @@ class AdaptViewAgent(
     override fun dismiss() {
         TODO("Not yet implemented")
     }
+
+    override fun deactivate() {
+        TODO("Not yet implemented")
+    }
+
+    override fun activate() {
+        TODO("Not yet implemented")
+    }
 }

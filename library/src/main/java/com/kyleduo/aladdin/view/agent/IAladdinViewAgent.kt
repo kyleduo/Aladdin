@@ -44,4 +44,15 @@ interface IAladdinViewAgent {
      * dismiss the view
      */
     fun dismiss()
+
+    /**
+     * deactivate the view, remove from super but still in shown state
+     */
+    fun deactivate()
+
+    /**
+     * activate the view.
+     * if the view is not been shown, this function does nothing
+     */
+    fun activate()
 }

@@ -15,8 +15,8 @@ class ActivityLifecycleManager : IAladdinManager, Application.ActivityLifecycleC
 
     private var startedActivityCount = 0
 
-    private val onAppForegroundListeners = mutableListOf<OnAppForegroundListener>()
-    private val onAppBackgroundListeners = mutableListOf<OnAppBackgroundListener>()
+    private val appLifecycleCallbacks = mutableListOf<AladdinAppLifecycleCallbacks>()
+    private val activityLifecycleCallbacks = mutableListOf<Application.ActivityLifecycleCallbacks>()
 
     override fun attach() {
         Aladdin.context.application.registerActivityLifecycleCallbacks(this)
@@ -26,58 +26,70 @@ class ActivityLifecycleManager : IAladdinManager, Application.ActivityLifecycleC
 
     }
 
-    fun addOnAppForegroundListener(onAppForegroundListener: OnAppForegroundListener) {
-        if (onAppForegroundListeners.contains(onAppForegroundListener)) {
-            onAppForegroundListeners.add(onAppForegroundListener)
+    fun registerAppLifecycleCallbacks(callback: AladdinAppLifecycleCallbacks) {
+        if (callback !in appLifecycleCallbacks) {
+            appLifecycleCallbacks.add(callback)
         }
     }
 
-    @Suppress("unused")
-    fun removeOnAppForegroundListener(onAppForegroundListener: OnAppForegroundListener) {
-        onAppForegroundListeners.remove(onAppForegroundListener)
-    }
-
-    fun addOnAppBackgroundListener(onAppBackgroundListener: OnAppBackgroundListener) {
-        if (onAppBackgroundListeners.contains(onAppBackgroundListener)) {
-            onAppBackgroundListeners.add(onAppBackgroundListener)
+    fun registerActivityLifecycleCallbacks(callback: Application.ActivityLifecycleCallbacks) {
+        if (callback !in activityLifecycleCallbacks) {
+            activityLifecycleCallbacks.add(callback)
         }
-    }
-
-    @Suppress("unused")
-    fun removeOnAppBackgroundListener(onAppBackgroundListener: OnAppBackgroundListener) {
-        onAppBackgroundListeners.remove(onAppBackgroundListener)
     }
 
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityCreated(activity, savedInstanceState)
+        }
     }
 
     override fun onActivityStarted(activity: Activity) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityStarted(activity)
+        }
         startedActivityCount += 1
         if (startedActivityCount == 1) {
-            onAppForegroundListeners.forEach {
-                it.onEnterForeground()
+            appLifecycleCallbacks.forEach {
+                it.onAppEnterForeground()
             }
         }
     }
 
     override fun onActivityResumed(activity: Activity) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityResumed(activity)
+        }
     }
 
     override fun onActivityPaused(activity: Activity) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityPaused(activity)
+        }
     }
 
     override fun onActivityStopped(activity: Activity) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityStopped(activity)
+        }
+
         startedActivityCount -= 1
         if (startedActivityCount == 0) {
-            onAppBackgroundListeners.forEach {
-                it.onEnterBackground()
+            appLifecycleCallbacks.forEach {
+                it.onAppEnterBackground()
             }
         }
     }
 
     override fun onActivitySaveInstanceState(activity: Activity, outState: Bundle) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivitySaveInstanceState(activity, outState)
+        }
     }
 
     override fun onActivityDestroyed(activity: Activity) {
+        activityLifecycleCallbacks.forEach {
+            it.onActivityDestroyed(activity)
+        }
     }
 }

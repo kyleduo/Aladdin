@@ -3,6 +3,7 @@ package com.kyleduo.aladdin.view
 import android.content.Context
 import android.view.WindowManager
 import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.lifecycle.AladdinAppLifecycleCallbacks
 import com.kyleduo.aladdin.structure.IAladdinManager
 import com.kyleduo.aladdin.utils.PermissionUtils
 import com.kyleduo.aladdin.utils.app
@@ -15,7 +16,7 @@ import com.kyleduo.aladdin.view.agent.IAladdinViewAgent
  *
  * @author kyleduo on 2021/5/25
  */
-class AladdinViewManager : IAladdinManager {
+class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
 
     var mode: AladdinViewMode = AladdinViewMode.Global
     private val views = mutableMapOf<Any, IAladdinView>()
@@ -26,6 +27,7 @@ class AladdinViewManager : IAladdinManager {
     }
 
     override fun attach() {
+        Aladdin.context.activityLifecycleManager.registerAppLifecycleCallbacks(this)
     }
 
     override fun ready() {
@@ -43,6 +45,18 @@ class AladdinViewManager : IAladdinManager {
             GlobalViewAgent(windowManager)
         } else {
             AdaptViewAgent(Aladdin.context.activityLifecycleManager)
+        }
+    }
+
+    override fun onAppEnterBackground() {
+        views.forEach {
+            it.value.agent.deactivate()
+        }
+    }
+
+    override fun onAppEnterForeground() {
+        views.forEach {
+            it.value.agent.activate()
         }
     }
 }
