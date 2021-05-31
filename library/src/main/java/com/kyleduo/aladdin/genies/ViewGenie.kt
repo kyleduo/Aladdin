@@ -15,6 +15,11 @@ abstract class ViewGenie(
     abstract val panel: View
 
     /**
+     * title for this genie, which will be used for the panel
+     */
+    abstract val title: String
+
+    /**
      * Lifecycle callback invoked after the [panel] has been selected.
      */
     abstract fun onSelected()
