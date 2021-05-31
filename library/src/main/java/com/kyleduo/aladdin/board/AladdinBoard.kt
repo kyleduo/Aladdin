@@ -46,6 +46,11 @@ class AladdinBoard : IAladdinView() {
         }
     }
 
+    override fun onAgentBound() {
+        super.onAgentBound()
+        agent.resize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+    }
+
     private fun setUpForPortrait() {
         contentView.orientation = LinearLayout.VERTICAL
     }
@@ -56,6 +61,5 @@ class AladdinBoard : IAladdinView() {
 
     fun show() {
         agent.show()
-        agent.resize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
     }
 }

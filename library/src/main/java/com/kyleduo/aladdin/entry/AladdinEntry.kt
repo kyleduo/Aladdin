@@ -37,8 +37,8 @@ class AladdinEntry : IAladdinView() {
     override fun onAgentBound() {
         super.onAgentBound()
 
-        agent.show()
         agent.gravity(Gravity.CENTER_VERTICAL or Gravity.START)
+        agent.show()
     }
 
     fun show() {

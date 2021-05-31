@@ -69,6 +69,8 @@ class GlobalViewAgent(
     }
 
     private fun updateLayout() {
-        windowManager.updateViewLayout(view.view, layoutParams)
+        if (view.view.parent != null) {
+            windowManager.updateViewLayout(view.view, layoutParams)
+        }
     }
 }
