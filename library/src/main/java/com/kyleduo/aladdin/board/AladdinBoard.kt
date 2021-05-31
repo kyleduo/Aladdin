@@ -16,18 +16,28 @@ import com.kyleduo.aladdin.view.IAladdinView
  * @author kyleduo on 2021/5/31
  */
 class AladdinBoard : IAladdinView() {
+    companion object {
+        private const val TAG_CONTENT = "content"
+    }
+
     override val view: View by lazy {
         FrameLayout(Aladdin.app).apply {
-            setUpForPortrait()
+            setBackgroundColor(0x60000000)
+            if (findViewWithTag<View>(TAG_CONTENT) == null) {
+                addView(contentView)
+            }
             setOnClickListener {
                 agent.dismiss()
                 (Aladdin.genie("entry") as? EntryGenie)?.show()
             }
+
+            setUpForPortrait()
         }
     }
     override val tag: Any = "Board"
-    private val contentView: View by lazy {
+    private val contentView: LinearLayout by lazy {
         LinearLayout(Aladdin.app).apply {
+            tag = TAG_CONTENT
             val width = UIUtils.screenSize.width - 32.dp2px()
             layoutParams = FrameLayout.LayoutParams(width, width / 3 * 4).apply {
                 gravity = Gravity.CENTER
@@ -36,9 +46,12 @@ class AladdinBoard : IAladdinView() {
         }
     }
 
-    private fun FrameLayout.setUpForPortrait() {
-        setBackgroundColor(0x60000000)
-        addView(contentView)
+    private fun setUpForPortrait() {
+        contentView.orientation = LinearLayout.VERTICAL
+    }
+
+    private fun setUpForLandscape() {
+        contentView.orientation = LinearLayout.HORIZONTAL
     }
 
     fun show() {
