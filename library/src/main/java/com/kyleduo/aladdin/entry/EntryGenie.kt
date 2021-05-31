@@ -17,4 +17,8 @@ class EntryGenie : IGenie {
 
     override fun onStop() {
     }
+
+    fun show() {
+        entry.show()
+    }
 }

@@ -1,6 +1,7 @@
 package com.kyleduo.aladdin
 
 import android.app.Application
+import com.kyleduo.aladdin.board.BoardGenie
 import com.kyleduo.aladdin.entry.EntryGenie
 import com.kyleduo.aladdin.genies.GenieManager
 import com.kyleduo.aladdin.genies.IGenie
@@ -24,6 +25,7 @@ class AladdinContext(val application: Application) {
 
     init {
         addGenie(EntryGenie())
+        addGenie(BoardGenie())
     }
 
     fun addGenie(genie: IGenie): AladdinContext {
