@@ -1,6 +1,7 @@
 package com.kyleduo.aladdin.entry
 
 import android.graphics.Color
+import android.view.Gravity
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.Toast
@@ -35,5 +36,6 @@ class AladdinEntry : IAladdinView() {
         super.onAgentBound()
 
         agent.show()
+        agent.gravity(Gravity.CENTER_VERTICAL or Gravity.LEFT)
     }
 }
