@@ -29,4 +29,8 @@ class GenieManager : IAladdinManager {
     fun findGenie(key: String): IGenie? {
         return genies[key]
     }
+
+    fun allGenies(): List<IGenie> {
+        return genies.values.toList()
+    }
 }

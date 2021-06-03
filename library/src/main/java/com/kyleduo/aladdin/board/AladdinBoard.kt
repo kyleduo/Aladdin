@@ -7,6 +7,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.kyleduo.aladdin.Aladdin
 import com.kyleduo.aladdin.entry.EntryGenie
+import com.kyleduo.aladdin.genies.ViewGenie
 import com.kyleduo.aladdin.utils.UIUtils
 import com.kyleduo.aladdin.utils.app
 import com.kyleduo.aladdin.utils.dp2px
@@ -43,8 +44,11 @@ class AladdinBoard : IAladdinView() {
                 gravity = Gravity.CENTER
             }
             setBackgroundColor(0xFFFAFAFA.toInt())
+            setOnClickListener { }
         }
     }
+
+    private val genies = LinkedHashMap<String, ViewGenie>()
 
     override fun onAgentBound() {
         super.onAgentBound()
@@ -61,5 +65,12 @@ class AladdinBoard : IAladdinView() {
 
     fun show() {
         agent.show()
+    }
+
+    /**
+     * add genie to board
+     */
+    fun addGenie(genie: ViewGenie) {
+        genies[genie.key] = genie
     }
 }
