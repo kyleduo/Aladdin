@@ -71,7 +71,6 @@ class GlobalViewAgent(
 
     override fun dismiss() {
         isShown = false
-        isActive = false
         windowManager.removeView(view.view)
     }
 

@@ -1,5 +1,6 @@
 package com.kyleduo.aladdin.board
 
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -65,10 +66,11 @@ class AladdinBoard : IAladdinView() {
             TextView(Aladdin.app).apply {
                 layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT
+                    ViewGroup.LayoutParams.MATCH_PARENT
                 )
                 text = genie.title
                 tag = genie.key
+                gravity = Gravity.CENTER
                 setOnClickListener {
                     Toast.makeText(Aladdin.app, "click ${it.tag}", Toast.LENGTH_SHORT).show()
                 }
