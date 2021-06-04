@@ -2,6 +2,7 @@ package com.kyleduo.aladdin
 
 import android.app.Application
 import com.kyleduo.aladdin.genies.IGenie
+import com.kyleduo.aladdin.preset.AppInfoGenie
 
 /**
  * Entry point of Aladdin library.
@@ -23,6 +24,7 @@ object Aladdin {
     fun with(application: Application): AladdinContext {
         return AladdinContext(application).also {
             context = it
+            it.addGenie(AppInfoGenie())
         }
     }
 

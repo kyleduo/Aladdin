@@ -1,16 +1,18 @@
 package com.kyleduo.aladdin.board
 
-import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
+import android.widget.TextView
+import android.widget.Toast
 import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.entry.EntryGenie
+import com.kyleduo.aladdin.genies.IGenie
 import com.kyleduo.aladdin.genies.ViewGenie
-import com.kyleduo.aladdin.utils.UIUtils
 import com.kyleduo.aladdin.utils.app
-import com.kyleduo.aladdin.utils.dp2px
 import com.kyleduo.aladdin.view.IAladdinView
 
 /**
@@ -25,7 +27,10 @@ class AladdinBoard : IAladdinView() {
         FrameLayout(Aladdin.app).apply {
             setBackgroundColor(0x60000000)
             if (findViewWithTag<View>(TAG_CONTENT) == null) {
+                contentView = LayoutInflater.from(Aladdin.app)
+                    .inflate(R.layout.aladdin_board_portrait, this, false) as LinearLayout
                 addView(contentView)
+                contentView.tag = TAG_CONTENT
             }
             setOnClickListener {
                 agent.dismiss()
@@ -36,17 +41,7 @@ class AladdinBoard : IAladdinView() {
         }
     }
     override val tag: Any = "Board"
-    private val contentView: LinearLayout by lazy {
-        LinearLayout(Aladdin.app).apply {
-            tag = TAG_CONTENT
-            val width = UIUtils.screenSize.width - 32.dp2px()
-            layoutParams = FrameLayout.LayoutParams(width, width / 3 * 4).apply {
-                gravity = Gravity.CENTER
-            }
-            setBackgroundColor(0xFFFAFAFA.toInt())
-            setOnClickListener { }
-        }
-    }
+    private lateinit var contentView: LinearLayout
 
     private val genies = LinkedHashMap<String, ViewGenie>()
 
@@ -56,21 +51,40 @@ class AladdinBoard : IAladdinView() {
     }
 
     private fun setUpForPortrait() {
-        contentView.orientation = LinearLayout.VERTICAL
     }
 
     private fun setUpForLandscape() {
-        contentView.orientation = LinearLayout.HORIZONTAL
     }
 
     fun show() {
         agent.show()
     }
 
-    /**
-     * add genie to board
-     */
-    fun addGenie(genie: ViewGenie) {
-        genies[genie.key] = genie
+    private fun prepareGenieView() {
+        for (genie in this.genies.values) {
+            TextView(Aladdin.app).apply {
+                layoutParams = ViewGroup.LayoutParams(
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT
+                )
+                text = genie.title
+                tag = genie.key
+                setOnClickListener {
+                    Toast.makeText(Aladdin.app, "click ${it.tag}", Toast.LENGTH_SHORT).show()
+                }
+            }.also {
+                contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer).addView(it)
+            }
+        }
+    }
+
+    fun addGenies(genies: List<IGenie>) {
+        for (genie in genies) {
+            if (genie is ViewGenie) {
+                this.genies[genie.key] = genie
+            }
+        }
+
+        prepareGenieView()
     }
 }

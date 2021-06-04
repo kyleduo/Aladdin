@@ -6,6 +6,7 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+    resourcePrefix 'aladdin_'
 
     defaultConfig {
         minSdkVersion 21

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="200dp"
+    android:layout_height="400dp"
+    android:layout_gravity="center"
+    android:background="#FFFAFAFA"
+    android:orientation="vertical">
+
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="#FFe0e0e0">
+
+        <LinearLayout
+            android:id="@+id/aladdin_boardTabContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal" />
+    </HorizontalScrollView>
+
+    <FrameLayout
+        android:id="@+id/aladdin_boardGenieViewContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>
