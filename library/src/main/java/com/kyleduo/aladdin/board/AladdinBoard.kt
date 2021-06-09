@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.view.isVisible
 import com.kyleduo.aladdin.Aladdin
 import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.entry.EntryGenie
@@ -43,6 +44,20 @@ class AladdinBoard : IAladdinView() {
     }
     override val tag: Any = "Board"
     private lateinit var contentView: LinearLayout
+    private val tabContainer by lazy { contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer) }
+    private val panelContainer by lazy { contentView.findViewById<FrameLayout>(R.id.aladdin_boardGeniePanelContainer) }
+    private var selectedGenie: ViewGenie? = null
+        set(value) {
+            if (field == value) {
+                return
+            }
+            val before = field
+            field?.onDeselected()
+            field = value
+            value?.onSelected()
+
+            onGenieSelected(before, value)
+        }
 
     private val genies = LinkedHashMap<String, ViewGenie>()
 
@@ -55,28 +70,66 @@ class AladdinBoard : IAladdinView() {
     }
 
     private fun setUpForLandscape() {
+        TODO("need implementation")
     }
 
     fun show() {
         agent.show()
+
+        if (genies.isNotEmpty() && selectedGenie == null) {
+            selectedGenie = genies.values.first()
+        }
     }
 
     private fun prepareGenieView() {
         for (genie in this.genies.values) {
-            TextView(Aladdin.app).apply {
-                layoutParams = ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
-                )
-                text = genie.title
-                tag = genie.key
-                gravity = Gravity.CENTER
-                setOnClickListener {
-                    Toast.makeText(Aladdin.app, "click ${it.tag}", Toast.LENGTH_SHORT).show()
-                }
-            }.also {
-                contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer).addView(it)
+            genie.createTab().also {
+                tabContainer.addView(it)
             }
+            genie.createPanel().also {
+                panelContainer.addView(it)
+            }
+        }
+    }
+
+    private fun ViewGenie.createTab(): View {
+        return TextView(Aladdin.app).also {
+            it.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            it.text = this.title
+            it.tag = tabTag()
+            it.gravity = Gravity.CENTER
+            val genie = this
+            it.setOnClickListener {
+                Toast.makeText(Aladdin.app, "click ${this.key}", Toast.LENGTH_SHORT).show()
+                selectedGenie = genie
+            }
+        }
+    }
+
+    private fun ViewGenie.createPanel(): View {
+        return FrameLayout(Aladdin.app).also {
+            it.layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+            it.tag = panelTag()
+            it.visibility = View.GONE
+            it.addView(this.createPanel(it))
+        }
+    }
+
+    private fun onGenieSelected(before: ViewGenie?, after: ViewGenie?) {
+        before?.let {
+            tabContainer.findViewWithTag<View>(it.tabTag()).isSelected = false
+            panelContainer.findViewWithTag<View>(it.panelTag()).isVisible = false
+        }
+
+        after?.let {
+            tabContainer.findViewWithTag<View>(it.tabTag()).isSelected = true
+            panelContainer.findViewWithTag<View>(it.panelTag()).isVisible = true
         }
     }
 
@@ -89,4 +142,7 @@ class AladdinBoard : IAladdinView() {
 
         prepareGenieView()
     }
+
+    private fun ViewGenie.tabTag() = "tab_$key"
+    private fun ViewGenie.panelTag() = "panel_$key"
 }

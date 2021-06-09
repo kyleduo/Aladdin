@@ -1,16 +1,21 @@
 package com.kyleduo.aladdin.preset
 
+import android.graphics.Color
 import android.view.View
-import com.kyleduo.aladdin.Aladdin
+import android.view.ViewGroup
 import com.kyleduo.aladdin.genies.ViewGenie
-import com.kyleduo.aladdin.utils.app
 
 /**
  * @author kyleduo on 2021/6/4
  */
 class AppInfoGenie : ViewGenie() {
-    override val panel: View = View(Aladdin.app)
     override val title: String = "App Info"
+
+    override fun createPanel(container: ViewGroup): View {
+        return View(container.context).apply {
+            setBackgroundColor(Color.LTGRAY)
+        }
+    }
 
     override fun onSelected() {
     }
