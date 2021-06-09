@@ -10,7 +10,7 @@ import android.os.Bundle
  * @author kyleduo on 2021/5/31
  */
 @Suppress("unused")
-class ActivityLifecycleCallbacksAdapter : Application.ActivityLifecycleCallbacks {
+open class ActivityLifecycleCallbacksAdapter : Application.ActivityLifecycleCallbacks {
     override fun onActivityCreated(activity: Activity, savedInstanceState: Bundle?) {
     }
 
