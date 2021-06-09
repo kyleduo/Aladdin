@@ -21,29 +21,19 @@ import com.kyleduo.aladdin.view.IAladdinView
  * @author kyleduo on 2021/5/31
  */
 class AladdinBoard : IAladdinView() {
-    companion object {
-        private const val TAG_CONTENT = "content"
-    }
 
-    override val view: View by lazy {
-        FrameLayout(Aladdin.app).apply {
-            setBackgroundColor(0x60000000)
-            if (findViewWithTag<View>(TAG_CONTENT) == null) {
-                contentView = LayoutInflater.from(Aladdin.app)
-                    .inflate(R.layout.aladdin_board_portrait, this, false) as LinearLayout
-                addView(contentView)
-                contentView.tag = TAG_CONTENT
-            }
-            setOnClickListener {
+    override val view: FrameLayout by lazy {
+        (LayoutInflater.from(Aladdin.app)
+            .inflate(R.layout.aladdin_board, FrameLayout(Aladdin.app), false)
+                as FrameLayout).also {
+            it.setOnClickListener {
                 agent.dismiss()
                 (Aladdin.genie("entry") as? EntryGenie)?.show()
             }
-
-            setUpForPortrait()
         }
     }
     override val tag: Any = "Board"
-    private lateinit var contentView: LinearLayout
+    private val contentView by lazy { view.findViewById<LinearLayout>(R.id.aladdin_boardContent) }
     private val tabContainer by lazy { contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer) }
     private val panelContainer by lazy { contentView.findViewById<FrameLayout>(R.id.aladdin_boardGeniePanelContainer) }
     private var selectedGenie: ViewGenie? = null
