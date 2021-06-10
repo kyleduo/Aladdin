@@ -8,6 +8,7 @@ import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import com.kyleduo.aladdin.Aladdin
 import com.kyleduo.aladdin.R
@@ -22,10 +23,10 @@ import com.kyleduo.aladdin.view.IAladdinView
  */
 class AladdinBoard : IAladdinView() {
 
-    override val view: FrameLayout by lazy {
-        (LayoutInflater.from(Aladdin.app)
-            .inflate(R.layout.aladdin_board, FrameLayout(Aladdin.app), false)
-                as FrameLayout).also {
+    override val view: ConstraintLayout by lazy {
+        val root = LayoutInflater.from(Aladdin.app)
+            .inflate(R.layout.aladdin_board, FrameLayout(Aladdin.app), false) as ConstraintLayout
+        root.also {
             it.setOnClickListener {
                 agent.dismiss()
                 (Aladdin.genie("entry") as? EntryGenie)?.show()
