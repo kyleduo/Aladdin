@@ -12,7 +12,7 @@
         android:layout_height="0dp"
         android:layout_gravity="center"
         android:layout_margin="32dp"
-        android:background="#FFFFFFFF"
+        android:background="@drawable/aladdin_board_content_background"
         android:clickable="true"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -34,7 +34,9 @@ class AladdinBoard : IAladdinView() {
         }
     }
     override val tag: Any = "Board"
-    private val contentView by lazy { view.findViewById<LinearLayout>(R.id.aladdin_boardContent) }
+    private val contentView by lazy {
+        view.findViewById<LinearLayout>(R.id.aladdin_boardContent).also { it.clipToOutline = true }
+    }
     private val tabContainer by lazy { contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer) }
     private val panelContainer by lazy { contentView.findViewById<FrameLayout>(R.id.aladdin_boardGeniePanelContainer) }
     private var selectedGenie: ViewGenie? = null
