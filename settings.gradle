@@ -1,4 +1,4 @@
 include ':app'
-include ':library'
+include ':core'
 
 rootProject.name = 'Aladdin'
