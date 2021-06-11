@@ -2,6 +2,7 @@ package com.kyleduo.aladdin.view
 
 import android.content.Context
 import android.view.WindowManager
+import android.widget.Toast
 import com.kyleduo.aladdin.Aladdin
 import com.kyleduo.aladdin.lifecycle.AladdinAppLifecycleCallbacks
 import com.kyleduo.aladdin.structure.IAladdinManager
@@ -19,11 +20,16 @@ import com.kyleduo.aladdin.view.agent.IAladdinViewAgent
 class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
 
     var mode: AladdinViewMode = AladdinViewMode.Global
-    private val views = mutableMapOf<Any, IAladdinView>()
+    private val views = mutableMapOf<Any, AladdinViewEntry>()
+    private var requestingPermission = false
 
     fun register(view: IAladdinView) {
-        views[view.tag] = view
-        view.bindAgent(createViewAgent())
+        val entry = AladdinViewEntry(view, createViewAgent(), false)
+        views[view.tag] = entry
+        if (PermissionUtils.hasAlertWindowPermission()) {
+            view.bindAgent(entry.agent)
+            entry.hasAgentBound = true
+        }
     }
 
     override fun attach() {
@@ -31,11 +37,6 @@ class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
     }
 
     override fun ready() {
-        if (mode == AladdinViewMode.Global) {
-            if (!PermissionUtils.hasAlertWindowPermission()) {
-                PermissionUtils.requestAlertWindowPermission()
-            }
-        }
     }
 
     private fun createViewAgent(): IAladdinViewAgent {
@@ -48,15 +49,52 @@ class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
         }
     }
 
+    private fun requestAlertWindowPermissionIfNeeded() {
+        if (mode == AladdinViewMode.Global) {
+            if (!PermissionUtils.hasAlertWindowPermission()) {
+                Toast.makeText(
+                    Aladdin.app,
+                    "Need System Alert Window permission in Global mode.",
+                    Toast.LENGTH_SHORT
+                ).show()
+                requestingPermission = true
+                PermissionUtils.requestAlertWindowPermission()
+            }
+        }
+    }
+
+    private fun rebindAgents() {
+        if (PermissionUtils.hasAlertWindowPermission()) {
+            views.forEach {
+                if (!it.value.hasAgentBound) {
+                    it.value.view.bindAgent(it.value.agent)
+                    it.value.hasAgentBound = true
+                }
+            }
+        }
+    }
+
     override fun onAppEnterBackground() {
         views.forEach {
-            it.value.agent.deactivate()
+            if (it.value.hasAgentBound) {
+                it.value.view.agent.deactivate()
+            }
         }
     }
 
     override fun onAppEnterForeground() {
+        if (requestingPermission) {
+            requestingPermission = false
+            rebindAgents()
+            onAppEnterBackground()
+        } else {
+            requestAlertWindowPermissionIfNeeded()
+        }
+
         views.forEach {
-            it.value.agent.activate()
+            if (it.value.hasAgentBound) {
+                it.value.view.agent.activate()
+            }
         }
     }
 }
