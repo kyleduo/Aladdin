@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="aladdin_textBody">#FF404040</color>
+    <color name="aladdin_textSubhead">#FF323232</color>
+    <color name="aladdin_textCaption">#FF808080</color>
+
+    <color name="aladdin_background">#FFFAFAFA</color>
+
+    <color name="aladdin_divider">#FFE0E0E0</color>
+</resources>

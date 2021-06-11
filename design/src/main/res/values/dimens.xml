@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="aladdin_textBody">12sp</dimen>
+    <dimen name="aladdin_textSubhead">14sp</dimen>
+    <dimen name="aladdin_textCaption">10sp</dimen>
+
+    <dimen name="aladdin_radius">8dp</dimen>
+</resources>

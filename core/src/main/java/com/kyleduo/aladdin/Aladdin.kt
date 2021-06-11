@@ -18,7 +18,7 @@ import com.kyleduo.aladdin.genies.IGenie
  */
 @Suppress("unused")
 object Aladdin {
-    internal lateinit var context: AladdinContext
+    lateinit var context: AladdinContext
 
     fun with(application: Application): AladdinContext {
         return AladdinContext(application).also {
