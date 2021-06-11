@@ -1,13 +1,14 @@
 package com.kyleduo.aladdin.entry
 
-import android.graphics.Color
 import android.view.Gravity
 import android.view.View
-import android.widget.RelativeLayout
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatImageView
 import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.board.BoardGenie
 import com.kyleduo.aladdin.utils.app
+import com.kyleduo.aladdin.utils.dp2px
 import com.kyleduo.aladdin.view.IAladdinView
 
 /**
@@ -17,11 +18,13 @@ import com.kyleduo.aladdin.view.IAladdinView
  */
 class AladdinEntry : IAladdinView() {
 
+    companion object {
+        private const val ENTRY_SIZE_DP = 36
+    }
+
     override val view: View by lazy {
-        RelativeLayout(Aladdin.app).apply {
-            setBackgroundColor(Color.CYAN and 0x40FFFFFF)
-            minimumWidth = 100
-            minimumHeight = 100
+        AppCompatImageView(Aladdin.app).apply {
+            setImageResource(R.drawable.aladdin_entry_icon)
 
             setOnClickListener {
                 Toast.makeText(Aladdin.app, "Click Entry !!!", Toast.LENGTH_SHORT).show()
@@ -37,6 +40,8 @@ class AladdinEntry : IAladdinView() {
     override fun onAgentBound() {
         super.onAgentBound()
 
+        val entrySize = ENTRY_SIZE_DP.dp2px()
+        agent.resize(entrySize, entrySize)
         agent.gravity(Gravity.CENTER_VERTICAL or Gravity.START)
         agent.show()
     }
