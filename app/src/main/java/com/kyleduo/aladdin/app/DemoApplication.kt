@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
 import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.genie.appinfo.AppInfoGenie
 import com.kyleduo.aladdin.genies.ViewGenie
 
 /**
@@ -16,6 +17,7 @@ class DemoApplication : Application() {
         super.onCreate()
 
         Aladdin.with(this)
+            .addGenie(AppInfoGenie())
             .addGenie(TestViewGenie(Color.RED))
             .addGenie(TestViewGenie(Color.GRAY))
             .install()
