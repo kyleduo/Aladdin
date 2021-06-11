@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/aladdin_board_tab_item_background"
+    android:elevation="2dp"
+    android:gravity="center"
+    android:minWidth="48dp"
+    android:minHeight="24dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:textSize="12dp"
+    tools:ignore="SpUsage"
+    tools:text="App Info">
+
+</TextView>

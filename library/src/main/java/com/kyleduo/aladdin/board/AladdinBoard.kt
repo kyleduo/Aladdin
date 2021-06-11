@@ -1,27 +1,28 @@
 package com.kyleduo.aladdin.board
 
-import android.view.Gravity
+import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.kyleduo.aladdin.Aladdin
 import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.entry.EntryGenie
 import com.kyleduo.aladdin.genies.IGenie
 import com.kyleduo.aladdin.genies.ViewGenie
 import com.kyleduo.aladdin.utils.app
+import com.kyleduo.aladdin.utils.dp2px
 import com.kyleduo.aladdin.view.IAladdinView
 
 /**
  * @author kyleduo on 2021/5/31
  */
-class AladdinBoard : IAladdinView() {
+class AladdinBoard : IAladdinView(), OnTabSelectedListener {
 
     override val view: ConstraintLayout by lazy {
         val root = LayoutInflater.from(Aladdin.app)
@@ -37,7 +38,32 @@ class AladdinBoard : IAladdinView() {
     private val contentView by lazy {
         view.findViewById<LinearLayout>(R.id.aladdin_boardContent).also { it.clipToOutline = true }
     }
-    private val tabContainer by lazy { contentView.findViewById<LinearLayout>(R.id.aladdin_boardTabContainer) }
+    private val tabAdapter = TabAdapter(this)
+    private val tabList by lazy {
+        contentView.findViewById<RecyclerView>(R.id.aladdin_boardTabList).also {
+            it.adapter = tabAdapter
+            it.layoutManager =
+                LinearLayoutManager(it.context, LinearLayoutManager.HORIZONTAL, false)
+            it.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: Rect,
+                    view: View,
+                    parent: RecyclerView,
+                    state: RecyclerView.State
+                ) {
+                    val position =
+                        (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
+
+                    val margin = 8.dp2px()
+                    if (position == 0) {
+                        outRect.set(margin, margin, margin, margin)
+                    } else {
+                        outRect.set(0, margin, margin, margin)
+                    }
+                }
+            })
+        }
+    }
     private val panelContainer by lazy { contentView.findViewById<FrameLayout>(R.id.aladdin_boardGeniePanelContainer) }
     private var selectedGenie: ViewGenie? = null
         set(value) {
@@ -49,6 +75,8 @@ class AladdinBoard : IAladdinView() {
             field = value
             value?.onSelected()
 
+            tabAdapter.selectedGenie = value
+
             onGenieSelected(before, value)
         }
 
@@ -57,13 +85,6 @@ class AladdinBoard : IAladdinView() {
     override fun onAgentBound() {
         super.onAgentBound()
         agent.resize(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-    }
-
-    private fun setUpForPortrait() {
-    }
-
-    private fun setUpForLandscape() {
-        TODO("need implementation")
     }
 
     fun show() {
@@ -76,31 +97,31 @@ class AladdinBoard : IAladdinView() {
 
     private fun prepareGenieView() {
         for (genie in this.genies.values) {
-            genie.createTab().also {
-                tabContainer.addView(it)
-            }
             genie.createPanel().also {
                 panelContainer.addView(it)
             }
         }
+
+        // init
+        tabList
+
+        tabAdapter.genies = this.genies.values.toList()
     }
 
-    private fun ViewGenie.createTab(): View {
-        return TextView(Aladdin.app).also {
-            it.layoutParams = ViewGroup.LayoutParams(
-                ViewGroup.LayoutParams.WRAP_CONTENT,
-                ViewGroup.LayoutParams.MATCH_PARENT
-            )
-            it.text = this.title
-            it.tag = tabTag()
-            it.gravity = Gravity.CENTER
-            val genie = this
-            it.setOnClickListener {
-                Toast.makeText(Aladdin.app, "click ${this.key}", Toast.LENGTH_SHORT).show()
-                selectedGenie = genie
-            }
-        }
-    }
+//    private fun ViewGenie.createTab(container: ViewGroup): View {
+//        val tab = LayoutInflater.from(container.context)
+//            .inflate(R.layout.aladdin_board_tab, container, false) as TextView
+//        return tab.also {
+//            it.text = this.title
+//            it.tag = tabTag()
+//            it.gravity = Gravity.CENTER
+//            val genie = this
+//            it.setOnClickListener {
+//                Toast.makeText(Aladdin.app, "click ${this.key}", Toast.LENGTH_SHORT).show()
+//                selectedGenie = genie
+//            }
+//        }
+//    }
 
     private fun ViewGenie.createPanel(): View {
         return FrameLayout(Aladdin.app).also {
@@ -116,12 +137,10 @@ class AladdinBoard : IAladdinView() {
 
     private fun onGenieSelected(before: ViewGenie?, after: ViewGenie?) {
         before?.let {
-            tabContainer.findViewWithTag<View>(it.tabTag()).isSelected = false
             panelContainer.findViewWithTag<View>(it.panelTag()).isVisible = false
         }
 
         after?.let {
-            tabContainer.findViewWithTag<View>(it.tabTag()).isSelected = true
             panelContainer.findViewWithTag<View>(it.panelTag()).isVisible = true
         }
     }
@@ -136,6 +155,9 @@ class AladdinBoard : IAladdinView() {
         prepareGenieView()
     }
 
-    private fun ViewGenie.tabTag() = "tab_$key"
+    override fun onTabSelected(position: Int, genie: ViewGenie) {
+        selectedGenie = genie
+    }
+
     private fun ViewGenie.panelTag() = "panel_$key"
 }

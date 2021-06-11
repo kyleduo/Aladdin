@@ -12,3 +12,10 @@ import com.kyleduo.aladdin.Aladdin
 fun Int.dp2px(): Int {
     return (Aladdin.app.resources.displayMetrics.density * this).toInt()
 }
+
+/**
+ * dp to px, in int format
+ */
+fun Float.dp2px(): Float {
+    return Aladdin.app.resources.displayMetrics.density * this
+}
