@@ -6,3 +6,4 @@ include ':core'
 
 include ':genies:appinfo'
 include ':design'
+include ':core-api'
