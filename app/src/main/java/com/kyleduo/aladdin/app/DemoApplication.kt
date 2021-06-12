@@ -4,9 +4,12 @@ import android.app.Application
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.AladdinContextFactoryImpl
+import com.kyleduo.aladdin.api.Aladdin
+import com.kyleduo.aladdin.api.AladdinContext
+import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
+import com.kyleduo.aladdin.api.manager.view.ViewMode
 import com.kyleduo.aladdin.genie.appinfo.AppInfoGenie
-import com.kyleduo.aladdin.genies.ViewGenie
 
 /**
  * @author kyleduo on 2021/5/18
@@ -17,13 +20,20 @@ class DemoApplication : Application() {
         super.onCreate()
 
         Aladdin.with(this)
-            .addGenie(AppInfoGenie())
-            .addGenie(TestViewGenie(Color.RED))
-            .addGenie(TestViewGenie(Color.GRAY))
+            .view()
+            .viewMode(ViewMode.Global)
+            .end()
+            .genie()
+            .addGenie { context -> AppInfoGenie(context) }
+            .addGenie { context -> TestViewGenie(Color.YELLOW, context) }
+            .addGenie { context -> TestViewGenie(Color.CYAN, context) }
+            .end()
+            .contextFactory(AladdinContextFactoryImpl())
             .install()
     }
 
-    class TestViewGenie(private val color: Int) : ViewGenie() {
+    class TestViewGenie(private val color: Int, context: AladdinContext) :
+        AladdinViewGenie(context) {
         override val title: String
             get() = color.toString()
 

@@ -46,4 +46,5 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:2.0.4"
 
     api project(':core-api')
+    implementation project(':design')
 }

@@ -44,6 +44,6 @@ dependencies {
 
     implementation 'com.drakeet.multitype:multitype:4.2.0'
 
-    implementation project(':core')
+    implementation project(':core-api')
     implementation project(':design')
 }

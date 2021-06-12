@@ -8,7 +8,8 @@ import androidx.annotation.MainThread
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.MultiTypeAdapter
-import com.kyleduo.aladdin.Aladdin
+import com.kyleduo.aladdin.api.AladdinContext
+import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.appinfo.data.AppInfoSection
 import com.kyleduo.aladdin.genie.appinfo.databinding.AladdinGenieAppInfoPanelBinding
 import com.kyleduo.aladdin.genie.appinfo.providers.BasicAppInfoProvider
@@ -18,14 +19,14 @@ import com.kyleduo.aladdin.genie.appinfo.view.AppInfoItem
 import com.kyleduo.aladdin.genie.appinfo.view.AppInfoItemDelegate
 import com.kyleduo.aladdin.genie.appinfo.view.AppInfoSectionTitle
 import com.kyleduo.aladdin.genie.appinfo.view.AppInfoSectionTitleItemDelegate
-import com.kyleduo.aladdin.genies.ViewGenie
+import com.kyleduo.aladdin.ui.dp2px
 
 /**
  * Display basic information of this Application.
  *
  * @author kyleduo on 2021/6/11
  */
-class AppInfoGenie : ViewGenie() {
+class AppInfoGenie(context: AladdinContext) : AladdinViewGenie(context) {
     companion object {
         const val KEY = "aladdin-app-info"
     }
@@ -34,9 +35,9 @@ class AppInfoGenie : ViewGenie() {
     override val key: String = KEY
 
     private val appInfoProviders = mutableListOf<AppInfoProvider>().also {
-        it.add(BasicAppInfoProvider(Aladdin.context.application))
-        it.add(DeviceInfoProvider(Aladdin.context.application))
-        it.add(DisplayInfoProvider(Aladdin.context.application))
+        it.add(BasicAppInfoProvider(context.app))
+        it.add(DeviceInfoProvider(context.app))
+        it.add(DisplayInfoProvider(context.app))
     }
 
     private lateinit var binding: AladdinGenieAppInfoPanelBinding
@@ -65,7 +66,7 @@ class AppInfoGenie : ViewGenie() {
                         val position =
                             (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
                         val item = adapter.items[position]
-                        val unit = (view.context.resources.displayMetrics.density * 8).toInt()
+                        val unit = 8.dp2px()
                         val isLast = position == adapter.items.size - 1
                         val bottom = if (isLast) unit else 0
                         if (item is AppInfoSectionTitle) {
