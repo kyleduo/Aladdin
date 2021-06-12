@@ -25,7 +25,7 @@ class DisplayInfoProvider(
             Rect(0, 0, windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
         }
         return AppInfoSection(
-            "显示信息", "", listOf(
+            "Display", "", listOf(
                 AppInfoItem("window size", "(${windowBounds.width()}, ${windowBounds.height()})"),
                 AppInfoItem("density", context.resources.displayMetrics.density.toString()),
                 AppInfoItem("densityDpi", context.resources.displayMetrics.densityDpi.toString()),

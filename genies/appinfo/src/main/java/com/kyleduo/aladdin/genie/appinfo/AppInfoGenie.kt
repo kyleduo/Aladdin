@@ -12,7 +12,7 @@ import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.appinfo.data.AppInfoSection
 import com.kyleduo.aladdin.genie.appinfo.databinding.AladdinGenieAppInfoPanelBinding
-import com.kyleduo.aladdin.genie.appinfo.providers.BasicAppInfoProvider
+import com.kyleduo.aladdin.genie.appinfo.providers.ApplicationInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.providers.DeviceInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.providers.DisplayInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.view.AppInfoItem
@@ -35,7 +35,7 @@ class AppInfoGenie(context: AladdinContext) : AladdinViewGenie(context) {
     override val key: String = KEY
 
     private val appInfoProviders = mutableListOf<AppInfoProvider>().also {
-        it.add(BasicAppInfoProvider(context.app))
+        it.add(ApplicationInfoProvider(context.app))
         it.add(DeviceInfoProvider(context.app))
         it.add(DisplayInfoProvider(context.app))
     }

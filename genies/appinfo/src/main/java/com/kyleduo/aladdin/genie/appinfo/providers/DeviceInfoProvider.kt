@@ -16,7 +16,7 @@ class DeviceInfoProvider(
     @Suppress("DEPRECATION")
     override fun provideAppInfo(): AppInfoSection {
         return AppInfoSection(
-            "设备信息", "", listOf(
+            "Device", "", listOf(
                 AppInfoItem("Brand", Build.BRAND),
                 AppInfoItem("Model", Build.MODEL),
                 AppInfoItem("Manufacturer", Build.MANUFACTURER),

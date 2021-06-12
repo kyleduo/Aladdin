@@ -9,7 +9,7 @@ import com.kyleduo.aladdin.genie.appinfo.data.AppInfoSection
 /**
  * @author kyleduo on 2021/6/11
  */
-class BasicAppInfoProvider(
+class ApplicationInfoProvider(
     private val context: Context
 ) : AppInfoProvider {
 
@@ -25,11 +25,11 @@ class BasicAppInfoProvider(
         }
 
         return AppInfoSection(
-            "基础信息", "", listOf(
+            "App", "", listOf(
                 AppInfoItem("Package", context.packageName),
-                AppInfoItem("PID", android.os.Process.myPid().toString()),
                 AppInfoItem("Version Code", versionCode.toString()),
                 AppInfoItem("Version Name", packageInfo.versionName),
+                AppInfoItem("PID", android.os.Process.myPid().toString()),
             )
         )
     }
