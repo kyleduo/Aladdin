@@ -1,20 +1,22 @@
-package com.kyleduo.aladdin.genie.appinfo.data
+package com.kyleduo.aladdin.genie.info.data
 
 /**
  * Represents a group of app info data
+ *
  * @author kyleduo on 2021/6/11
  */
-data class AppInfoSection(
+data class InfoSection(
     val title: String,
     val desc: String,
-    val items: List<AppInfoItem>
+    val items: List<InfoItem>
 )
 
 /**
  * Represents a single data of application information.
+ *
  * @author kyleduo on 2021/6/11
  */
-data class AppInfoItem(
+data class InfoItem(
     val name: String,
     val value: String
 )

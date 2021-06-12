@@ -1,21 +1,21 @@
-package com.kyleduo.aladdin.genie.appinfo.view
+package com.kyleduo.aladdin.genie.info.view
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
-import com.kyleduo.aladdin.genie.appinfo.R
-import com.kyleduo.aladdin.genie.appinfo.databinding.AladdinGenieAppInfoLayoutItemBinding
+import com.kyleduo.aladdin.genie.info.R
+import com.kyleduo.aladdin.genie.info.databinding.AladdinGenieInfoLayoutItemBinding
 import com.kyleduo.aladdin.ui.inflateView
 
 /**
  * @author kyleduo on 2021/6/11
  */
-class AppInfoItemDelegate : ItemViewDelegate<AppInfoItem, AppInfoItemViewHolder>() {
+class AppInfoItemDelegate : ItemViewDelegate<InfoItemViewData, AppInfoItemViewHolder>() {
     override fun onBindViewHolder(
         holder: AppInfoItemViewHolder,
-        item: AppInfoItem
+        item: InfoItemViewData
     ) {
         holder.bind(item)
     }
@@ -25,17 +25,17 @@ class AppInfoItemDelegate : ItemViewDelegate<AppInfoItem, AppInfoItemViewHolder>
         parent: ViewGroup
     ): AppInfoItemViewHolder {
         return AppInfoItemViewHolder(
-            parent.inflateView(R.layout.aladdin_genie_app_info_layout_item)
+            parent.inflateView(R.layout.aladdin_genie_info_layout_item)
         )
     }
 
 }
 
 class AppInfoItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val binding = AladdinGenieAppInfoLayoutItemBinding.bind(itemView)
+    private val binding = AladdinGenieInfoLayoutItemBinding.bind(itemView)
 
-    fun bind(item: AppInfoItem) {
-        binding.aladdinAppinfoItemNameText.text = item.name
-        binding.aladdinAppinfoItemValueText.text = item.value
+    fun bind(item: InfoItemViewData) {
+        binding.aladdinInfoItemNameText.text = item.name
+        binding.aladdinInfoItemValueText.text = item.value
     }
 }
