@@ -1,6 +1,8 @@
 package com.kyleduo.aladdin.genie.appinfo.providers
 
 import android.content.Context
+import android.graphics.Rect
+import android.os.Build
 import android.view.WindowManager
 import com.kyleduo.aladdin.genie.appinfo.AppInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.data.AppInfoItem
@@ -17,7 +19,11 @@ class DisplayInfoProvider(
     override fun provideAppInfo(): AppInfoSection {
         val windowManager: WindowManager =
             context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-        val windowBounds = windowManager.currentWindowMetrics.bounds
+        val windowBounds = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            windowManager.currentWindowMetrics.bounds
+        } else {
+            Rect(0, 0, windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
+        }
         return AppInfoSection(
             "显示信息", "", listOf(
                 AppInfoItem("window size", "(${windowBounds.width()}, ${windowBounds.height()})"),
