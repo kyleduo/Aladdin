@@ -48,7 +48,7 @@ class AdaptViewAgent(
             (view.view.parent as? ViewGroup)?.removeView(view.view)
         }
 
-        (toActivity.window.decorView as? ViewGroup)?.addView(view.view)
+        toActivity.addAladdinView(view)
     }
 
     override fun bind(view: IAladdinView) {
@@ -85,9 +85,7 @@ class AdaptViewAgent(
     override fun show() {
         isShown = true
         if (isActive) {
-            currentActivityRef?.get()?.window?.decorView?.let {
-                (it as ViewGroup).addView(view.view, layoutParams)
-            }
+            currentActivityRef?.get()?.addAladdinView(view)
         }
     }
 
@@ -106,10 +104,19 @@ class AdaptViewAgent(
     override fun activate() {
         isActive = true
         if (isShown && view.view.parent == null) {
-            currentActivityRef?.get()?.window?.decorView?.let {
-                (it as ViewGroup).addView(view.view, layoutParams)
-            }
+            currentActivityRef?.get()?.addAladdinView(view)
         }
+    }
+
+    private fun Activity.addAladdinView(view: IAladdinView) {
+        if (view.view.parent == this.window?.decorView) {
+            // already added
+            return
+        }
+        if (view.view.parent != null) {
+            (view.view.parent as? ViewGroup)?.removeView(view.view)
+        }
+        (this.window?.decorView as? ViewGroup)?.addView(view.view, layoutParams)
     }
 
     private fun updateLayout() {

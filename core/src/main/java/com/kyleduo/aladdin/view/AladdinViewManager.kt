@@ -19,17 +19,13 @@ import com.kyleduo.aladdin.view.agent.IAladdinViewAgent
  */
 class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
 
-    var mode: AladdinViewMode = AladdinViewMode.Global
+    var mode: AladdinViewMode = AladdinViewMode.Adaptive
     private val views = mutableMapOf<Any, AladdinViewEntry>()
     private var requestingPermission = false
 
     fun register(view: IAladdinView) {
         val entry = AladdinViewEntry(view, createViewAgent(), false)
         views[view.tag] = entry
-        if (PermissionUtils.hasAlertWindowPermission()) {
-            view.bindAgent(entry.agent)
-            entry.hasAgentBound = true
-        }
     }
 
     override fun attach() {
@@ -37,6 +33,7 @@ class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
     }
 
     override fun ready() {
+        rebindAgents()
     }
 
     private fun createViewAgent(): IAladdinViewAgent {
@@ -64,7 +61,7 @@ class AladdinViewManager : IAladdinManager, AladdinAppLifecycleCallbacks {
     }
 
     private fun rebindAgents() {
-        if (PermissionUtils.hasAlertWindowPermission()) {
+        if (mode == AladdinViewMode.Adaptive || PermissionUtils.hasAlertWindowPermission()) {
             views.forEach {
                 if (!it.value.hasAgentBound) {
                     it.value.view.bindAgent(it.value.agent)
