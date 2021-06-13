@@ -3,11 +3,11 @@ package com.kyleduo.aladdin.genie.logcat.view
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
+import com.kyleduo.aladdin.genie.logcat.databinding.AladdinItemLogcatBinding
 import com.kyleduo.aladdin.ui.inflateView
 
 /**
@@ -15,7 +15,7 @@ import com.kyleduo.aladdin.ui.inflateView
  */
 class LogItemViewDelegate : ItemViewDelegate<LogItem, LogItemViewHolder>() {
     override fun onBindViewHolder(holder: LogItemViewHolder, item: LogItem) {
-        (holder.itemView as TextView).text = item.toString()
+        holder.bind(item)
     }
 
     override fun onCreateViewHolder(context: Context, parent: ViewGroup): LogItemViewHolder {
@@ -23,4 +23,14 @@ class LogItemViewDelegate : ItemViewDelegate<LogItem, LogItemViewHolder>() {
     }
 }
 
-class LogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
+class LogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+    private val binding = AladdinItemLogcatBinding.bind(itemView)
+
+    fun bind(item: LogItem) {
+        binding.aladdinLogcatItemLevelBadge.text = item.level.badge
+        binding.aladdinLogcatItemTime.text = item.time
+        binding.aladdinLogcatItemTag.text = item.tag
+        binding.aladdinLogcatItemContent.text = item.content
+    }
+}

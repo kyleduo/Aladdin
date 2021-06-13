@@ -77,7 +77,7 @@ class LogcatGenie(
     fun start() {
         stop()
         reader = LogcatReader(LogcatParser(), this).also {
-            start()
+            it.start()
         }
     }
 

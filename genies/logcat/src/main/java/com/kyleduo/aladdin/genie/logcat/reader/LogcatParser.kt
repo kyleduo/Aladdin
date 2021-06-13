@@ -11,7 +11,7 @@ class LogcatParser {
     companion object {
         // 06-13 01:24:51.691  2537  2731 D NetworkController.SecMobileSignalController(0/2147483647): onSignalStrengthsChanged level=2
         private const val REGEX =
-            """^(\d{2}-\d{2} \d{2}:\d{2}:\d{2}\.\d{3})\s+(\d+)\s+(\d+)\s+(\S)\s+([^:\s]+)\s*:\s+(.+)$"""
+            """^(\d{2}-\d{2})\s+(\d{2}:\d{2}:\d{2}\.\d{3})\s+(\d+)\s+(\d+)\s+(\S)\s+([^:\s]+)\s*:\s+(.+)$"""
 
         val regex = Regex(REGEX)
     }
@@ -19,17 +19,17 @@ class LogcatParser {
     fun parse(message: String): LogItem {
         val result = regex.find(message) ?: return LogItem.error("Parse Error", message)
 
-        if (result.groups.size != 7) {
+        if (result.groups.size != 8) {
             // not valid
             return LogItem.error("Parse Error", message)
         }
 
-        val time = result.groups[1]?.value ?: ""
-//        val pid = result.groups[2]?.value ?: ""
-        val tid = result.groups[3]?.value ?: ""
-        val level = LogLevel.parse(result.groups[4]?.value ?: "")
-        val tag = result.groups[5]?.value ?: ""
-        val content = result.groups[6]?.value ?: ""
+        val time = result.groups[2]?.value ?: ""
+//        val pid = result.groups[3]?.value ?: ""
+        val tid = result.groups[4]?.value ?: ""
+        val level = LogLevel.parse(result.groups[5]?.value ?: "")
+        val tag = result.groups[6]?.value ?: ""
+        val content = result.groups[7]?.value ?: ""
 
         return LogItem(level, time, tid, tag, content)
     }
