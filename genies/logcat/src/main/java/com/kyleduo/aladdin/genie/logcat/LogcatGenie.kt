@@ -11,6 +11,8 @@ import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLayoutPanelLogcatBind
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatParser
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatReader
 import com.kyleduo.aladdin.genie.logcat.reader.OnLogItemListener
+import com.kyleduo.aladdin.genie.logcat.view.DefaultLogItemPalette
+import com.kyleduo.aladdin.genie.logcat.view.LogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemViewDelegate
 import com.kyleduo.aladdin.ui.inflateView
 import java.util.*
@@ -20,7 +22,9 @@ import java.util.*
  */
 class LogcatGenie(
     context: AladdinContext,
-    private val itemLimit: Int = 2000
+    private val itemLimit: Int = 2000,
+    private val blacklist: List<String> = listOf("ViewRootImpl"),
+    private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
 ) : AladdinViewGenie(context),
     OnLogItemListener {
     companion object {
@@ -35,7 +39,7 @@ class LogcatGenie(
     private val adapter by lazy {
         MultiTypeAdapter().also {
             it.items = items
-            it.register(LogItem::class.java, LogItemViewDelegate())
+            it.register(LogItem::class.java, LogItemViewDelegate(logItemPalette))
         }
     }
     private val layoutManager by lazy {
@@ -76,7 +80,7 @@ class LogcatGenie(
     @Suppress("MemberVisibilityCanBePrivate")
     fun start() {
         stop()
-        reader = LogcatReader(LogcatParser(), this).also {
+        reader = LogcatReader(LogcatParser(), blacklist, this).also {
             it.start()
         }
     }
