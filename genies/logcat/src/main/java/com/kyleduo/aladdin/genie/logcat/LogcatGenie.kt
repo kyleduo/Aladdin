@@ -2,11 +2,14 @@ package com.kyleduo.aladdin.genie.logcat
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
+import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLayoutPanelLogcatBinding
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatParser
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatReader
@@ -25,8 +28,7 @@ class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
-) : AladdinViewGenie(context),
-    OnLogItemListener {
+) : AladdinViewGenie(context), OnLogItemListener, AdapterView.OnItemSelectedListener {
     companion object {
         const val KEY = "aladdin-genie-logcat"
         const val TAG = "LogcatGenie"
@@ -38,7 +40,7 @@ class LogcatGenie(
 
     private val adapter by lazy {
         MultiTypeAdapter().also {
-            it.items = items
+            it.items = filteredItems
             it.register(LogItem::class.java, LogItemViewDelegate(logItemPalette))
         }
     }
@@ -46,7 +48,12 @@ class LogcatGenie(
         LinearLayoutManager(context.app, LinearLayoutManager.VERTICAL, false)
     }
 
-    private var items = LinkedList<LogItem>()
+    // all log items
+    private var allItems = LinkedList<LogItem>()
+
+    // filtered log items
+    private var filteredItems = LinkedList<LogItem>()
+    private var filterLevel = LogLevel.Verbose
 
     private var reader: LogcatReader? = null
 
@@ -58,7 +65,20 @@ class LogcatGenie(
 
             binding.aladdinLogcatList.also {
                 it.adapter = adapter
+                it.itemAnimator = null
                 it.layoutManager = layoutManager
+            }
+
+            binding.aladdinLogcatLevelSpinner.onItemSelectedListener = this
+            ArrayAdapter.createFromResource(
+                binding.aladdinLogcatLevelSpinner.context,
+                R.array.aladdin_test_dropdown,
+                android.R.layout.simple_spinner_item
+            ).also { adapter ->
+                // Specify the layout to use when the list of choices appears
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+                // Apply the adapter to the spinner
+                binding.aladdinLogcatLevelSpinner.adapter = adapter
             }
         }
     }
@@ -92,15 +112,58 @@ class LogcatGenie(
     }
 
     override fun onLogItem(item: LogItem) {
-        val isBottom = layoutManager.findLastVisibleItemPosition() == items.size - 1
-        items.addFirst(item)
-        if (items.size > itemLimit * 2) {
-            items = LinkedList(items.subList(0, itemLimit))
-            adapter.items = items
+        allItems.addFirst(item)
+        if (allItems.size > itemLimit * 2) {
+            allItems = LinkedList(allItems.subList(0, itemLimit))
         }
-        adapter.notifyDataSetChanged()
+
+        if (item.level.level < filterLevel.level) {
+            return
+        }
+        filteredItems.addFirst(item)
+        var newList = false
+        if (filteredItems.size > itemLimit) {
+            filteredItems = LinkedList(filteredItems.subList(0, itemLimit / 2))
+            adapter.items = filteredItems
+            newList = true
+        }
+
+        val isBottom = layoutManager.findFirstVisibleItemPosition() == 0
+
+        if (newList) {
+            adapter.notifyDataSetChanged()
+        } else {
+            adapter.notifyItemInserted(0)
+        }
+
         if (isBottom) {
             binding.aladdinLogcatList.scrollToPosition(0)
         }
+    }
+
+    // spinner
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val newLevel = when (position) {
+            0 -> LogLevel.Verbose
+            1 -> LogLevel.Debug
+            2 -> LogLevel.Info
+            3 -> LogLevel.Warn
+            4 -> LogLevel.Error
+            5 -> LogLevel.Assert
+            else -> filterLevel
+        }
+
+        if (newLevel == filterLevel) {
+            return
+        }
+
+        filterLevel = newLevel
+        filteredItems.clear()
+        filteredItems.addAll(allItems.filter { it.level.level >= filterLevel.level })
+        adapter.notifyDataSetChanged()
+        binding.aladdinLogcatList.scrollToPosition(0)
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }
