@@ -1,7 +1,5 @@
 package com.kyleduo.aladdin.managers.view
 
-import android.content.Context
-import android.view.WindowManager
 import android.widget.Toast
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.config.ViewConfigurator
@@ -10,9 +8,9 @@ import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.api.manager.view.ViewManager
 import com.kyleduo.aladdin.api.manager.view.ViewMode
-import com.kyleduo.aladdin.utils.PermissionUtils
 import com.kyleduo.aladdin.managers.view.agent.AdaptViewAgent
 import com.kyleduo.aladdin.managers.view.agent.GlobalViewAgent
+import com.kyleduo.aladdin.utils.PermissionUtils
 
 /**
  * A manager for organizing [AladdinView]'s.
@@ -44,11 +42,9 @@ class ViewManagerImpl(
 
     private fun createViewAgent(): AladdinViewAgent {
         return if (mode == ViewMode.Global) {
-            val windowManager =
-                context.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-            GlobalViewAgent(windowManager)
+            GlobalViewAgent(context)
         } else {
-            AdaptViewAgent(context.lifecycleManager)
+            AdaptViewAgent(context)
         }
     }
 

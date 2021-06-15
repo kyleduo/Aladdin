@@ -1,12 +1,17 @@
 package com.kyleduo.aladdin.managers.view.agent
 
+import android.content.Context
 import android.graphics.PixelFormat
+import android.graphics.Rect
 import android.os.Build
+import android.util.Size
 import android.view.Gravity
 import android.view.ViewGroup
 import android.view.WindowManager
+import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
+import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
 
 /**
  * View agent in [com.kyleduo.aladdin.api.manager.view.ViewMode.Global] mode.
@@ -16,9 +21,12 @@ import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
  * @author kyleduo on 2021/5/28
  */
 class GlobalViewAgent(
-    private val windowManager: WindowManager
+    val context: AladdinContext
 ) : AladdinViewAgent {
+    private val windowManager: WindowManager =
+        context.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
+    @Suppress("DEPRECATION")
     private val layoutParams = WindowManager.LayoutParams().also {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
@@ -38,6 +46,16 @@ class GlobalViewAgent(
 
     override fun bind(view: AladdinView) {
         this.view = view
+
+        if (this.view.isDraggable) {
+            this.view.view.setOnTouchListener(
+                ViewDraggingHelper(
+                    context,
+                    this,
+                    this.view.autoSnapEdges
+                )
+            )
+        }
     }
 
     override fun resize(width: Int, height: Int) {
@@ -47,6 +65,9 @@ class GlobalViewAgent(
     }
 
     override fun gravity(gravity: Int) {
+        if (view.isDraggable) {
+            return
+        }
         layoutParams.gravity = gravity
         updateLayout()
     }
@@ -63,10 +84,30 @@ class GlobalViewAgent(
         updateLayout()
     }
 
+    @Suppress("DEPRECATION")
+    override fun getParentSize(): Size {
+        // FIXME: 2021/6/15 kyleduo find a way to get exact size of ViewRootImpl
+        val windowBounds = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            windowManager.currentWindowMetrics.bounds
+        } else {
+            Rect(0, 0, windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
+        }
+        return Size(windowBounds.width(), windowBounds.height())
+    }
+
+    override fun getX(): Int {
+        return layoutParams.x
+    }
+
+    override fun getY(): Int {
+        return layoutParams.y
+    }
+
     override fun show() {
         isShown = true
         if (isActive) {
             windowManager.addView(view.view, layoutParams)
+            windowManager
         }
     }
 

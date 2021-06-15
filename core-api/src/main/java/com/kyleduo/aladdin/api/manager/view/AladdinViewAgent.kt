@@ -1,5 +1,7 @@
 package com.kyleduo.aladdin.api.manager.view
 
+import android.util.Size
+
 /**
  * Agent of a view, providing abilities like show/dismiss, positioning, resizing of a view.
  *
@@ -32,6 +34,21 @@ interface AladdinViewAgent {
      * move by a delta distance.
      */
     fun moveBy(dx: Int, dy: Int)
+
+    /**
+     * return the size of parent view
+     */
+    fun getParentSize(): Size
+
+    /**
+     * get X in parent of this view
+     */
+    fun getX(): Int
+
+    /**
+     * get Y in parent of this view
+     */
+    fun getY(): Int
 
     /**
      * show the view

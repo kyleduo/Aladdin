@@ -1,12 +1,12 @@
 package com.kyleduo.aladdin.genies.entry
 
-import android.view.Gravity
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.view.AladdinView
+import com.kyleduo.aladdin.api.manager.view.SnapEdge
 import com.kyleduo.aladdin.genies.board.BoardGenie
 import com.kyleduo.aladdin.ui.dp2px
 
@@ -36,12 +36,14 @@ class AladdinEntry(context: AladdinContext) : AladdinView() {
     }
     override val tag: Any = "Entry"
 
+    override val isDraggable: Boolean = true
+    override val autoSnapEdges: Int = SnapEdge.ALL
+
     override fun onAgentBound() {
         super.onAgentBound()
 
         val entrySize = ENTRY_SIZE_DP.dp2px()
         agent.resize(entrySize, entrySize)
-        agent.gravity(Gravity.CENTER_VERTICAL or Gravity.START)
         agent.show()
     }
 

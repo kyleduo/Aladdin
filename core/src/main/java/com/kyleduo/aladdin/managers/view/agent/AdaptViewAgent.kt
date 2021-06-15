@@ -1,12 +1,15 @@
 package com.kyleduo.aladdin.managers.view.agent
 
 import android.app.Activity
+import android.util.Size
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.lifecycle.ActivityLifecycleCallbacksAdapter
 import com.kyleduo.aladdin.api.manager.lifecycle.LifecycleManager
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
+import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
 import java.lang.ref.WeakReference
 
 /**
@@ -16,8 +19,10 @@ import java.lang.ref.WeakReference
  * @author kyleduo on 2021/5/28
  */
 class AdaptViewAgent(
-    private val lifecycleManager: LifecycleManager
+    val context: AladdinContext
 ) : AladdinViewAgent {
+
+    private val lifecycleManager: LifecycleManager = context.lifecycleManager
 
     private val layoutParams = FrameLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -54,6 +59,16 @@ class AdaptViewAgent(
 
     override fun bind(view: AladdinView) {
         this.view = view
+
+        if (this.view.isDraggable) {
+            this.view.view.setOnTouchListener(
+                ViewDraggingHelper(
+                    context,
+                    this,
+                    this.view.autoSnapEdges
+                )
+            )
+        }
     }
 
     override fun resize(width: Int, height: Int) {
@@ -64,23 +79,40 @@ class AdaptViewAgent(
     }
 
     override fun gravity(gravity: Int) {
+        if (view.isDraggable) {
+            return
+        }
         layoutParams.gravity = gravity
 
         updateLayout()
     }
 
     override fun moveTo(x: Int, y: Int) {
-        layoutParams.marginStart = x
+        layoutParams.leftMargin = x
         layoutParams.topMargin = y
 
         updateLayout()
     }
 
     override fun moveBy(dx: Int, dy: Int) {
-        layoutParams.marginStart += dx
+        layoutParams.leftMargin += dx
         layoutParams.topMargin += dy
 
         updateLayout()
+    }
+
+    override fun getParentSize(): Size {
+        return this.currentActivityRef?.get()?.window?.decorView?.let {
+            Size(it.width, it.height)
+        } ?: Size(0, 0)
+    }
+
+    override fun getX(): Int {
+        return layoutParams.marginStart
+    }
+
+    override fun getY(): Int {
+        return layoutParams.topMargin
     }
 
     override fun show() {
