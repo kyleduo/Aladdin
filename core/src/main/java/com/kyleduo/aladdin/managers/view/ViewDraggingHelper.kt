@@ -1,5 +1,7 @@
 package com.kyleduo.aladdin.managers.view
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.view.MotionEvent
@@ -23,7 +25,8 @@ class ViewDraggingHelper(
     val context: AladdinContext,
     val agent: AladdinViewAgent,
     @SnapEdgeType
-    val snapEdges: Int
+    val snapEdges: Int,
+    private val snappedListener: OnViewSnappedListener?
 ) : View.OnTouchListener {
 
     private var dragging = false
@@ -128,6 +131,22 @@ class ViewDraggingHelper(
             }
         }
 
+        snappedListener?.let {
+            animator.addListener(object : AnimatorListenerAdapter() {
+
+                override fun onAnimationEnd(animation: Animator?) {
+                    it.onViewSnapped()
+                }
+            })
+        }
         animator.start()
+    }
+
+    /**
+     * Listener used to get callback when view has been snapped to edge.
+     */
+    interface OnViewSnappedListener {
+
+        fun onViewSnapped()
     }
 }

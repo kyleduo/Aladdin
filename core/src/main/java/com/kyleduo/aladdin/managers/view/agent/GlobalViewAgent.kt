@@ -22,7 +22,7 @@ import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
  */
 class GlobalViewAgent(
     val context: AladdinContext
-) : AladdinViewAgent {
+) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener {
     private val windowManager: WindowManager =
         context.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
 
@@ -52,7 +52,8 @@ class GlobalViewAgent(
                 ViewDraggingHelper(
                     context,
                     this,
-                    this.view.autoSnapEdges
+                    this.view.autoSnapEdges,
+                    this
                 )
             )
         }
@@ -134,5 +135,9 @@ class GlobalViewAgent(
         if (isShown && view.view.parent == null) {
             windowManager.addView(view.view, layoutParams)
         }
+    }
+
+    override fun onViewSnapped() {
+        // TODO: 2021/6/16 kyleduo persist view's position
     }
 }

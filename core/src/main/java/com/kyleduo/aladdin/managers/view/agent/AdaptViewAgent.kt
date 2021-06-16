@@ -20,7 +20,7 @@ import java.lang.ref.WeakReference
  */
 class AdaptViewAgent(
     val context: AladdinContext
-) : AladdinViewAgent {
+) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener {
 
     private val lifecycleManager: LifecycleManager = context.lifecycleManager
 
@@ -65,7 +65,8 @@ class AdaptViewAgent(
                 ViewDraggingHelper(
                     context,
                     this,
-                    this.view.autoSnapEdges
+                    this.view.autoSnapEdges,
+                    this
                 )
             )
         }
@@ -156,5 +157,9 @@ class AdaptViewAgent(
         if (view.view.parent != null) {
             view.view.requestLayout()
         }
+    }
+
+    override fun onViewSnapped() {
+        // TODO: 2021/6/16 kyleduo persist view's position
     }
 }
