@@ -2,6 +2,7 @@ package com.kyleduo.aladdin.managers.view.agent
 
 import android.app.Activity
 import android.util.Size
+import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.kyleduo.aladdin.api.AladdinContext
@@ -22,7 +23,7 @@ import java.lang.ref.WeakReference
 class AdaptViewAgent(
     val context: AladdinContext,
     val viewPositionStorage: ViewPositionStorage
-) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener {
+) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener, View.OnAttachStateChangeListener {
 
     private val lifecycleManager: LifecycleManager = context.lifecycleManager
 
@@ -33,6 +34,13 @@ class AdaptViewAgent(
     private lateinit var view: AladdinView
     private var isActive = true
     private var isShown = false
+    private val viewDraggingHelper by lazy {
+        ViewDraggingHelper(
+            context,
+            this.view,
+            this
+        )
+    }
 
     private var currentActivityRef: WeakReference<Activity>? = null
 
@@ -63,14 +71,8 @@ class AdaptViewAgent(
         this.view = view
 
         if (this.view.isDraggable) {
-            this.view.view.setOnTouchListener(
-                ViewDraggingHelper(
-                    context,
-                    this,
-                    this.view.autoSnapEdges,
-                    this
-                )
-            )
+            this.view.view.setOnTouchListener(viewDraggingHelper)
+            this.view.view.addOnAttachStateChangeListener(this)
             viewPositionStorage.get(this.view)?.let {
                 moveTo(it.x, it.y)
             }
@@ -166,5 +168,12 @@ class AdaptViewAgent(
 
     override fun onViewSnapped() {
         viewPositionStorage.save(view)
+    }
+
+    override fun onViewAttachedToWindow(v: View?) {
+        viewDraggingHelper.trySnapToEdge()
+    }
+
+    override fun onViewDetachedFromWindow(v: View?) {
     }
 }

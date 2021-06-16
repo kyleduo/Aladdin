@@ -9,9 +9,8 @@ import android.view.View
 import android.view.ViewConfiguration
 import android.view.animation.DecelerateInterpolator
 import com.kyleduo.aladdin.api.AladdinContext
-import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
+import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.SnapEdge
-import com.kyleduo.aladdin.api.manager.view.SnapEdgeType
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -23,9 +22,7 @@ import kotlin.math.min
  */
 class ViewDraggingHelper(
     val context: AladdinContext,
-    val agent: AladdinViewAgent,
-    @SnapEdgeType
-    val snapEdges: Int,
+    val view: AladdinView,
     private val snappedListener: OnViewSnappedListener?
 ) : View.OnTouchListener {
 
@@ -58,7 +55,7 @@ class ViewDraggingHelper(
                 if (dragging) {
                     val dx = x - lastX
                     val dy = y - lastY
-                    agent.moveBy(dx.toInt(), dy.toInt())
+                    view.agent.moveBy(dx.toInt(), dy.toInt())
                 }
                 lastX = x
                 lastY = y
@@ -75,17 +72,24 @@ class ViewDraggingHelper(
         return dragging
     }
 
+    fun trySnapToEdge() {
+        trySnap(view.view)
+    }
+
     private fun trySnap(v: View?) {
         v ?: return
+
+        val snapEdges = view.autoSnapEdges
+        val agent = view.agent
 
         if (snapEdges == SnapEdge.NONE) {
             return
         }
 
-        val snapToLeft = snapEdges or SnapEdge.LEFT > 0
-        val snapToTop = snapEdges or SnapEdge.TOP > 0
-        val snapToRight = snapEdges or SnapEdge.RIGHT > 0
-        val snapToBottom = snapEdges or SnapEdge.BOTTOM > 0
+        val snapToLeft = snapEdges and SnapEdge.LEFT > 0
+        val snapToTop = snapEdges and SnapEdge.TOP > 0
+        val snapToRight = snapEdges and SnapEdge.RIGHT > 0
+        val snapToBottom = snapEdges and SnapEdge.BOTTOM > 0
 
         val parentSize = agent.getParentSize()
 

@@ -37,7 +37,7 @@ class AladdinEntry(context: AladdinContext) : AladdinView() {
     override val tag: String = "Entry"
 
     override val isDraggable: Boolean = true
-    override val autoSnapEdges: Int = SnapEdge.ALL
+    override val autoSnapEdges: Int = SnapEdge.LEFT or SnapEdge.RIGHT
 
     override fun onAgentBound() {
         super.onAgentBound()
