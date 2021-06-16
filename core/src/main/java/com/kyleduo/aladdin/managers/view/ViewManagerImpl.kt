@@ -25,6 +25,7 @@ class ViewManagerImpl(
     override var mode: ViewMode = configurator?.viewMode ?: ViewMode.Global
 
     private val views = mutableMapOf<Any, AladdinViewEntry>()
+    private val viewPositionStorage = ViewPositionStorage(context)
     private var requestingPermission = false
 
     override fun register(view: AladdinView) {
@@ -42,9 +43,9 @@ class ViewManagerImpl(
 
     private fun createViewAgent(): AladdinViewAgent {
         return if (mode == ViewMode.Global) {
-            GlobalViewAgent(context)
+            GlobalViewAgent(context, viewPositionStorage)
         } else {
-            AdaptViewAgent(context)
+            AdaptViewAgent(context, viewPositionStorage)
         }
     }
 

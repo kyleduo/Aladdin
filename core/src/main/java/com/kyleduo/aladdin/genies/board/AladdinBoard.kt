@@ -37,7 +37,7 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
             }
         }
     }
-    override val tag: Any = "Board"
+    override val tag: String = "Board"
     private val contentView by lazy {
         view.findViewById<LinearLayout>(R.id.aladdin_boardContent).also { it.clipToOutline = true }
     }

@@ -10,6 +10,7 @@ import com.kyleduo.aladdin.api.manager.lifecycle.LifecycleManager
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
+import com.kyleduo.aladdin.managers.view.ViewPositionStorage
 import java.lang.ref.WeakReference
 
 /**
@@ -19,7 +20,8 @@ import java.lang.ref.WeakReference
  * @author kyleduo on 2021/5/28
  */
 class AdaptViewAgent(
-    val context: AladdinContext
+    val context: AladdinContext,
+    val viewPositionStorage: ViewPositionStorage
 ) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener {
 
     private val lifecycleManager: LifecycleManager = context.lifecycleManager
@@ -69,6 +71,9 @@ class AdaptViewAgent(
                     this
                 )
             )
+            viewPositionStorage.get(this.view)?.let {
+                moveTo(it.x, it.y)
+            }
         }
     }
 
@@ -160,6 +165,6 @@ class AdaptViewAgent(
     }
 
     override fun onViewSnapped() {
-        // TODO: 2021/6/16 kyleduo persist view's position
+        viewPositionStorage.save(view)
     }
 }

@@ -12,6 +12,7 @@ import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
+import com.kyleduo.aladdin.managers.view.ViewPositionStorage
 
 /**
  * View agent in [com.kyleduo.aladdin.api.manager.view.ViewMode.Global] mode.
@@ -21,7 +22,8 @@ import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
  * @author kyleduo on 2021/5/28
  */
 class GlobalViewAgent(
-    val context: AladdinContext
+    val context: AladdinContext,
+    val viewPositionStorage: ViewPositionStorage
 ) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener {
     private val windowManager: WindowManager =
         context.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -56,6 +58,9 @@ class GlobalViewAgent(
                     this
                 )
             )
+            viewPositionStorage.get(this.view)?.let {
+                moveTo(it.x, it.y)
+            }
         }
     }
 
@@ -138,6 +143,6 @@ class GlobalViewAgent(
     }
 
     override fun onViewSnapped() {
-        // TODO: 2021/6/16 kyleduo persist view's position
+        viewPositionStorage.save(view)
     }
 }

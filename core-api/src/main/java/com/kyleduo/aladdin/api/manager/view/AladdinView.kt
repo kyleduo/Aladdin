@@ -13,7 +13,7 @@ import android.view.View
 abstract class AladdinView {
 
     abstract val view: View
-    abstract val tag: Any
+    abstract val tag: String
 
     lateinit var agent: AladdinViewAgent
 
