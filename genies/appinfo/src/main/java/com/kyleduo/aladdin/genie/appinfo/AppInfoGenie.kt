@@ -1,6 +1,5 @@
 package com.kyleduo.aladdin.genie.appinfo
 
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.genie.appinfo.providers.ApplicationInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.providers.DeviceInfoProvider
 import com.kyleduo.aladdin.genie.appinfo.providers.DisplayInfoProvider
@@ -11,7 +10,7 @@ import com.kyleduo.aladdin.genie.info.InfoGenie
  *
  * @author kyleduo on 2021/6/11
  */
-class AppInfoGenie(context: AladdinContext) : InfoGenie(context) {
+class AppInfoGenie : InfoGenie() {
     companion object {
         const val KEY = "aladdin-app-info"
     }
@@ -19,7 +18,9 @@ class AppInfoGenie(context: AladdinContext) : InfoGenie(context) {
     override val title: String = "App Info"
     override val key: String = KEY
 
-    init {
+    override fun onStart() {
+        super.onStart()
+
         registerInfoProvider(ApplicationInfoProvider(context.app))
         registerInfoProvider(DeviceInfoProvider(context.app))
         registerInfoProvider(DisplayInfoProvider(context.app))

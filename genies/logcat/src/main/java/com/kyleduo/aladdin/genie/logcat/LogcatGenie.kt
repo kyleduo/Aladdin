@@ -6,7 +6,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
@@ -24,11 +23,10 @@ import java.util.*
  * @author kyleduo on 2021/6/13
  */
 class LogcatGenie(
-    context: AladdinContext,
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
-) : AladdinViewGenie(context), OnLogItemListener, AdapterView.OnItemSelectedListener {
+) : AladdinViewGenie(), OnLogItemListener, AdapterView.OnItemSelectedListener {
     companion object {
         const val KEY = "aladdin-genie-logcat"
         const val TAG = "LogcatGenie"

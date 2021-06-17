@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
@@ -23,7 +22,7 @@ import java.lang.ref.WeakReference
  *
  * @author kyleduo on 2021/6/17
  */
-class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenceRecycledListener {
+class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
     override val title: String = "Hook"
     override val key: String = "aladdin-genie-hook"
 

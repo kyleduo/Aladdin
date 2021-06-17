@@ -8,7 +8,6 @@ import androidx.annotation.MainThread
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.MultiTypeAdapter
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.info.data.InfoSection
 import com.kyleduo.aladdin.genie.info.databinding.AladdinGenieInfoPanelBinding
@@ -23,7 +22,7 @@ import com.kyleduo.aladdin.ui.dp2px
  *
  * @author kyleduo on 2021/6/11
  */
-abstract class InfoGenie(context: AladdinContext) : AladdinViewGenie(context) {
+abstract class InfoGenie : AladdinViewGenie() {
     private val infoProviders = mutableListOf<InfoProvider>()
 
     private lateinit var binding: AladdinGenieInfoPanelBinding

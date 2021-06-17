@@ -10,21 +10,26 @@ import com.kyleduo.aladdin.genies.entry.EntryGenie
 /**
  * @author kyleduo on 2021/5/18
  */
-class GenieManagerImpl(context: AladdinContext, configurator: GenieConfigurator?) : GenieManager {
+class GenieManagerImpl(
+    val context: AladdinContext,
+    configurator: GenieConfigurator?
+) : GenieManager {
 
     private val genies = mutableMapOf<String, AladdinGenie>()
 
     init {
-        addGenie(EntryGenie(context))
-        addGenie(BoardGenie(context))
+        addGenie(EntryGenie())
+        addGenie(BoardGenie())
 
-        configurator?.genieFactories?.forEach {
-            addGenie(it.create(context))
+        configurator?.genies?.forEach {
+            addGenie(it)
         }
     }
 
     override fun attach() {
-
+        genies.forEach {
+            it.value.context = context
+        }
     }
 
     override fun ready() {

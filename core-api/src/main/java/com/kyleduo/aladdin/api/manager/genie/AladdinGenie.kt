@@ -7,13 +7,16 @@ import com.kyleduo.aladdin.api.AladdinContext
  *
  * @author kyleduo on 2021/5/18
  */
-abstract class AladdinGenie(
-    val context: AladdinContext // TODO: 2021/6/18 kyleduo move to lateinit property
-) {
+abstract class AladdinGenie {
     /**
      * a unique key for this [AladdinGenie].
      */
     abstract val key: String
+
+    /**
+     * [AladdinContext] instance. Injected before [onStart]
+     */
+    lateinit var context: AladdinContext
 
     /**
      * Lifecycle callback for start.

@@ -1,14 +1,13 @@
 package com.kyleduo.aladdin.genies.entry
 
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
 
 /**
  * @author kyleduo on 2021/5/28
  */
-class EntryGenie(context: AladdinContext) : AladdinGenie(context) {
+class EntryGenie : AladdinGenie() {
 
-    private val entry = AladdinEntry(context)
+    private val entry by lazy { AladdinEntry(context) }
     override val key: String = "entry"
 
     override fun onStart() {

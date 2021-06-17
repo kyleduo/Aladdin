@@ -2,14 +2,13 @@ package com.kyleduo.aladdin.api.manager.genie
 
 import android.view.View
 import android.view.ViewGroup
-import com.kyleduo.aladdin.api.AladdinContext
 
 /**
  * Abstract [AladdinGenie] definition for Genie with user interface, probably a panel.
  *
  * @author kyleduo on 2021/5/25
  */
-abstract class AladdinViewGenie(context: AladdinContext) : AladdinGenie(context) {
+abstract class AladdinViewGenie : AladdinGenie() {
 
     /**
      * title for this genie, which will be used for the panel

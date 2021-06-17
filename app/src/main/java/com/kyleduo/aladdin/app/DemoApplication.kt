@@ -9,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.kyleduo.aladdin.AladdinContextFactoryImpl
 import com.kyleduo.aladdin.api.Aladdin
-import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.api.manager.view.ViewMode
 import com.kyleduo.aladdin.genie.appinfo.AppInfoGenie
@@ -42,10 +41,10 @@ class DemoApplication : Application() {
             .viewMode(ViewMode.Global)
             .end()
             .genie()
-            .addGenie { context -> AppInfoGenie(context) }
-            .addGenie { context -> LogcatGenie(context) }
-            .addGenie { context -> TestViewGenie(Color.CYAN, context) }
-            .addGenie { context -> HookGenie(context) }
+            .addGenie(AppInfoGenie())
+            .addGenie(LogcatGenie())
+            .addGenie(TestViewGenie(Color.CYAN))
+            .addGenie(HookGenie())
             .end()
             .contextFactory(AladdinContextFactoryImpl())
             .install()
@@ -53,8 +52,8 @@ class DemoApplication : Application() {
         handler.post(testLogRunnable)
     }
 
-    class TestViewGenie(private val color: Int, context: AladdinContext) :
-        AladdinViewGenie(context) {
+    class TestViewGenie(private val color: Int) :
+        AladdinViewGenie() {
         override val title: String
             get() = color.toString()
 
