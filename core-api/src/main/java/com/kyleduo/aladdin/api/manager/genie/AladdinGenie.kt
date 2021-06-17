@@ -8,7 +8,7 @@ import com.kyleduo.aladdin.api.AladdinContext
  * @author kyleduo on 2021/5/18
  */
 abstract class AladdinGenie(
-    val context: AladdinContext
+    val context: AladdinContext // TODO: 2021/6/18 kyleduo move to lateinit property
 ) {
     /**
      * a unique key for this [AladdinGenie].
