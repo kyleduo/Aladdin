@@ -7,6 +7,7 @@ import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
 import java.lang.ref.Reference
+import java.lang.ref.WeakReference
 
 /**
  * HookGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
@@ -25,8 +26,17 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
     private lateinit var binding: AladdinGenieHookPanelBinding
 
     private val referenceTracker = ReferenceTracker(this)
-//    private val actionsMap: MutableMap<WeakReference<*>, MutableList<HookAction<*>>> =
-//        mutableMapOf()
+
+    /**
+     * reference -> list of actions
+     */
+    private val actionsMap: MutableMap<WeakReference<*>, MutableList<HookAction<*>>> =
+        mutableMapOf()
+
+    /**
+     * receiver's class -> reference
+     */
+    private val referenceMap: MutableMap<Class<*>, WeakReference<*>> = mutableMapOf()
 
     override fun createPanel(container: ViewGroup): View {
         return LayoutInflater.from(container.context)
@@ -53,12 +63,41 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
         key: String,
         title: String,
         receiver: R,
-        action: ((receiver: R) -> Unit)
+        action: ReceiverAction<R>
     ) {
-        // TODO: 2021/6/17 kyleduo
+        val ref = getReference(receiver)
+
+        var actions = actionsMap[ref]
+        if (actions == null) {
+            actions = mutableListOf()
+            actionsMap[ref] = actions
+        }
+
+        val hookAction = HookAction(
+            key,
+            title,
+            ref,
+            action
+        )
+
+        actions.add(hookAction)
+    }
+
+    private fun <R : Any> getReference(instance: R): WeakReference<R> {
+        val exists = referenceMap[instance::class.java]
+        @Suppress("UNCHECKED_CAST")
+        if (exists != null) {
+            return exists as WeakReference<R>
+        }
+        return WeakReference(instance, referenceTracker.referenceQueue).also {
+            referenceMap[instance::class.java] = it
+        }
     }
 
     override fun onReferenceRecycled(reference: Reference<*>) {
+        val entry = referenceMap.entries.find { it.value == reference } ?: return
+        referenceMap.remove(entry.key)
 
+        actionsMap.remove(reference)
     }
 }

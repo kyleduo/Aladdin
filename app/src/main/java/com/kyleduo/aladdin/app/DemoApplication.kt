@@ -13,6 +13,7 @@ import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.api.manager.view.ViewMode
 import com.kyleduo.aladdin.genie.appinfo.AppInfoGenie
+import com.kyleduo.aladdin.genie.hook.HookGenie
 import com.kyleduo.aladdin.genie.logcat.LogcatGenie
 
 /**
@@ -44,6 +45,7 @@ class DemoApplication : Application() {
             .addGenie { context -> AppInfoGenie(context) }
             .addGenie { context -> LogcatGenie(context) }
             .addGenie { context -> TestViewGenie(Color.CYAN, context) }
+            .addGenie { context -> HookGenie(context) }
             .end()
             .contextFactory(AladdinContextFactoryImpl())
             .install()
