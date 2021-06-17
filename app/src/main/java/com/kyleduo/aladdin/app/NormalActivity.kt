@@ -7,11 +7,18 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.genie.hook.HookGenie
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * @author kyleduo on 2021/6/9
  */
 class NormalActivity : AppCompatActivity() {
+
+    companion object {
+        val counter = AtomicInteger()
+    }
+
+    val index = counter.getAndIncrement()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,14 +31,13 @@ class NormalActivity : AppCompatActivity() {
         }
 
         (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
-            it.register("showToast", "showToast", this) { r ->
+            it.register("showToast", "showToast", "Demo", this) { r ->
                 r.showToast()
             }
         }
-
     }
 
     private fun showToast() {
-        Toast.makeText(this, "toast from hook action", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, "Normal Activity - $index", Toast.LENGTH_SHORT).show()
     }
 }

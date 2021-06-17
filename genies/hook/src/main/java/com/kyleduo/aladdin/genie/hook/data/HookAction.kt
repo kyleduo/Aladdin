@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.hook
+package com.kyleduo.aladdin.genie.hook.data
 
 import java.lang.ref.WeakReference
 
@@ -8,6 +8,7 @@ import java.lang.ref.WeakReference
 class HookAction<R : Any>(
     val key: String,
     val title: String,
+    val group: String,
     val reference: WeakReference<R>,
-    val action: ReceiverAction<R>
+    val action: (receiver: R) -> Unit
 )

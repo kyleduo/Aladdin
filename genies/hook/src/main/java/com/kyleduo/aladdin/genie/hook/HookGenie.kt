@@ -3,9 +3,13 @@ package com.kyleduo.aladdin.genie.hook
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
+import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
+import com.kyleduo.aladdin.genie.hook.view.HookActionItemViewDelegate
 import java.lang.ref.Reference
 import java.lang.ref.WeakReference
 
@@ -34,14 +38,25 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
         mutableMapOf()
 
     /**
-     * receiver's class -> reference
+     * receiver's hashCode -> reference
      */
-    private val referenceMap: MutableMap<Class<*>, WeakReference<*>> = mutableMapOf()
+    private val referenceMap: MutableMap<Int, WeakReference<*>> = mutableMapOf()
+
+    private val adapter by lazy {
+        MultiTypeAdapter().also {
+            it.register(HookAction::class.java, HookActionItemViewDelegate())
+        }
+    }
 
     override fun createPanel(container: ViewGroup): View {
         return LayoutInflater.from(container.context)
-            .inflate(R.layout.aladdin_genie_hook_panel, container, false).also {
-                binding = AladdinGenieHookPanelBinding.bind(it)
+            .inflate(R.layout.aladdin_genie_hook_panel, container, false).also { view ->
+                binding = AladdinGenieHookPanelBinding.bind(view)
+                binding.aladdinGenieHookActionsList.also {
+                    it.adapter = this.adapter
+                    it.layoutManager =
+                        LinearLayoutManager(context.app, LinearLayoutManager.VERTICAL, false)
+                }
             }
     }
 
@@ -62,8 +77,9 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
     fun <R : Any> register(
         key: String,
         title: String,
+        group: String,
         receiver: R,
-        action: ReceiverAction<R>
+        action: (receiver: R) -> Unit
     ) {
         val ref = getReference(receiver)
 
@@ -76,21 +92,25 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
         val hookAction = HookAction(
             key,
             title,
+            group,
             ref,
             action
         )
 
         actions.add(hookAction)
+
+        refreshActionsList()
     }
 
     private fun <R : Any> getReference(instance: R): WeakReference<R> {
-        val exists = referenceMap[instance::class.java]
+        val hash = instance.hashCode()
+        val exists = referenceMap[hash]
         @Suppress("UNCHECKED_CAST")
         if (exists != null) {
             return exists as WeakReference<R>
         }
         return WeakReference(instance, referenceTracker.referenceQueue).also {
-            referenceMap[instance::class.java] = it
+            referenceMap[hash] = it
         }
     }
 
@@ -99,5 +119,13 @@ class HookGenie(context: AladdinContext) : AladdinViewGenie(context), OnReferenc
         referenceMap.remove(entry.key)
 
         actionsMap.remove(reference)
+
+        refreshActionsList()
+    }
+
+    private fun refreshActionsList() {
+        val actions = actionsMap.values.flatten().toList()
+        adapter.items = actions
+        adapter.notifyDataSetChanged()
     }
 }
