@@ -60,6 +60,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
     }
 
     override fun onSelected() {
+        scanDecayedReference()
     }
 
     override fun onDeselected() {
@@ -114,10 +115,22 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
     }
 
     override fun onReferenceRecycled(reference: Reference<*>) {
+        discardReference(reference)
+
+        refreshActionsList()
+    }
+
+    private fun discardReference(reference: Reference<*>) {
         val entry = referenceMap.entries.find { it.value == reference } ?: return
         referenceMap.remove(entry.key)
-
         actionsMap.remove(reference)
+    }
+
+    private fun scanDecayedReference() {
+        val decayedReferences = referenceMap.values.filter { it.get() == null }.toList()
+        decayedReferences.forEach {
+            discardReference(it)
+        }
 
         refreshActionsList()
     }
