@@ -7,7 +7,8 @@ import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
-import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLayoutPanelLogcatBinding
+import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatPanelBinding
+import com.kyleduo.aladdin.genie.logcat.detail.LogcatDetailPanel
 import com.kyleduo.aladdin.genie.logcat.filter.LevelFilterPanel
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatParser
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatReader
@@ -15,6 +16,7 @@ import com.kyleduo.aladdin.genie.logcat.reader.OnLogItemListener
 import com.kyleduo.aladdin.genie.logcat.view.DefaultLogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemViewDelegate
+import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.inflateView
 import java.util.*
 
@@ -25,7 +27,8 @@ class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
-) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
+) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener,
+    OnItemClickListener<LogItem> {
     companion object {
         const val KEY = "aladdin-genie-logcat"
         const val TAG = "LogcatGenie"
@@ -38,7 +41,7 @@ class LogcatGenie(
     private val adapter by lazy {
         MultiTypeAdapter().also {
             it.items = filteredItems
-            it.register(LogItem::class.java, LogItemViewDelegate(logItemPalette))
+            it.register(LogItem::class.java, LogItemViewDelegate(logItemPalette, this))
         }
     }
     private val layoutManager by lazy {
@@ -63,11 +66,15 @@ class LogcatGenie(
 
     private var reader: LogcatReader? = null
 
-    private lateinit var binding: AladdinLayoutPanelLogcatBinding
+    private lateinit var binding: AladdinGenieLogcatPanelBinding
+
+    private val logDetailPanel by lazy {
+        LogcatDetailPanel(panelController.panelContainer, logItemPalette)
+    }
 
     override fun createPanel(container: ViewGroup): View {
         return container.inflateView(R.layout.aladdin_genie_logcat_panel).also { view ->
-            binding = AladdinLayoutPanelLogcatBinding.bind(view)
+            binding = AladdinGenieLogcatPanelBinding.bind(view)
 
             binding.aladdinLogcatList.also {
                 it.adapter = adapter
@@ -159,5 +166,9 @@ class LogcatGenie(
         filteredItems.addAll(allItems.filter { it.level in filterLevels })
         adapter.notifyDataSetChanged()
         binding.aladdinLogcatList.scrollToPosition(0)
+    }
+
+    override fun onItemClick(position: Int, item: LogItem) {
+        logDetailPanel.show(item)
     }
 }

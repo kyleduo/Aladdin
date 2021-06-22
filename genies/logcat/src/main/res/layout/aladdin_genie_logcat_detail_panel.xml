@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/aladdin_dim"
+    android:clickable="true"
+    tools:ignore="KeyboardInaccessibleWidget">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/aladdin_logcat_log_detail_panel_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:background="@drawable/aladdin_panel_round_corner_background"
+        android:elevation="2dp">
+
+        <ImageView
+            android:id="@+id/aladdin_logcat_log_detail_close"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginEnd="16dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/aladdin_ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+        <ScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aladdin_logcat_log_detail_close">
+
+            <TextView
+                android:id="@+id/aladdin_logcat_log_detail_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="monospace"
+                android:padding="8dp"
+                android:text="@string/aladdin_level_filter"
+                android:textColor="@color/aladdin_textBody"
+                android:textSize="10dp"
+                tools:ignore="SpUsage" />
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

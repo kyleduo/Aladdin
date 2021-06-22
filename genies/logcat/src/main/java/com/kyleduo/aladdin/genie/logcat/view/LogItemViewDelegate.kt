@@ -11,7 +11,8 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
-import com.kyleduo.aladdin.genie.logcat.databinding.AladdinItemLogcatBinding
+import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemBinding
+import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.dp2px
 import com.kyleduo.aladdin.ui.inflateView
 import kotlin.math.min
@@ -20,27 +21,33 @@ import kotlin.math.min
  * @author kyleduo on 2021/6/13
  */
 class LogItemViewDelegate(
-    private val palette: LogItemPalette
+    private val palette: LogItemPalette,
+    private val onItemClickListener: OnItemClickListener<LogItem>
 ) : ItemViewDelegate<LogItem, LogItemViewHolder>() {
     override fun onBindViewHolder(holder: LogItemViewHolder, item: LogItem) {
         holder.bind(item)
     }
 
     override fun onCreateViewHolder(context: Context, parent: ViewGroup): LogItemViewHolder {
-        return LogItemViewHolder(parent.inflateView(R.layout.aladdin_genie_logcat_item), palette)
+        return LogItemViewHolder(
+            parent.inflateView(R.layout.aladdin_genie_logcat_item),
+            palette,
+            onItemClickListener
+        )
     }
 }
 
 class LogItemViewHolder(
     itemView: View,
-    private val palette: LogItemPalette
+    private val palette: LogItemPalette,
+    private val onItemClickListener: OnItemClickListener<LogItem>
 ) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
         val itemStyles = mutableMapOf<LogLevel, LogItemStyle>()
     }
 
-    private val binding = AladdinItemLogcatBinding.bind(itemView)
+    private val binding = AladdinGenieLogcatItemBinding.bind(itemView)
 
     @Suppress("UnnecessaryVariable")
     fun bind(item: LogItem) {
@@ -60,6 +67,10 @@ class LogItemViewHolder(
         binding.aladdinLogcatItemTime.setTextColor(itemStyle.textColor)
         binding.aladdinLogcatItemTag.setTextColor(itemStyle.textColor)
         binding.aladdinLogcatItemContent.setTextColor(itemStyle.textColor)
+
+        itemView.setOnClickListener {
+            onItemClickListener.onItemClick(absoluteAdapterPosition, item)
+        }
     }
 
     private fun getItemStyle(level: LogLevel, palette: LogItemPalette): LogItemStyle {

@@ -9,8 +9,8 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
-import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLogcatItemLevelSelectorBinding
-import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLogcatLevelSelectorPanelBinding
+import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemLevelSelectorBinding
+import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatLevelSelectorPanelBinding
 import com.kyleduo.aladdin.ui.inflateView
 import com.kyleduo.aladdin.ui.layoutInflater
 
@@ -23,7 +23,7 @@ class LevelFilterPanel(
 ) : OnLogLevelSelectedChangeListener {
 
     private val binding by lazy {
-        AladdinLogcatLevelSelectorPanelBinding.inflate(
+        AladdinGenieLogcatLevelSelectorPanelBinding.inflate(
             container.context.layoutInflater(),
             container,
             false
@@ -110,7 +110,7 @@ class LevelFilterPanel(
         private val onLogLevelSelectedChangeListener: OnLogLevelSelectedChangeListener
     ) : RecyclerView.ViewHolder(itemView) {
 
-        private val binding = AladdinLogcatItemLevelSelectorBinding.bind(itemView)
+        private val binding = AladdinGenieLogcatItemLevelSelectorBinding.bind(itemView)
 
         fun bind(item: LogLevelSelectorItem) {
             binding.aladdinLogcatLevelSelectorLevel.text = item.level.name
