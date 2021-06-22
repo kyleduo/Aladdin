@@ -15,6 +15,7 @@ import com.kyleduo.aladdin.genie.logcat.reader.LogcatReader
 import com.kyleduo.aladdin.genie.logcat.reader.OnLogItemListener
 import com.kyleduo.aladdin.genie.logcat.view.DefaultLogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemPalette
+import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
 import com.kyleduo.aladdin.genie.logcat.view.LogItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.inflateView
@@ -26,7 +27,7 @@ import java.util.*
 class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
-    private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
+    logItemPalette: LogItemPalette = DefaultLogItemPalette()
 ) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener,
     OnItemClickListener<LogItem> {
     companion object {
@@ -38,10 +39,12 @@ class LogcatGenie(
 
     override val key: String = KEY
 
+    private val logItemStyles = LogItemStyles(logItemPalette)
+
     private val adapter by lazy {
         MultiTypeAdapter().also {
             it.items = filteredItems
-            it.register(LogItem::class.java, LogItemViewDelegate(logItemPalette, this))
+            it.register(LogItem::class.java, LogItemViewDelegate(logItemStyles, this))
         }
     }
     private val layoutManager by lazy {
@@ -69,7 +72,7 @@ class LogcatGenie(
     private lateinit var binding: AladdinGenieLogcatPanelBinding
 
     private val logDetailPanel by lazy {
-        LogcatDetailPanel(panelController.panelContainer, logItemPalette)
+        LogcatDetailPanel(panelController.panelContainer, logItemStyles)
     }
 
     override fun createPanel(container: ViewGroup): View {
