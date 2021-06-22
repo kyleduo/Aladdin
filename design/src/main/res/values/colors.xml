@@ -7,4 +7,6 @@
     <color name="aladdin_background">#FFFAFAFA</color>
 
     <color name="aladdin_divider">#FFE0E0E0</color>
+
+    <color name="aladdin_dim">#80000000</color>
 </resources>

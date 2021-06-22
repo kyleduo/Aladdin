@@ -16,6 +16,15 @@ enum class LogLevel(
 
     companion object {
 
+        val levels = listOf(
+            Verbose,
+            Debug,
+            Info,
+            Warn,
+            Error,
+            Assert
+        )
+
         fun parse(level: String): LogLevel {
             return values().find { it.badge == level } ?: Error
         }

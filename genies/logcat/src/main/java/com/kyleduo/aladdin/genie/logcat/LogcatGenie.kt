@@ -2,14 +2,13 @@ package com.kyleduo.aladdin.genie.logcat
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinLayoutPanelLogcatBinding
+import com.kyleduo.aladdin.genie.logcat.filter.LevelFilterPanel
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatParser
 import com.kyleduo.aladdin.genie.logcat.reader.LogcatReader
 import com.kyleduo.aladdin.genie.logcat.reader.OnLogItemListener
@@ -26,7 +25,7 @@ class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     private val logItemPalette: LogItemPalette = DefaultLogItemPalette()
-) : AladdinViewGenie(), OnLogItemListener, AdapterView.OnItemSelectedListener {
+) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
     companion object {
         const val KEY = "aladdin-genie-logcat"
         const val TAG = "LogcatGenie"
@@ -51,7 +50,16 @@ class LogcatGenie(
 
     // filtered log items
     private var filteredItems = LinkedList<LogItem>()
-    private var filterLevel = LogLevel.Verbose
+
+    private var filterLevels: List<LogLevel> = listOf(*LogLevel.values())
+        set(value) {
+            field = value
+            binding.aladdinLogcatLevelSelector.text = field.toString()
+        }
+    private val levelFilterDelegate = lazy {
+        LevelFilterPanel(panelController.panelContainer, this)
+    }
+    private val levelFilter by levelFilterDelegate
 
     private var reader: LogcatReader? = null
 
@@ -67,17 +75,11 @@ class LogcatGenie(
                 it.layoutManager = layoutManager
             }
 
-            binding.aladdinLogcatLevelSpinner.onItemSelectedListener = this
-            ArrayAdapter.createFromResource(
-                binding.aladdinLogcatLevelSpinner.context,
-                R.array.aladdin_test_dropdown,
-                android.R.layout.simple_spinner_item
-            ).also { adapter ->
-                // Specify the layout to use when the list of choices appears
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-                // Apply the adapter to the spinner
-                binding.aladdinLogcatLevelSpinner.adapter = adapter
+            binding.aladdinLogcatLevelSelector.setOnClickListener {
+                showLevelSelector()
             }
+
+            filterLevels = filterLevels
         }
     }
 
@@ -85,6 +87,9 @@ class LogcatGenie(
     }
 
     override fun onDeselected() {
+        if (levelFilterDelegate.isInitialized()) {
+            levelFilter.dismiss()
+        }
     }
 
     override fun onStart() {
@@ -109,13 +114,18 @@ class LogcatGenie(
         reader = null
     }
 
+    private fun showLevelSelector() {
+        levelFilter.selectedLevels = filterLevels
+        levelFilter.show()
+    }
+
     override fun onLogItem(item: LogItem) {
         allItems.addFirst(item)
         if (allItems.size > itemLimit * 2) {
             allItems = LinkedList(allItems.subList(0, itemLimit))
         }
 
-        if (item.level.level < filterLevel.level) {
+        if (item.level !in filterLevels) {
             return
         }
         filteredItems.addFirst(item)
@@ -139,29 +149,15 @@ class LogcatGenie(
         }
     }
 
-    // spinner
-    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        val newLevel = when (position) {
-            0 -> LogLevel.Verbose
-            1 -> LogLevel.Debug
-            2 -> LogLevel.Info
-            3 -> LogLevel.Warn
-            4 -> LogLevel.Error
-            5 -> LogLevel.Assert
-            else -> filterLevel
-        }
-
-        if (newLevel == filterLevel) {
+    override fun onFilterLevelsSelected(levels: List<LogLevel>) {
+        if (levels == filterLevels) {
             return
         }
 
-        filterLevel = newLevel
+        filterLevels = levels
         filteredItems.clear()
-        filteredItems.addAll(allItems.filter { it.level.level >= filterLevel.level })
+        filteredItems.addAll(allItems.filter { it.level in filterLevels })
         adapter.notifyDataSetChanged()
         binding.aladdinLogcatList.scrollToPosition(0)
-    }
-
-    override fun onNothingSelected(parent: AdapterView<*>?) {
     }
 }
