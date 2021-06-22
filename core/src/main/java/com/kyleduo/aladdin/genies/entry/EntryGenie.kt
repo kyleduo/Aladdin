@@ -7,8 +7,12 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
  */
 class EntryGenie : AladdinGenie() {
 
+    companion object {
+        const val KEY = "entry"
+    }
+
     private val entry by lazy { AladdinEntry(context) }
-    override val key: String = "entry"
+    override val key: String = KEY
 
     override fun onStart() {
         context.viewManager.register(entry)

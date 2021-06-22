@@ -16,6 +16,11 @@ abstract class AladdinViewGenie : AladdinGenie() {
     abstract val title: String
 
     /**
+     * Inject before the view is added to board
+     */
+    lateinit var panelController: PanelController
+
+    /**
      * create panel view
      */
     abstract fun createPanel(container: ViewGroup): View

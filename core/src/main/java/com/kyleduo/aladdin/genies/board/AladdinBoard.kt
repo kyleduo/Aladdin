@@ -21,7 +21,7 @@ import com.kyleduo.aladdin.ui.dp2px
 /**
  * @author kyleduo on 2021/5/31
  */
-class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListener {
+class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedListener {
 
     override val view: ConstraintLayout by lazy {
         val root = LayoutInflater.from(context.app)
@@ -32,8 +32,7 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
             ) as ConstraintLayout
         root.also {
             it.setOnClickListener {
-                agent.dismiss()
-                (context.genieManager.findGenie("entry") as? EntryGenie)?.show()
+                hide()
             }
         }
     }
@@ -68,13 +67,14 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
         }
     }
     private val panelContainer by lazy { contentView.findViewById<FrameLayout>(R.id.aladdin_boardGeniePanelContainer) }
-    private var selectedGenie: AladdinViewGenie? = null
+    internal var selectedGenie: AladdinViewGenie? = null
         set(value) {
             if (field == value) {
                 return
             }
             val before = field
-            field?.onDeselected()
+            lastSelectedGenie = before
+            before?.onDeselected()
             field = value
             value?.onSelected()
 
@@ -82,6 +82,7 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
 
             onGenieSelected(before, value)
         }
+    private var lastSelectedGenie: AladdinViewGenie? = null
 
     private val genies = LinkedHashMap<String, AladdinViewGenie>()
 
@@ -94,15 +95,13 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
         agent.show()
 
         if (genies.isNotEmpty() && selectedGenie == null) {
-            selectedGenie = genies.values.first()
+            selectedGenie = lastSelectedGenie ?: genies.values.first()
         }
     }
 
     private fun prepareGenieView() {
         for (genie in this.genies.values) {
-            genie.createPanel().also {
-                panelContainer.addView(it)
-            }
+            attachGenie(genie)
         }
 
         // init
@@ -111,31 +110,19 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
         tabAdapter.genies = this.genies.values.toList()
     }
 
-//    private fun ViewGenie.createTab(container: ViewGroup): View {
-//        val tab = LayoutInflater.from(container.context)
-//            .inflate(R.layout.aladdin_board_tab, container, false) as TextView
-//        return tab.also {
-//            it.text = this.title
-//            it.tag = tabTag()
-//            it.gravity = Gravity.CENTER
-//            val genie = this
-//            it.setOnClickListener {
-//                Toast.makeText(Aladdin.app, "click ${this.key}", Toast.LENGTH_SHORT).show()
-//                selectedGenie = genie
-//            }
-//        }
-//    }
-
-    private fun AladdinViewGenie.createPanel(): View {
-        return FrameLayout(context.app).also {
+    private fun attachGenie(genie: AladdinViewGenie) {
+        val geniePanelContainer = FrameLayout(context.app).also {
             it.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT
             )
-            it.tag = panelTag()
+            it.tag = genie.panelTag()
             it.visibility = View.GONE
-            it.addView(this.createPanel(it))
         }
+        genie.panelController = BoardPanelController(geniePanelContainer, this)
+        geniePanelContainer.addView(genie.createPanel(geniePanelContainer))
+
+        panelContainer.addView(geniePanelContainer)
     }
 
     private fun onGenieSelected(before: AladdinViewGenie?, after: AladdinViewGenie?) {
@@ -156,6 +143,12 @@ class AladdinBoard(context: AladdinContext) : AladdinView(), OnTabSelectedListen
         }
 
         prepareGenieView()
+    }
+
+    fun hide() {
+        selectedGenie = null
+        agent.dismiss()
+        (context.genieManager.findGenie(EntryGenie.KEY) as? EntryGenie)?.show()
     }
 
     override fun onTabSelected(position: Int, genie: AladdinViewGenie) {
