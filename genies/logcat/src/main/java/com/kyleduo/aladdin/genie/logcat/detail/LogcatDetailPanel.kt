@@ -2,6 +2,7 @@ package com.kyleduo.aladdin.genie.logcat.detail
 
 import android.content.res.ColorStateList
 import android.view.ViewGroup
+import android.widget.TextView
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatDetailPanelBinding
 import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
@@ -38,12 +39,25 @@ class LogcatDetailPanel(
 
         val itemStyle = logItemStyles.getStyle(item.level)
 
+        fun TextView.applyStyle() {
+            setTextColor(itemStyle.textColor)
+        }
+
         binding.aladdinLogcatLogDetailPanelContent.background = itemStyle.detailBackground
-        binding.aladdinLogcatLogDetailContent.setTextColor(itemStyle.textColor)
         binding.aladdinLogcatLogDetailClose.imageTintList =
             ColorStateList.valueOf(itemStyle.badgeTextColor)
         binding.aladdinLogcatLogDetailClose.background =
             UIUtils.createRoundCornerDrawable(itemStyle.badgeBackgroundColor, 4f.dp2px())
+        binding.aladdinLogcatLogDetailLevel.text = item.level.name
+        binding.aladdinLogcatLogDetailTime.text = item.time
+        binding.aladdinLogcatLogDetailTag.text = item.tag
+        binding.aladdinLogcatLogDetailTid.text = item.tid
+
+        binding.aladdinLogcatLogDetailLevel.applyStyle()
+        binding.aladdinLogcatLogDetailTime.applyStyle()
+        binding.aladdinLogcatLogDetailTid.applyStyle()
+        binding.aladdinLogcatLogDetailTag.applyStyle()
+        binding.aladdinLogcatLogDetailContent.applyStyle()
     }
 
     fun dismiss() {

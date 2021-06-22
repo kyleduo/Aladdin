@@ -16,7 +16,7 @@
         android:background="@drawable/aladdin_panel_round_corner_background"
         android:elevation="2dp">
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <ImageView
             android:id="@+id/aladdin_logcat_log_detail_close"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -28,20 +28,78 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:ignore="ContentDescription" />
 
+        <TextView
+            android:id="@+id/aladdin_logcat_log_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="monospace"
+            android:lines="1"
+            android:textSize="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="SpUsage"
+            tools:text="14:51:27.118" />
+
+        <TextView
+            android:id="@+id/aladdin_logcat_log_detail_level"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="monospace"
+            android:lines="1"
+            android:textSize="10dp"
+            app:layout_constraintStart_toEndOf="@id/aladdin_logcat_log_detail_time"
+            app:layout_constraintTop_toTopOf="@id/aladdin_logcat_log_detail_time"
+            tools:ignore="SpUsage"
+            tools:text="Verbose" />
+
+        <TextView
+            android:id="@+id/aladdin_logcat_log_detail_tid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="monospace"
+            android:lines="1"
+            android:textSize="10dp"
+            app:layout_constraintStart_toEndOf="@id/aladdin_logcat_log_detail_level"
+            app:layout_constraintTop_toTopOf="@id/aladdin_logcat_log_detail_level"
+            tools:ignore="SpUsage"
+            tools:text="10" />
+
+        <TextView
+            android:id="@+id/aladdin_logcat_log_detail_tag"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:gravity="start"
+            android:textSize="10dp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/aladdin_logcat_log_detail_close"
+            app:layout_constraintStart_toStartOf="@id/aladdin_logcat_log_detail_time"
+            app:layout_constraintTop_toBottomOf="@id/aladdin_logcat_log_detail_time"
+            tools:ignore="SpUsage"
+            tools:text="BaseRestrictionMgr" />
+
         <ScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/aladdin_logcat_log_detail_close">
+            app:layout_constraintTop_toBottomOf="@id/aladdin_logcat_log_detail_tag">
 
             <TextView
                 android:id="@+id/aladdin_logcat_log_detail_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="monospace"
-                android:padding="8dp"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
                 android:text="@string/aladdin_level_filter"
                 android:textColor="@color/aladdin_textBody"
                 android:textSize="10dp"
