@@ -66,7 +66,7 @@ class LogcatGenie(
     private lateinit var binding: AladdinLayoutPanelLogcatBinding
 
     override fun createPanel(container: ViewGroup): View {
-        return container.inflateView(R.layout.aladdin_layout_panel_logcat).also { view ->
+        return container.inflateView(R.layout.aladdin_genie_logcat_panel).also { view ->
             binding = AladdinLayoutPanelLogcatBinding.bind(view)
 
             binding.aladdinLogcatList.also {

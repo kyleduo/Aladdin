@@ -99,7 +99,7 @@ class LevelFilterPanel(
             parent: ViewGroup
         ): LevelFilterItemViewHolder {
             return LevelFilterItemViewHolder(
-                parent.inflateView(R.layout.aladdin_logcat_item_level_selector),
+                parent.inflateView(R.layout.aladdin_genie_logcat_item_level_selector),
                 onLogLevelSelectedChangeListener
             )
         }

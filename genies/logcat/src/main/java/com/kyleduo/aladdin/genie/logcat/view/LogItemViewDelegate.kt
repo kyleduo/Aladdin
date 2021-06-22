@@ -27,7 +27,7 @@ class LogItemViewDelegate(
     }
 
     override fun onCreateViewHolder(context: Context, parent: ViewGroup): LogItemViewHolder {
-        return LogItemViewHolder(parent.inflateView(R.layout.aladdin_item_logcat), palette)
+        return LogItemViewHolder(parent.inflateView(R.layout.aladdin_genie_logcat_item), palette)
     }
 }
 
