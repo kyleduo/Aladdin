@@ -40,4 +40,12 @@ class NormalActivity : AppCompatActivity() {
     private fun showToast() {
         Toast.makeText(this, "Normal Activity - $index", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister(
+            "showToast",
+            this
+        )
+    }
 }
