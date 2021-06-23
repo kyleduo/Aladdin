@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.genie.hook.HookGenie
@@ -19,8 +18,8 @@ class MainActivity : AppCompatActivity() {
         }
 
         (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
-            it.register("showToastInMain", "[main]showToast", "Demo - Main", this) { r ->
-                r.showToast()
+            it.register("showToastInMain", "open activity", "Demo - Main", this) { r ->
+                startActivity(Intent(this@MainActivity, NormalActivity::class.java))
             }
         }
 
@@ -29,10 +28,6 @@ class MainActivity : AppCompatActivity() {
                 Log.d("MainActivity", "from no receiver action")
             }
         }
-    }
-
-    private fun showToast() {
-        Toast.makeText(this, "[main] toast from hook action", Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {
