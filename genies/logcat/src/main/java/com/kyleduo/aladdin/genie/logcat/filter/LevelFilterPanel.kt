@@ -1,6 +1,8 @@
 package com.kyleduo.aladdin.genie.logcat.filter
 
 import android.content.Context
+import android.content.res.ColorStateList
+import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -11,6 +13,9 @@ import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemLevelSelectorBinding
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatLevelSelectorPanelBinding
+import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
+import com.kyleduo.aladdin.ui.UIUtils
+import com.kyleduo.aladdin.ui.dp2px
 import com.kyleduo.aladdin.ui.inflateView
 import com.kyleduo.aladdin.ui.layoutInflater
 
@@ -19,6 +24,7 @@ import com.kyleduo.aladdin.ui.layoutInflater
  */
 class LevelFilterPanel(
     private val container: ViewGroup,
+    private val itemStyles: LogItemStyles,
     private val listener: OnFilterLevelsSelectedListener
 ) : OnLogLevelSelectedChangeListener {
 
@@ -34,6 +40,30 @@ class LevelFilterPanel(
             it.aladdinLogcatLevelSelectorList.apply {
                 adapter = this@LevelFilterPanel.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun getItemOffsets(
+                        outRect: Rect,
+                        view: View,
+                        parent: RecyclerView,
+                        state: RecyclerView.State
+                    ) {
+                        val position =
+                            (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
+                        val base = 4f.dp2px().toInt()
+                        val bottom = if (position + 1 == parent.adapter?.itemCount) {
+                            base
+                        } else {
+                            0
+                        }
+
+                        outRect.set(
+                            base * 2,
+                            base,
+                            base * 2,
+                            bottom
+                        )
+                    }
+                })
             }
         }
     }
@@ -42,7 +72,7 @@ class LevelFilterPanel(
 
     private val adapter by lazy {
         MultiTypeAdapter().also {
-            it.register(LogLevelSelectorItem::class, LevelFilterItemViewDelegate(this))
+            it.register(LogLevelSelectorItem::class, LevelFilterItemViewDelegate(this, itemStyles))
         }
     }
 
@@ -92,7 +122,8 @@ class LevelFilterPanel(
     }
 
     class LevelFilterItemViewDelegate(
-        private val onLogLevelSelectedChangeListener: OnLogLevelSelectedChangeListener
+        private val onLogLevelSelectedChangeListener: OnLogLevelSelectedChangeListener,
+        private val itemStyles: LogItemStyles
     ) :
         ItemViewDelegate<LogLevelSelectorItem, LevelFilterItemViewHolder>() {
         override fun onBindViewHolder(
@@ -108,14 +139,16 @@ class LevelFilterPanel(
         ): LevelFilterItemViewHolder {
             return LevelFilterItemViewHolder(
                 parent.inflateView(R.layout.aladdin_genie_logcat_item_level_selector),
-                onLogLevelSelectedChangeListener
+                onLogLevelSelectedChangeListener,
+                itemStyles
             )
         }
     }
 
     class LevelFilterItemViewHolder(
         itemView: View,
-        private val onLogLevelSelectedChangeListener: OnLogLevelSelectedChangeListener
+        private val onLogLevelSelectedChangeListener: OnLogLevelSelectedChangeListener,
+        private val itemStyles: LogItemStyles
     ) : RecyclerView.ViewHolder(itemView) {
 
         private val binding = AladdinGenieLogcatItemLevelSelectorBinding.bind(itemView)
@@ -141,6 +174,18 @@ class LevelFilterPanel(
             binding.aladdinLogcatLevelSelectorFastSelect.setOnClickListener {
                 onLogLevelSelectedChangeListener.onLogLevelFastSelected(item.level)
             }
+
+            val itemStyle = itemStyles.getStyle(item.level)
+
+            binding.aladdinLogcatLevelSelectorLevel.setTextColor(itemStyle.textColor)
+            binding.aladdinLogcatLevelSelectorFastSelect.setColorFilter(itemStyle.textColor)
+            binding.aladdinLogcatLevelSelectorCheckbox.buttonTintList =
+                ColorStateList.valueOf(itemStyle.textColor)
+            binding.root.background =
+                UIUtils.createRoundCornerDrawable(
+                    itemStyle.backgroundColor,
+                    4f.dp2px()
+                )
         }
     }
 

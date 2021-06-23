@@ -69,7 +69,7 @@ class LogcatGenie(
             updateLevelSelector(value)
         }
     private val levelFilterDelegate = lazy {
-        LevelFilterPanel(panelController.panelContainer, this)
+        LevelFilterPanel(panelController.panelContainer, logItemStyles, this)
     }
     private val levelFilter by levelFilterDelegate
 
