@@ -27,4 +27,9 @@ class MainActivity : AppCompatActivity() {
     private fun showToast() {
         Toast.makeText(this, "[main] toast from hook action", Toast.LENGTH_SHORT).show()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister("showToastInMain", this)
+    }
 }

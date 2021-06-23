@@ -104,12 +104,28 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         refreshActionsList()
     }
 
+    fun unregister(key: String, receiver: Any) {
+        val ref = getReference(receiver, false) ?: return
+
+        val actions = actionsMap[ref] ?: return
+        actions.removeAll { it.key == key }
+
+        refreshActionsList()
+    }
+
     private fun <R : Any> getReference(instance: R): WeakReference<R> {
+        return getReference(instance, create = true)!!
+    }
+
+    private fun <R : Any> getReference(instance: R, create: Boolean): WeakReference<R>? {
         val hash = instance.hashCode()
         val exists = referenceMap[hash]
         @Suppress("UNCHECKED_CAST")
         if (exists != null) {
             return exists as WeakReference<R>
+        }
+        if (!create) {
+            return null
         }
         return WeakReference(instance, referenceTracker.referenceQueue).also {
             referenceMap[hash] = it
