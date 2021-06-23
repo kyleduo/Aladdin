@@ -156,19 +156,12 @@ class LevelFilterPanel(
         fun bind(item: LogLevelSelectorItem) {
             binding.aladdinLogcatLevelSelectorLevel.text = item.level.name
 
-            fun muteCheckBox(action: () -> Unit) {
-                binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener(null)
-                action()
-                binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener { _, isChecked ->
-                    onLogLevelSelectedChangeListener.onLogLevelSelectedChanged(
-                        item.level,
-                        isChecked
-                    )
-                }
-            }
-
-            muteCheckBox {
-                binding.aladdinLogcatLevelSelectorCheckbox.isChecked = item.isSelected
+            binding.aladdinLogcatLevelSelectorCb.isSelected = item.isSelected
+            binding.aladdinLogcatLevelSelectorCb.setOnClickListener {
+                onLogLevelSelectedChangeListener.onLogLevelSelectedChanged(
+                    item.level,
+                    !item.isSelected
+                )
             }
 
             binding.aladdinLogcatLevelSelectorFastSelect.setOnClickListener {
@@ -179,8 +172,9 @@ class LevelFilterPanel(
 
             binding.aladdinLogcatLevelSelectorLevel.setTextColor(itemStyle.textColor)
             binding.aladdinLogcatLevelSelectorFastSelect.setColorFilter(itemStyle.textColor)
-            binding.aladdinLogcatLevelSelectorCheckbox.buttonTintList =
+            binding.aladdinLogcatLevelSelectorCb.imageTintList =
                 ColorStateList.valueOf(itemStyle.textColor)
+
             binding.root.background =
                 UIUtils.createRoundCornerDrawable(
                     itemStyle.backgroundColor,

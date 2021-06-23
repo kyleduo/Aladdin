@@ -1,16 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_checked="true">
-        <shape android:shape="oval">
-            <size android:width="16dp" android:height="16dp" />
-            <solid android:color="#40000000" />
-        </shape>
-    </item>
-
-    <item>
-        <shape android:shape="oval">
-            <size android:width="16dp" android:height="16dp" />
-            <stroke android:width="2dp" android:color="#20000000" />
-        </shape>
-    </item>
+    <item android:drawable="@drawable/aladdin_genie_logcat_level_selector_fast_select_checked" android:state_selected="true" />
+    <item android:drawable="@drawable/aladdin_genie_logcat_level_selector_fast_select_unchecked" />
 </selector>
