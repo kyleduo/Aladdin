@@ -153,14 +153,15 @@ class LogcatGenie(
                 ForegroundColorSpan(logItemStyles.getStyle(first).textColor),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-            else -> for (level in levels) {
-                ssb.append(
-                    level.name.substring(0, 1) + " ",
-                    ForegroundColorSpan(logItemStyles.getStyle(level).textColor),
-                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-                ).also {
-                    it.delete(it.length - 1, it.length)
+            else -> {
+                for (level in levels) {
+                    ssb.append(
+                        level.name.substring(0, 1) + "/",
+                        ForegroundColorSpan(logItemStyles.getStyle(level).textColor),
+                        Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                    )
                 }
+                ssb.delete(ssb.length - 1, ssb.length)
             }
         }
         binding.aladdinLogcatLevelSelector.text = ssb
