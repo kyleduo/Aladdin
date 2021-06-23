@@ -9,6 +9,7 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
 import com.kyleduo.aladdin.genie.hook.view.HookActionItemViewDelegate
+import com.kyleduo.aladdin.ui.OnItemClickListener
 import java.lang.ref.Reference
 import java.lang.ref.WeakReference
 
@@ -22,7 +23,8 @@ import java.lang.ref.WeakReference
  *
  * @author kyleduo on 2021/6/17
  */
-class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
+class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
+    OnItemClickListener<HookAction<Any>> {
     override val title: String = "Hook"
     override val key: String = "aladdin-genie-hook"
 
@@ -43,7 +45,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
 
     private val adapter by lazy {
         MultiTypeAdapter().also {
-            it.register(HookAction::class.java, HookActionItemViewDelegate())
+            it.register(HookAction::class.java, HookActionItemViewDelegate(this))
         }
     }
 
@@ -139,5 +141,14 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener {
         val actions = actionsMap.values.flatten().toList()
         adapter.items = actions
         adapter.notifyDataSetChanged()
+    }
+
+    override fun onItemClick(position: Int, item: HookAction<Any>) {
+        val ref = item.reference.get()
+        if (ref == null) {
+            scanDecayedReference()
+        } else {
+            item.action(ref)
+        }
     }
 }

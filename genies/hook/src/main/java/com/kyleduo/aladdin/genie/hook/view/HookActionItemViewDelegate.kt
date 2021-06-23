@@ -9,23 +9,32 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.hook.R
 import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookActionItemBinding
+import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.inflateView
 
 /**
  * @author kyleduo on 2021/6/17
  */
-class HookActionItemViewDelegate : ItemViewDelegate<HookAction<*>, HookActionItemViewHolder>() {
+class HookActionItemViewDelegate(
+    private val onItemClickListener: OnItemClickListener<HookAction<Any>>
+) : ItemViewDelegate<HookAction<*>, HookActionItemViewHolder>() {
     override fun onBindViewHolder(holder: HookActionItemViewHolder, item: HookAction<*>) {
         @Suppress("UNCHECKED_CAST")
         holder.bind(item as HookAction<Any>)
     }
 
     override fun onCreateViewHolder(context: Context, parent: ViewGroup): HookActionItemViewHolder {
-        return HookActionItemViewHolder(parent.inflateView(R.layout.aladdin_genie_hook_action_item))
+        return HookActionItemViewHolder(
+            parent.inflateView(R.layout.aladdin_genie_hook_action_item),
+            onItemClickListener
+        )
     }
 }
 
-class HookActionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+class HookActionItemViewHolder(
+    itemView: View,
+    private val onItemClickListener: OnItemClickListener<HookAction<Any>>
+) : RecyclerView.ViewHolder(itemView) {
 
     private val binding = AladdinGenieHookActionItemBinding.bind(itemView)
 
@@ -35,7 +44,7 @@ class HookActionItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemVie
         val hash = instance?.hashCode()?.toString() ?: "Recycled"
         binding.aladdinGenieHookActionItemName.text = item.title + " " + hash
         binding.aladdinGenieHookActionItemName.setOnClickListener {
-            item.reference.get()?.let { r -> item.action(r) }
+            onItemClickListener.onItemClick(absoluteAdapterPosition, item)
         }
     }
 }
