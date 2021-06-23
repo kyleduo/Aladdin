@@ -9,11 +9,16 @@ import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.data.NoReceiverAction
+import com.kyleduo.aladdin.genie.hook.data.NoReceiverRefHolder
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
+import com.kyleduo.aladdin.genie.hook.view.HookActionGroupItemViewDelegate
 import com.kyleduo.aladdin.genie.hook.view.HookActionItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
+import com.kyleduo.aladdin.ui.SimpleOffsetDecoration
+import com.kyleduo.aladdin.ui.dp2px
 import java.lang.ref.Reference
 import java.lang.ref.WeakReference
+import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * HookGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
@@ -29,7 +34,6 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     OnItemClickListener<HookAction<Any>> {
     companion object {
         private const val TAG = "HookGenie"
-        private val REF_HOLDER = Any()
     }
 
     override val title: String = "Hook"
@@ -50,8 +54,11 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
      */
     private val referenceMap: MutableMap<Int, WeakReference<*>> = mutableMapOf()
 
+    private val receiverCounter: MutableMap<Class<*>, AtomicInteger> = mutableMapOf()
+
     private val adapter by lazy {
         MultiTypeAdapter().also {
+            it.register(String::class.java, HookActionGroupItemViewDelegate())
             it.register(HookAction::class.java, HookActionItemViewDelegate(this))
         }
     }
@@ -64,6 +71,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
                     it.adapter = this.adapter
                     it.layoutManager =
                         LinearLayoutManager(context.app, LinearLayoutManager.VERTICAL, false)
+                    it.addItemDecoration(SimpleOffsetDecoration(8.dp2px(), 8.dp2px()))
                 }
             }
     }
@@ -89,7 +97,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         group: String,
         action: NoReceiverAction
     ) {
-        register(key, title, group, REF_HOLDER) {
+        register(key, title, group, NoReceiverRefHolder) {
             action()
         }
     }
@@ -114,10 +122,17 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
             return
         }
 
+        val receiverClass = receiver::class.java
+        val counter = receiverCounter[receiverClass] ?: AtomicInteger(1).also {
+            receiverCounter[receiverClass] = it
+        }
+
         val hookAction = HookAction(
             key,
             title,
             group,
+            receiverClass,
+            counter.getAndIncrement(),
             ref,
             action
         )
@@ -177,8 +192,22 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     }
 
     private fun refreshActionsList() {
+        val groups = mutableMapOf<String, MutableList<HookAction<*>>>()
         val actions = actionsMap.values.flatten().toList()
-        adapter.items = actions
+        actions.forEach {
+            val group = groups[it.group] ?: mutableListOf<HookAction<*>>().also { list ->
+                groups[it.group] = list
+            }
+            group.add(it)
+        }
+
+        val viewItems = mutableListOf<Any>()
+        groups.forEach {
+            viewItems.add(it.key)
+            it.value.forEach { action -> viewItems.add(action) }
+        }
+
+        adapter.items = viewItems
         adapter.notifyDataSetChanged()
     }
 

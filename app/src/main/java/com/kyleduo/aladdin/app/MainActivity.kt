@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
-            it.register("no_receiver", "[main] no receiver", "Demo - Main") {
+            it.register("no_receiver", "no receiver", "Demo - Main") {
                 Log.d("MainActivity", "from no receiver action")
             }
         }

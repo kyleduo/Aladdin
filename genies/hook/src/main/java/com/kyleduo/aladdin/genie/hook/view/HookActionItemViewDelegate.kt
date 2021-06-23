@@ -4,10 +4,12 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.hook.R
 import com.kyleduo.aladdin.genie.hook.data.HookAction
+import com.kyleduo.aladdin.genie.hook.data.NoReceiverRefHolder
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookActionItemBinding
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.inflateView
@@ -39,12 +41,19 @@ class HookActionItemViewHolder(
     private val binding = AladdinGenieHookActionItemBinding.bind(itemView)
 
     @SuppressLint("SetTextI18n")
-    fun bind(item: HookAction<in Any>) {
-        val instance = item.reference.get()
-        val hash = instance?.hashCode()?.toString() ?: "Recycled"
-        binding.aladdinGenieHookActionItemName.text = item.title + " " + hash
-        binding.aladdinGenieHookActionItemName.setOnClickListener {
-            onItemClickListener.onItemClick(absoluteAdapterPosition, item)
+    fun bind(action: HookAction<in Any>) {
+        binding.aladdinGenieHookActionItemName.text = action.title
+        binding.aladdinGenieHookActionItemContent.setOnClickListener {
+            onItemClickListener.onItemClick(absoluteAdapterPosition, action)
+        }
+        if (action.reference.get() == NoReceiverRefHolder) {
+            binding.aladdinGenieHookActionItemContent.setBackgroundResource(R.drawable.aladdin_genie_hook_no_receiver_action_item_content_bg)
+            binding.aladdinGenieHookActionItemReceiver.isVisible = false
+        } else {
+            binding.aladdinGenieHookActionItemContent.setBackgroundResource(R.drawable.aladdin_genie_hook_action_item_content_bg)
+            binding.aladdinGenieHookActionItemReceiver.isVisible = true
+            binding.aladdinGenieHookActionItemReceiver.text =
+                "[${action.receiverClass.simpleName} #${action.receiverNo}]"
         }
     }
 }

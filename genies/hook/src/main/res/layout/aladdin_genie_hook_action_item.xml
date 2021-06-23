@@ -1,18 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/aladdin_genie_hook_action_item_name"
-        android:layout_width="match_parent"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/aladdin_genie_hook_action_item_content"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingStart="16dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/aladdin_genie_hook_action_item_content_bg"
+        android:minWidth="160dp"
+        android:orientation="horizontal"
+        android:paddingStart="8dp"
         android:paddingTop="8dp"
-        android:paddingEnd="16dp"
-        android:paddingBottom="8dp"
-        tools:text="someAction" />
+        android:paddingEnd="8dp"
+        android:paddingBottom="8dp">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/aladdin_genie_hook_action_item_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textColor="@color/aladdin_white"
+            android:textSize="@dimen/aladdin_textBody"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/aladdin_genie_hook_action_item_barrier"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_default="wrap"
+            tools:text="longlong long long long long long long long long long long long long long long long name" />
+
+        <TextView
+            android:id="@+id/aladdin_genie_hook_action_item_receiver"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:fontFamily="monospace"
+            android:textColor="#A0FFFFFF"
+            android:textSize="@dimen/aladdin_textCaption"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/aladdin_genie_hook_action_item_name"
+            tools:text="[Receiver #1]" />
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/aladdin_genie_hook_action_item_barrier"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:barrierDirection="end"
+            app:constraint_referenced_ids="aladdin_genie_hook_action_item_name,aladdin_genie_hook_action_item_receiver" />
+
+        <ImageView
+            android:layout_width="16dp"
+            android:layout_height="16dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/aladdin_genie_hook_action_item_arrow"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1"
+            app:layout_constraintStart_toEndOf="@id/aladdin_genie_hook_action_item_barrier"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

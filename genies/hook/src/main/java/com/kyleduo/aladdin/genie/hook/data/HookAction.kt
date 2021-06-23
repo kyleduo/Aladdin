@@ -9,6 +9,8 @@ class HookAction<R : Any>(
     val key: String,
     val title: String,
     val group: String,
+    val receiverClass: Class<*>,
+    val receiverNo: Int,
     val reference: WeakReference<R>,
     val action: (receiver: R) -> Unit
 )

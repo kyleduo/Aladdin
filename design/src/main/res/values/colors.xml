@@ -4,6 +4,8 @@
     <color name="aladdin_textSubhead">#FF323232</color>
     <color name="aladdin_textCaption">#FF808080</color>
 
+    <color name="aladdin_white">#FFFFFFFF</color>
+
     <color name="aladdin_background">#FFFAFAFA</color>
 
     <color name="aladdin_divider">#FFEAEAEA</color>
