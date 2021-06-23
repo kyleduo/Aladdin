@@ -2,6 +2,7 @@ package com.kyleduo.aladdin.app
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -22,6 +23,12 @@ class MainActivity : AppCompatActivity() {
                 r.showToast()
             }
         }
+
+        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
+            it.register("no_receiver", "[main] no receiver", "Demo - Main") {
+                Log.d("MainActivity", "from no receiver action")
+            }
+        }
     }
 
     private fun showToast() {
@@ -30,6 +37,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister("showToastInMain", this)
+        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister(
+            "showToastInMain",
+            this
+        )
     }
 }

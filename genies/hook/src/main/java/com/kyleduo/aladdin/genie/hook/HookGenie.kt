@@ -1,5 +1,6 @@
 package com.kyleduo.aladdin.genie.hook
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.hook.data.HookAction
+import com.kyleduo.aladdin.genie.hook.data.NoReceiverAction
 import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
 import com.kyleduo.aladdin.genie.hook.view.HookActionItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
@@ -25,6 +27,11 @@ import java.lang.ref.WeakReference
  */
 class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     OnItemClickListener<HookAction<Any>> {
+    companion object {
+        private const val TAG = "HookGenie"
+        private val REF_HOLDER = Any()
+    }
+
     override val title: String = "Hook"
     override val key: String = "aladdin-genie-hook"
 
@@ -76,6 +83,17 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         referenceTracker.stop()
     }
 
+    fun register(
+        key: String,
+        title: String,
+        group: String,
+        action: NoReceiverAction
+    ) {
+        register(key, title, group, REF_HOLDER) {
+            action()
+        }
+    }
+
     fun <R : Any> register(
         key: String,
         title: String,
@@ -89,6 +107,11 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         if (actions == null) {
             actions = mutableListOf()
             actionsMap[ref] = actions
+        }
+
+        if (actions.find { it.key == key } != null) {
+            Log.w(TAG, "action key '$key' conflict.")
+            return
         }
 
         val hookAction = HookAction(
