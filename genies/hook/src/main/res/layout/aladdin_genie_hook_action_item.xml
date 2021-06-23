@@ -27,10 +27,11 @@
             android:textSize="@dimen/aladdin_textBody"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/aladdin_genie_hook_action_item_barrier"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_default="wrap"
-            tools:text="longlong long long long long long long long long long long long long long long long name" />
+            tools:text="action" />
 
         <TextView
             android:id="@+id/aladdin_genie_hook_action_item_receiver"
