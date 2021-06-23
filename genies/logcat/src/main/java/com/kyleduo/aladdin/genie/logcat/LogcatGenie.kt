@@ -1,5 +1,9 @@
 package com.kyleduo.aladdin.genie.logcat
 
+import android.annotation.SuppressLint
+import android.text.SpannableStringBuilder
+import android.text.Spanned
+import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,6 +22,8 @@ import com.kyleduo.aladdin.genie.logcat.view.LogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
 import com.kyleduo.aladdin.genie.logcat.view.LogItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
+import com.kyleduo.aladdin.ui.UIUtils
+import com.kyleduo.aladdin.ui.dp2px
 import com.kyleduo.aladdin.ui.inflateView
 import java.util.*
 
@@ -60,7 +66,7 @@ class LogcatGenie(
     private var filterLevels: List<LogLevel> = listOf(*LogLevel.values())
         set(value) {
             field = value
-            binding.aladdinLogcatLevelSelector.text = field.toString()
+            updateLevelSelector(value)
         }
     private val levelFilterDelegate = lazy {
         LevelFilterPanel(panelController.panelContainer, this)
@@ -122,6 +128,46 @@ class LogcatGenie(
     fun stop() {
         reader?.interrupt()
         reader = null
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun updateLevelSelector(levels: List<LogLevel>) {
+        if (levels.isEmpty()) {
+            binding.aladdinLogcatLevelSelector.text = "None"
+            binding.aladdinLogcatLevelSelector.background = UIUtils.createRoundCornerDrawable(
+                logItemStyles.getStyle(LogLevel.Verbose).backgroundColor,
+                4f.dp2px()
+            )
+            return
+        }
+        val ssb = SpannableStringBuilder()
+        val first = levels.first()
+        when (levels.size) {
+            LogLevel.Assert.level - first.level + 1 -> ssb.append(
+                first.name + "+",
+                ForegroundColorSpan(logItemStyles.getStyle(first).textColor),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            1 -> ssb.append(
+                first.name,
+                ForegroundColorSpan(logItemStyles.getStyle(first).textColor),
+                Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+            )
+            else -> for (level in levels) {
+                ssb.append(
+                    level.name.substring(0, 1) + " ",
+                    ForegroundColorSpan(logItemStyles.getStyle(level).textColor),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                ).also {
+                    it.delete(it.length - 1, it.length)
+                }
+            }
+        }
+        binding.aladdinLogcatLevelSelector.text = ssb
+        binding.aladdinLogcatLevelSelector.background = UIUtils.createRoundCornerDrawable(
+            logItemStyles.getStyle(first).backgroundColor,
+            4f.dp2px()
+        )
     }
 
     private fun showLevelSelector() {
