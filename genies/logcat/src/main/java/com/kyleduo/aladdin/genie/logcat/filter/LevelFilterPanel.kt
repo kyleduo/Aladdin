@@ -78,6 +78,14 @@ class LevelFilterPanel(
         listener.onFilterLevelsSelected(selectedLevels)
     }
 
+    override fun onLogLevelFastSelected(level: LogLevel) {
+        selectedLevels = LogLevel.levels.filter { it.level >= level.level }
+        adapter.items = makeItemList()
+        adapter.notifyDataSetChanged()
+        listener.onFilterLevelsSelected(selectedLevels)
+
+    }
+
     interface OnFilterLevelsSelectedListener {
 
         fun onFilterLevelsSelected(levels: List<LogLevel>)
@@ -114,10 +122,24 @@ class LevelFilterPanel(
 
         fun bind(item: LogLevelSelectorItem) {
             binding.aladdinLogcatLevelSelectorLevel.text = item.level.name
-            binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener(null)
-            binding.aladdinLogcatLevelSelectorCheckbox.isChecked = item.isSelected
-            binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener { _, isChecked ->
-                onLogLevelSelectedChangeListener.onLogLevelSelectedChanged(item.level, isChecked)
+
+            fun muteCheckBox(action: () -> Unit) {
+                binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener(null)
+                action()
+                binding.aladdinLogcatLevelSelectorCheckbox.setOnCheckedChangeListener { _, isChecked ->
+                    onLogLevelSelectedChangeListener.onLogLevelSelectedChanged(
+                        item.level,
+                        isChecked
+                    )
+                }
+            }
+
+            muteCheckBox {
+                binding.aladdinLogcatLevelSelectorCheckbox.isChecked = item.isSelected
+            }
+
+            binding.aladdinLogcatLevelSelectorFastSelect.setOnClickListener {
+                onLogLevelSelectedChangeListener.onLogLevelFastSelected(item.level)
             }
         }
     }

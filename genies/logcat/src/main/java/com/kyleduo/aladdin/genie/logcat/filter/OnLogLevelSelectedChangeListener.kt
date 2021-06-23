@@ -8,4 +8,6 @@ import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 interface OnLogLevelSelectedChangeListener {
 
     fun onLogLevelSelectedChanged(level: LogLevel, isSelected: Boolean)
+
+    fun onLogLevelFastSelected(level: LogLevel)
 }
