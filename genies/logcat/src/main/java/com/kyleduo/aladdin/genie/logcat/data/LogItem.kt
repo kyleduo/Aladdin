@@ -15,4 +15,15 @@ data class LogItem(
             return LogItem(LogLevel.Error, "", "", reason, origin)
         }
     }
+
+    fun maybeMerge(another: LogItem): Boolean {
+        return level == another.level &&
+                time == another.time &&
+                tid == another.tid &&
+                tag == another.tag
+    }
+
+    fun merge(another: LogItem): LogItem {
+        return copy(content = "$content\n${another.content}")
+    }
 }

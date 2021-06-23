@@ -130,6 +130,18 @@ class LogcatGenie(
     }
 
     override fun onLogItem(item: LogItem) {
+        if (allItems.isNotEmpty()) {
+            val first = allItems.first
+            if (first.maybeMerge(item)) {
+                val merged = first.merge(item)
+                allItems[0] = merged
+                if (filteredItems[0] == first) {
+                    filteredItems[0] = merged
+                }
+                adapter.notifyItemChanged(0)
+                return
+            }
+        }
         allItems.addFirst(item)
         if (allItems.size > itemLimit * 2) {
             allItems = LinkedList(allItems.subList(0, itemLimit))
@@ -146,7 +158,7 @@ class LogcatGenie(
             newList = true
         }
 
-        val isBottom = layoutManager.findFirstVisibleItemPosition() == 0
+        val isAtTop = layoutManager.findFirstVisibleItemPosition() == 0
 
         if (newList) {
             adapter.notifyDataSetChanged()
@@ -154,7 +166,7 @@ class LogcatGenie(
             adapter.notifyItemInserted(0)
         }
 
-        if (isBottom) {
+        if (isAtTop) {
             binding.aladdinLogcatList.scrollToPosition(0)
         }
     }
