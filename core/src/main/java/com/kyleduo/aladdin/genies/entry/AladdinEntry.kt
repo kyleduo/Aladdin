@@ -1,7 +1,6 @@
 package com.kyleduo.aladdin.genies.entry
 
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.api.AladdinContext
@@ -26,9 +25,6 @@ class AladdinEntry(context: AladdinContext) : AladdinView() {
             setImageResource(R.drawable.aladdin_entry_icon)
 
             setOnClickListener {
-                Toast.makeText(context.app, "Click Entry !!!", Toast.LENGTH_SHORT).show()
-//                val random = Random(System.currentTimeMillis())
-//                agent.moveBy(random.nextInt(-100, 100), random.nextInt(-100, 100))
                 agent.dismiss()
                 (context.genieManager.findGenie("board") as? BoardGenie)?.show()
             }
