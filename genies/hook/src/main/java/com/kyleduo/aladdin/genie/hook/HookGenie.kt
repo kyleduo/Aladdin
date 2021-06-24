@@ -18,7 +18,7 @@ import com.kyleduo.aladdin.ui.SimpleOffsetDecoration
 import com.kyleduo.aladdin.ui.dp2px
 import java.lang.ref.Reference
 import java.lang.ref.WeakReference
-import java.util.concurrent.atomic.AtomicInteger
+import java.util.*
 
 /**
  * HookGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
@@ -54,7 +54,10 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
      */
     private val referenceMap: MutableMap<Int, WeakReference<*>> = mutableMapOf()
 
-    private val receiverCounter: MutableMap<Class<*>, AtomicInteger> = mutableMapOf()
+    /**
+     * receiver's class -> instance history [hash]
+     */
+    private val receiverCounter: MutableMap<Class<*>, MutableList<Int>> = mutableMapOf()
 
     private val adapter by lazy {
         MultiTypeAdapter().also {
@@ -110,6 +113,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         action: (receiver: R) -> Unit
     ) {
         val ref = getReference(receiver)
+        val hash = receiver.hashCode()
 
         var actions = actionsMap[ref]
         if (actions == null) {
@@ -123,8 +127,15 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         }
 
         val receiverClass = receiver::class.java
-        val counter = receiverCounter[receiverClass] ?: AtomicInteger(1).also {
+        val records = receiverCounter[receiverClass] ?: mutableListOf<Int>().also {
             receiverCounter[receiverClass] = it
+        }
+
+        val index = if (records.contains(hash)) {
+            records.indexOf(hash) + 1
+        } else {
+            records.add(hash)
+            records.size
         }
 
         val hookAction = HookAction(
@@ -132,7 +143,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
             title,
             group,
             receiverClass,
-            counter.getAndIncrement(),
+            index,
             ref,
             action
         )

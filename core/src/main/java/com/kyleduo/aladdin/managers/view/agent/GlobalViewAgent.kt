@@ -127,6 +127,9 @@ class GlobalViewAgent(
     override fun show() {
         isShown = true
         if (isActive) {
+            if (view.view.parent != null) {
+                windowManager.removeView(view.view)
+            }
             windowManager.addView(view.view, layoutParams)
             windowManager
         }
