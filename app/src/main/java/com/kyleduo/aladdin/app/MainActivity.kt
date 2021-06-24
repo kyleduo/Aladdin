@@ -18,8 +18,24 @@ class MainActivity : AppCompatActivity() {
         }
 
         (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
-            it.register("showToastInMain", "open activity", "Demo - Main", this) { r ->
-                startActivity(Intent(this@MainActivity, NormalActivity::class.java))
+            for (i in 1..10) {
+                it.register(
+                    "showToastInMain - $i",
+                    "open activity [$i]",
+                    "Demo - Main - ${i / 5}",
+                    this
+                ) { r ->
+                    r.startActivity(Intent(r, NormalActivity::class.java))
+                }
+            }
+
+            it.register(
+                "showToastInMain",
+                "open activity",
+                "",
+                this
+            ) { r ->
+                r.startActivity(Intent(r, NormalActivity::class.java))
             }
         }
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
+import com.kyleduo.aladdin.genie.hook.data.ActionGroupItem
 import com.kyleduo.aladdin.genie.hook.data.HookAction
 import com.kyleduo.aladdin.genie.hook.data.NoReceiverAction
 import com.kyleduo.aladdin.genie.hook.data.NoReceiverRefHolder
@@ -34,6 +35,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     OnItemClickListener<HookAction<Any>> {
     companion object {
         private const val TAG = "HookGenie"
+        private const val DEFAULT_GROUP_NAME = "--"
     }
 
     override val title: String = "Hook"
@@ -61,7 +63,14 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
 
     private val adapter by lazy {
         MultiTypeAdapter().also {
-            it.register(String::class.java, HookActionGroupItemViewDelegate())
+            it.register(
+                ActionGroupItem::class.java,
+                HookActionGroupItemViewDelegate(object : OnItemClickListener<ActionGroupItem> {
+                    override fun onItemClick(position: Int, item: ActionGroupItem) {
+                        onGroupItemClicked(item)
+                    }
+                })
+            )
             it.register(HookAction::class.java, HookActionItemViewDelegate(this))
         }
     }
@@ -92,6 +101,32 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
 
     override fun onStop() {
         referenceTracker.stop()
+    }
+
+    fun onGroupItemClicked(group: ActionGroupItem) {
+        val list = adapter.items.toMutableList()
+        val index = list.indexOf(group)
+        val newGroupItem = group.copy(isFold = !group.isFold)
+        if (group.isFold) {
+            // unfold
+            val actions = actionsMap.values.flatten().filter { it.group == group.name }.toList()
+            list.addAll(index + 1, actions)
+        } else {
+            // fold
+            val toBeRemoved = mutableListOf<HookAction<*>>()
+            for (i in index + 1 until list.size) {
+                val item = list[i]
+                (item as? HookAction<*>)?.let {
+                    if (it.group == group.name) {
+                        toBeRemoved.add(it)
+                    }
+                }
+            }
+            list.removeAll(toBeRemoved)
+        }
+        list[index] = newGroupItem
+        adapter.items = list
+        adapter.notifyDataSetChanged()
     }
 
     fun register(
@@ -138,10 +173,12 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
             records.size
         }
 
+        val groupName = if (group.isEmpty()) DEFAULT_GROUP_NAME else group
+
         val hookAction = HookAction(
             key,
             title,
-            group,
+            groupName,
             receiverClass,
             index,
             ref,
@@ -203,6 +240,8 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     }
 
     private fun refreshActionsList() {
+        val originList = adapter.items
+
         val groups = mutableMapOf<String, MutableList<HookAction<*>>>()
         val actions = actionsMap.values.flatten().toList()
         actions.forEach {
@@ -212,10 +251,25 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
             group.add(it)
         }
 
+        val groupNames = groups.keys.sorted()
+
+        val foldByDefault = actions.size > 10
         val viewItems = mutableListOf<Any>()
-        groups.forEach {
-            viewItems.add(it.key)
-            it.value.forEach { action -> viewItems.add(action) }
+        groupNames.forEach {
+            val name = it
+            val groupActions = groups[it] ?: listOf<Any>()
+            val originIsFold = (originList.find { item ->
+                (item as? ActionGroupItem)?.name == name
+            } as? ActionGroupItem)?.isFold ?: foldByDefault
+            val group = ActionGroupItem(
+                name,
+                groupActions.size,
+                originIsFold
+            )
+            viewItems.add(group)
+            if (!group.isFold) {
+                viewItems.addAll(groupActions)
+            }
         }
 
         adapter.items = viewItems
