@@ -4,6 +4,7 @@ import android.content.Context
 import android.graphics.PixelFormat
 import android.graphics.Rect
 import android.os.Build
+import android.util.DisplayMetrics
 import android.util.Size
 import android.view.Gravity
 import android.view.View
@@ -14,6 +15,7 @@ import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
 import com.kyleduo.aladdin.managers.view.ViewPositionStorage
+
 
 /**
  * View agent in [com.kyleduo.aladdin.api.manager.view.ViewMode.Global] mode.
@@ -92,13 +94,24 @@ class GlobalViewAgent(
         updateLayout()
     }
 
-    @Suppress("DEPRECATION")
     override fun getParentSize(): Size {
-        // FIXME: 2021/6/15 kyleduo find a way to get exact size of ViewRootImpl
         val windowBounds = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowManager.currentWindowMetrics.bounds
+            Rect().also { rect ->
+                val metrics = windowManager.currentWindowMetrics
+                val cutout = metrics.windowInsets.displayCutout
+                rect.set(metrics.bounds)
+                cutout?.let {
+                    rect.left += cutout.safeInsetLeft
+                    rect.top += cutout.safeInsetTop
+                    rect.right -= cutout.safeInsetRight
+                    rect.bottom -= cutout.safeInsetBottom
+                }
+            }
         } else {
-            Rect(0, 0, windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
+            val displayMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            windowManager.defaultDisplay.getMetrics(displayMetrics)
+            Rect(0, 0, displayMetrics.widthPixels, displayMetrics.heightPixels)
         }
         return Size(windowBounds.width(), windowBounds.height())
     }
