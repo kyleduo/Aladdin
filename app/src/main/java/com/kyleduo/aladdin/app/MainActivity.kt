@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, NormalActivity::class.java))
         }
 
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
+        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
             for (i in 1..10) {
                 it.register(
                     "showToastInMain - $i",
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
+        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
             it.register("no_receiver", "no receiver", "Demo - Main") {
                 Log.d("MainActivity", "from no receiver action")
             }
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister(
+        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.unregister(
             "showToastInMain",
             this
         )

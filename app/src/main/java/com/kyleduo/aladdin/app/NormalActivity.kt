@@ -30,7 +30,7 @@ class NormalActivity : AppCompatActivity() {
             startActivity(Intent(this@NormalActivity, NormalActivity::class.java))
         }
 
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.let {
+        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
             it.register("showToast", "showToast", "Demo", this) { r ->
                 r.showToast()
             }
@@ -43,7 +43,7 @@ class NormalActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        (Aladdin.context.genieManager.findGenie("aladdin-genie-hook") as? HookGenie)?.unregister(
+        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.unregister(
             "showToast",
             this
         )

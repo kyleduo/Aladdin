@@ -34,12 +34,14 @@ import java.util.*
 class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     OnItemClickListener<HookAction<Any>> {
     companion object {
+        const val KEY = "aladdin-genie-hook"
+
         private const val TAG = "HookGenie"
         private const val DEFAULT_GROUP_NAME = "--"
     }
 
     override val title: String = "Hook"
-    override val key: String = "aladdin-genie-hook"
+    override val key: String = KEY
 
     private lateinit var binding: AladdinGenieHookPanelBinding
 
