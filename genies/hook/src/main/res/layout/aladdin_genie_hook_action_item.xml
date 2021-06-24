@@ -20,17 +20,17 @@
 
         <TextView
             android:id="@+id/aladdin_genie_hook_action_item_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:maxLines="2"
             android:textColor="@color/aladdin_white"
             android:textSize="@dimen/aladdin_textBody"
             android:textStyle="bold"
+            app:layout_constrainedWidth="true"
             app:layout_constraintEnd_toStartOf="@id/aladdin_genie_hook_action_item_barrier"
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_default="wrap"
             tools:text="action" />
 
         <TextView
