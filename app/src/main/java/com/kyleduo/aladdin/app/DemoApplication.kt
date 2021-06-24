@@ -2,9 +2,6 @@ package com.kyleduo.aladdin.app
 
 import android.app.Application
 import android.graphics.Color
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import com.kyleduo.aladdin.AladdinContextFactoryImpl
@@ -19,19 +16,6 @@ import com.kyleduo.aladdin.genie.logcat.LogcatGenie
  * @author kyleduo on 2021/5/18
  */
 class DemoApplication : Application() {
-
-    companion object {
-        private const val TAG = "DemoApplication"
-    }
-
-    private val handler = Handler(Looper.getMainLooper())
-
-    private val testLogRunnable = object : Runnable {
-        override fun run() {
-            Log.d(TAG, "run: ")
-            handler.postDelayed(this, 1000)
-        }
-    }
 
     override fun onCreate() {
         super.onCreate()
@@ -48,8 +32,6 @@ class DemoApplication : Application() {
             .end()
             .contextFactory(AladdinContextFactoryImpl())
             .install()
-
-        handler.post(testLogRunnable)
     }
 
     class TestViewGenie(private val color: Int) :
