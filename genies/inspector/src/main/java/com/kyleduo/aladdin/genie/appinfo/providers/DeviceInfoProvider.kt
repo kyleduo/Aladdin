@@ -14,7 +14,7 @@ class DeviceInfoProvider(
 ) : InfoProvider {
 
     @Suppress("DEPRECATION")
-    override fun provideAppInfo(): InfoSection {
+    override fun provideInfo(): InfoSection {
         return InfoSection(
             "Device", "", listOf(
                 InfoItem("Brand", Build.BRAND),

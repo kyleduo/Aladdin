@@ -14,7 +14,7 @@ class ApplicationInfoProvider(
 ) : InfoProvider {
 
     @Suppress("DEPRECATION")
-    override fun provideAppInfo(): InfoSection {
+    override fun provideInfo(): InfoSection {
         val packageManager = context.packageManager
         val packageInfo = packageManager.getPackageInfo(context.packageName, 0)
 

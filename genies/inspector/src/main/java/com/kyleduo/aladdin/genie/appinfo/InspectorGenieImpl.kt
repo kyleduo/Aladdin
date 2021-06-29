@@ -91,7 +91,7 @@ class InspectorGenieImpl : AladdinViewGenie(), InspectorGenie {
 
     private fun reload() {
         val viewItems = infoProviders.mapNotNull {
-            it.provideAppInfo()
+            it.provideInfo()
         }.toList().toViewItems()
         adapter.items = viewItems
         adapter.notifyDataSetChanged()

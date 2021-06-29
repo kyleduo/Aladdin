@@ -25,7 +25,7 @@ class DemoApplication : Application(), InfoProvider {
 
     private val random = Random(System.currentTimeMillis())
 
-    override fun provideAppInfo(): InfoSection {
+    override fun provideInfo(): InfoSection {
         return InfoSection(
             "Demo Application", "registered in App",
             listOf(

@@ -8,5 +8,5 @@ import com.kyleduo.aladdin.genie.appinfo.api.data.InfoSection
  */
 interface InfoProvider {
 
-    fun provideAppInfo(): InfoSection?
+    fun provideInfo(): InfoSection?
 }

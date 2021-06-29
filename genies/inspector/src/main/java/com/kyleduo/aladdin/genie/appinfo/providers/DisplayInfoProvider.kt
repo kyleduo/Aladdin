@@ -16,7 +16,7 @@ class DisplayInfoProvider(
 ) : InfoProvider {
 
     @Suppress("DEPRECATION")
-    override fun provideAppInfo(): InfoSection {
+    override fun provideInfo(): InfoSection {
         val windowManager: WindowManager =
             context.getSystemService(Context.WINDOW_SERVICE) as WindowManager
         val windowBounds = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
