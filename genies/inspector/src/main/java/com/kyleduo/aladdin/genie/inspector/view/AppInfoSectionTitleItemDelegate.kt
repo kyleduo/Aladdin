@@ -1,12 +1,12 @@
-package com.kyleduo.aladdin.genie.appinfo.view
+package com.kyleduo.aladdin.genie.inspector.view
 
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
-import com.kyleduo.aladdin.genie.appinfo.R
-import com.kyleduo.aladdin.genie.appinfo.databinding.AladdinGenieInfoLayoutSectionTitleBinding
+import com.kyleduo.aladdin.genie.inspector.R
+import com.kyleduo.aladdin.genie.inspector.databinding.AladdinGenieInfoLayoutSectionTitleBinding
 import com.kyleduo.aladdin.ui.inflateView
 
 /**

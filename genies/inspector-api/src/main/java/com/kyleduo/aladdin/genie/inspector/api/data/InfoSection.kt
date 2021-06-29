@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.appinfo.api.data
+package com.kyleduo.aladdin.genie.inspector.api.data
 
 /**
  * Represents a group of app info data

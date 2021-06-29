@@ -2,10 +2,10 @@ package com.kyleduo.aladdin.app
 
 import android.app.Application
 import com.kyleduo.aladdin.api.Aladdin
-import com.kyleduo.aladdin.genie.appinfo.api.InfoProvider
-import com.kyleduo.aladdin.genie.appinfo.api.InspectorGenie
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoItem
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoSection
+import com.kyleduo.aladdin.genie.inspector.api.InfoProvider
+import com.kyleduo.aladdin.genie.inspector.api.InspectorGenie
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoItem
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoSection
 import kotlin.random.Random
 
 /**

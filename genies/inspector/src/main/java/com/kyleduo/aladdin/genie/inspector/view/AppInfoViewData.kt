@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.appinfo.view
+package com.kyleduo.aladdin.genie.inspector.view
 
 /**
  * section title data

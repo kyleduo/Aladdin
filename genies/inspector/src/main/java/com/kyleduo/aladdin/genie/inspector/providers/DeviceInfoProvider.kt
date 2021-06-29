@@ -1,10 +1,10 @@
-package com.kyleduo.aladdin.genie.appinfo.providers
+package com.kyleduo.aladdin.genie.inspector.providers
 
 import android.content.Context
 import android.os.Build
-import com.kyleduo.aladdin.genie.appinfo.api.InfoProvider
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoItem
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoSection
+import com.kyleduo.aladdin.genie.inspector.api.InfoProvider
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoItem
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoSection
 
 /**
  * @author kyleduo on 2021/6/11

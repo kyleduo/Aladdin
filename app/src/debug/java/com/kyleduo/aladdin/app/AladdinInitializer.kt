@@ -3,7 +3,7 @@ package com.kyleduo.aladdin.app
 import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.api.manager.view.AladdinViewMode
 import com.kyleduo.aladdin.genie.actions.ActionsGenieImpl
-import com.kyleduo.aladdin.genie.appinfo.InspectorGenieImpl
+import com.kyleduo.aladdin.genie.inspector.InspectorGenieImpl
 import com.kyleduo.aladdin.genie.logcat.LogcatGenie
 
 /**

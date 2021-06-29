@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.appinfo.api
+package com.kyleduo.aladdin.genie.inspector.api
 
 import androidx.annotation.MainThread
 

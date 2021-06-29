@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.appinfo
+package com.kyleduo.aladdin.genie.inspector
 
 import android.graphics.Rect
 import android.view.LayoutInflater
@@ -9,17 +9,17 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
-import com.kyleduo.aladdin.genie.appinfo.api.InfoProvider
-import com.kyleduo.aladdin.genie.appinfo.api.InspectorGenie
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoSection
-import com.kyleduo.aladdin.genie.appinfo.databinding.AladdinGenieInfoPanelBinding
-import com.kyleduo.aladdin.genie.appinfo.providers.ApplicationInfoProvider
-import com.kyleduo.aladdin.genie.appinfo.providers.DeviceInfoProvider
-import com.kyleduo.aladdin.genie.appinfo.providers.DisplayInfoProvider
-import com.kyleduo.aladdin.genie.appinfo.view.AppInfoItemDelegate
-import com.kyleduo.aladdin.genie.appinfo.view.AppInfoSectionTitleItemDelegate
-import com.kyleduo.aladdin.genie.appinfo.view.InfoItemViewData
-import com.kyleduo.aladdin.genie.appinfo.view.InfoSectionTitleViewData
+import com.kyleduo.aladdin.genie.inspector.api.InfoProvider
+import com.kyleduo.aladdin.genie.inspector.api.InspectorGenie
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoSection
+import com.kyleduo.aladdin.genie.inspector.databinding.AladdinGenieInfoPanelBinding
+import com.kyleduo.aladdin.genie.inspector.providers.ApplicationInfoProvider
+import com.kyleduo.aladdin.genie.inspector.providers.DeviceInfoProvider
+import com.kyleduo.aladdin.genie.inspector.providers.DisplayInfoProvider
+import com.kyleduo.aladdin.genie.inspector.view.AppInfoItemDelegate
+import com.kyleduo.aladdin.genie.inspector.view.AppInfoSectionTitleItemDelegate
+import com.kyleduo.aladdin.genie.inspector.view.InfoItemViewData
+import com.kyleduo.aladdin.genie.inspector.view.InfoSectionTitleViewData
 import com.kyleduo.aladdin.ui.dp2px
 
 /**

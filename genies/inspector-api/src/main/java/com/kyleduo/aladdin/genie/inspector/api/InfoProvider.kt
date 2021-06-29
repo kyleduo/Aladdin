@@ -1,6 +1,6 @@
-package com.kyleduo.aladdin.genie.appinfo.api
+package com.kyleduo.aladdin.genie.inspector.api
 
-import com.kyleduo.aladdin.genie.appinfo.api.data.InfoSection
+import com.kyleduo.aladdin.genie.inspector.api.data.InfoSection
 
 /**
  * Providing app info to [InspectorGenie]
