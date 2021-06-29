@@ -32,8 +32,7 @@ import java.util.*
  *
  * @author kyleduo on 2021/6/17
  */
-class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener,
-    OnItemClickListener<Action<Any>> {
+class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener {
     companion object {
 
         private val TAG = ActionsGenieImpl::class.java.name
@@ -73,7 +72,15 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
                     }
                 })
             )
-            it.register(Action::class.java, HookActionItemViewDelegate(this))
+            it.register(Action::class.java, HookActionItemViewDelegate(onItemClickListener))
+        }
+    }
+
+    private val onItemClickListener by lazy {
+        object : OnItemClickListener<Action<Any>> {
+            override fun onItemClick(position: Int, item: Action<Any>) {
+                this@ActionsGenieImpl.onItemClick(item)
+            }
         }
     }
 
@@ -278,7 +285,7 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
         adapter.notifyDataSetChanged()
     }
 
-    override fun onItemClick(position: Int, item: Action<Any>) {
+    private fun onItemClick(item: Action<Any>) {
         val ref = item.reference.get()
         if (ref == null) {
             scanDecayedReference()

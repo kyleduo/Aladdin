@@ -34,8 +34,7 @@ class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     logItemPalette: LogItemPalette = DefaultLogItemPalette()
-) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener,
-    OnItemClickListener<LogItem> {
+) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
     companion object {
         const val TAG = "LogcatGenie"
     }
@@ -47,7 +46,10 @@ class LogcatGenie(
     private val adapter by lazy {
         MultiTypeAdapter().also {
             it.items = filteredItems
-            it.register(LogItem::class.java, LogItemViewDelegate(logItemStyles, this))
+            it.register(
+                LogItem::class.java,
+                LogItemViewDelegate(logItemStyles, onItemClickListener)
+            )
         }
     }
     private val layoutManager by lazy {
@@ -76,6 +78,12 @@ class LogcatGenie(
 
     private val logDetailPanel by lazy {
         LogcatDetailPanel(panelController.panelContainer, logItemStyles)
+    }
+
+    private val onItemClickListener = object : OnItemClickListener<LogItem> {
+        override fun onItemClick(position: Int, item: LogItem) {
+            this@LogcatGenie.onItemClick(item)
+        }
     }
 
     override fun createPanel(container: ViewGroup): View {
@@ -227,7 +235,7 @@ class LogcatGenie(
         binding.aladdinLogcatList.scrollToPosition(0)
     }
 
-    override fun onItemClick(position: Int, item: LogItem) {
+    private fun onItemClick(item: LogItem) {
         logDetailPanel.show(item)
     }
 }

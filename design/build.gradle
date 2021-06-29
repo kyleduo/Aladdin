@@ -4,16 +4,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    resourcePrefix 'aladdin_'
+    compileSdkVersion COMPILE_SDK as int
+    buildToolsVersion BUILD_TOOLS
+    resourcePrefix RESOURCE_PREFIX
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion MIN_SDK as int
+        versionName VERSION_NAME
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
     }
 
@@ -27,18 +25,16 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    kotlinOptions {
-        jvmTarget = '1.8'
-    }
 }
 
 dependencies {
+    //noinspection GradleDependency
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_SDK_LIB"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.5.0'
-    implementation 'androidx.appcompat:appcompat:1.3.0'
-    api "androidx.constraintlayout:constraintlayout:2.0.4"
-    api "androidx.recyclerview:recyclerview:1.2.1"
+    implementation "androidx.core:core-ktx:$ANDROID_X_CORE_X"
+    implementation "androidx.appcompat:appcompat:$ANDROID_X_APPCOMPAT"
+    implementation "androidx.recyclerview:recyclerview:$ANDROID_X_RECYCLER_VIEW"
+    implementation "androidx.constraintlayout:constraintlayout:$ANDROID_X_CONSTRAINT_LAYOUT"
 
     implementation project(':core-api')
 }
