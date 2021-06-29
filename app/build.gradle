@@ -52,9 +52,11 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
     implementation project(':core-api')
-    debugImplementation project(':core')
+    implementation project(':genies:inspector-api')
 
-    implementation project(':genies:appinfo')
+    debugImplementation project(':core')
+    debugImplementation project(':genies:inspector')
+
     implementation project(':genies:logcat')
     implementation project(':genies:hook')
 }

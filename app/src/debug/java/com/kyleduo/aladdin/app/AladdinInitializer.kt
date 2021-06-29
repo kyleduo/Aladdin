@@ -2,7 +2,7 @@ package com.kyleduo.aladdin.app
 
 import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.api.manager.view.AladdinViewMode
-import com.kyleduo.aladdin.genie.appinfo.AppInfoGenie
+import com.kyleduo.aladdin.genie.appinfo.InspectorGenieImpl
 import com.kyleduo.aladdin.genie.hook.HookGenie
 import com.kyleduo.aladdin.genie.logcat.LogcatGenie
 
@@ -17,7 +17,7 @@ object AladdinInitializer {
                 it.viewMode(AladdinViewMode.Global)
             }
             .genie {
-                it.addGenie(AppInfoGenie())
+                it.addGenie(InspectorGenieImpl())
                     .addGenie(LogcatGenie())
                     .addGenie(HookGenie())
             }

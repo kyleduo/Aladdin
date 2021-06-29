@@ -4,9 +4,9 @@ include ':app'
 
 include ':core'
 
-include ':genies:appinfo'
+include ':genies:inspector'
 include ':design'
 include ':core-api'
-include ':genies:info'
 include ':genies:logcat'
 include ':genies:hook'
+include ':genies:inspector-api'
