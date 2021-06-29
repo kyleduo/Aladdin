@@ -6,7 +6,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.kyleduo.aladdin.api.Aladdin
-import com.kyleduo.aladdin.genie.hook.HookGenie
+import com.kyleduo.aladdin.genie.actions.ActionsGenie
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -30,7 +30,7 @@ class NormalActivity : AppCompatActivity() {
             startActivity(Intent(this@NormalActivity, NormalActivity::class.java))
         }
 
-        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
+        Aladdin.findGenie<ActionsGenie>(ActionsGenie.KEY)?.let {
             it.register("showToast", "showToast", "Demo", this) { r ->
                 r.showToast()
             }
@@ -43,7 +43,7 @@ class NormalActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.unregister(
+        Aladdin.findGenie<ActionsGenie>(ActionsGenie.KEY)?.unregister(
             "showToast",
             this
         )

@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.hook
+package com.kyleduo.aladdin.genie.actions
 
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
-import com.kyleduo.aladdin.genie.hook.data.ActionGroupItem
-import com.kyleduo.aladdin.genie.hook.data.HookAction
-import com.kyleduo.aladdin.genie.hook.data.NoReceiverAction
-import com.kyleduo.aladdin.genie.hook.data.NoReceiverRefHolder
-import com.kyleduo.aladdin.genie.hook.databinding.AladdinGenieHookPanelBinding
-import com.kyleduo.aladdin.genie.hook.view.HookActionGroupItemViewDelegate
-import com.kyleduo.aladdin.genie.hook.view.HookActionItemViewDelegate
+import com.kyleduo.aladdin.genie.actions.data.Action
+import com.kyleduo.aladdin.genie.actions.data.ActionGroupItem
+import com.kyleduo.aladdin.genie.actions.data.NoReceiverAction
+import com.kyleduo.aladdin.genie.actions.data.NoReceiverRefHolder
+import com.kyleduo.aladdin.genie.actions.databinding.AladdinGenieActionsPanelBinding
+import com.kyleduo.aladdin.genie.actions.view.HookActionGroupItemViewDelegate
+import com.kyleduo.aladdin.genie.actions.view.HookActionItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.SimpleOffsetDecoration
 import com.kyleduo.aladdin.ui.dp2px
@@ -23,34 +23,34 @@ import java.util.*
 
 /**
  * HookGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
- * you want to trigger some logic which is hard to simulate, you can expose an action to [HookGenie]
- * and you can trigger it through [HookGenie].
+ * you want to trigger some logic which is hard to simulate, you can expose an action to [ActionsGenie]
+ * and you can trigger it through [ActionsGenie].
  *
- * [HookGenie] will track the reference of the receiver of actions so it's safe to use it with
+ * [ActionsGenie] will track the reference of the receiver of actions so it's safe to use it with
  * Activity or other instance that has lifecycle.
  *
  * @author kyleduo on 2021/6/17
  */
-class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
-    OnItemClickListener<HookAction<Any>> {
+class ActionsGenie : AladdinViewGenie(), OnReferenceRecycledListener,
+    OnItemClickListener<Action<Any>> {
     companion object {
-        const val KEY = "aladdin-genie-hook"
+        const val KEY = "aladdin-genie-actions"
 
-        private const val TAG = "HookGenie"
+        private const val TAG = "ActionsGenie"
         private const val DEFAULT_GROUP_NAME = "--"
     }
 
-    override val title: String = "Hook"
+    override val title: String = "Actions"
     override val key: String = KEY
 
-    private lateinit var binding: AladdinGenieHookPanelBinding
+    private lateinit var binding: AladdinGenieActionsPanelBinding
 
     private val referenceTracker = ReferenceTracker(this)
 
     /**
      * reference -> list of actions
      */
-    private val actionsMap: MutableMap<WeakReference<*>, MutableList<HookAction<*>>> =
+    private val actionsMap: MutableMap<WeakReference<*>, MutableList<Action<*>>> =
         mutableMapOf()
 
     /**
@@ -73,15 +73,15 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
                     }
                 })
             )
-            it.register(HookAction::class.java, HookActionItemViewDelegate(this))
+            it.register(Action::class.java, HookActionItemViewDelegate(this))
         }
     }
 
     override fun createPanel(container: ViewGroup): View {
         return LayoutInflater.from(container.context)
-            .inflate(R.layout.aladdin_genie_hook_panel, container, false).also { view ->
-                binding = AladdinGenieHookPanelBinding.bind(view)
-                binding.aladdinGenieHookActionsList.also {
+            .inflate(R.layout.aladdin_genie_actions_panel, container, false).also { view ->
+                binding = AladdinGenieActionsPanelBinding.bind(view)
+                binding.aladdinGenieActionsActionsList.also {
                     it.adapter = this.adapter
                     it.layoutManager =
                         LinearLayoutManager(context.app, LinearLayoutManager.VERTICAL, false)
@@ -115,10 +115,10 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
             list.addAll(index + 1, actions)
         } else {
             // fold
-            val toBeRemoved = mutableListOf<HookAction<*>>()
+            val toBeRemoved = mutableListOf<Action<*>>()
             for (i in index + 1 until list.size) {
                 val item = list[i]
-                (item as? HookAction<*>)?.let {
+                (item as? Action<*>)?.let {
                     if (it.group == group.name) {
                         toBeRemoved.add(it)
                     }
@@ -177,7 +177,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
 
         val groupName = if (group.isEmpty()) DEFAULT_GROUP_NAME else group
 
-        val hookAction = HookAction(
+        val hookAction = Action(
             key,
             title,
             groupName,
@@ -244,10 +244,10 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
     private fun refreshActionsList() {
         val originList = adapter.items
 
-        val groups = mutableMapOf<String, MutableList<HookAction<*>>>()
+        val groups = mutableMapOf<String, MutableList<Action<*>>>()
         val actions = actionsMap.values.flatten().toList()
         actions.forEach {
-            val group = groups[it.group] ?: mutableListOf<HookAction<*>>().also { list ->
+            val group = groups[it.group] ?: mutableListOf<Action<*>>().also { list ->
                 groups[it.group] = list
             }
             group.add(it)
@@ -278,7 +278,7 @@ class HookGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         adapter.notifyDataSetChanged()
     }
 
-    override fun onItemClick(position: Int, item: HookAction<Any>) {
+    override fun onItemClick(position: Int, item: Action<Any>) {
         val ref = item.reference.get()
         if (ref == null) {
             scanDecayedReference()

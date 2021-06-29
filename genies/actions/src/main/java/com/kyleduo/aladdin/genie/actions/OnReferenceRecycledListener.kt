@@ -1,4 +1,4 @@
-package com.kyleduo.aladdin.genie.hook
+package com.kyleduo.aladdin.genie.actions
 
 import java.lang.ref.Reference
 

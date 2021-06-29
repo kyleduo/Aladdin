@@ -13,7 +13,7 @@
     android:paddingBottom="4dp">
 
     <TextView
-        android:id="@+id/aladdin_genie_hook_group_item_name"
+        android:id="@+id/aladdin_genie_actions_group_item_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:lines="1"
@@ -24,10 +24,10 @@
         tools:text="Title" />
 
     <ImageView
-        android:id="@+id/aladdin_genie_hook_group_item_arrow"
+        android:id="@+id/aladdin_genie_actions_group_item_arrow"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:src="@drawable/aladdin_genie_hook_icon_group_item_arrow"
+        android:src="@drawable/aladdin_genie_actions_icon_group_item_arrow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"

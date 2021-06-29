@@ -6,7 +6,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.kyleduo.aladdin.api.Aladdin
-import com.kyleduo.aladdin.genie.hook.HookGenie
+import com.kyleduo.aladdin.genie.actions.ActionsGenie
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, NormalActivity::class.java))
         }
 
-        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
+        Aladdin.findGenie<ActionsGenie>(ActionsGenie.KEY)?.let {
             for (i in 1..10) {
                 it.register(
                     "showToastInMain - $i",
@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.let {
+        Aladdin.findGenie<ActionsGenie>(ActionsGenie.KEY)?.let {
             it.register("no_receiver", "no receiver", "Demo - Main") {
                 Log.d("MainActivity", "from no receiver action")
             }
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie<HookGenie>(HookGenie.KEY)?.unregister(
+        Aladdin.findGenie<ActionsGenie>(ActionsGenie.KEY)?.unregister(
             "showToastInMain",
             this
         )
