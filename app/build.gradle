@@ -56,7 +56,7 @@ dependencies {
 
     debugImplementation project(':core')
     debugImplementation project(':genies:inspector')
+    debugImplementation project(':genies:logcat')
 
-    implementation project(':genies:logcat')
     implementation project(':genies:hook')
 }
