@@ -27,10 +27,24 @@ fun Int.dp2px(): Int {
 }
 
 /**
- * dp to px, in int format
+ * dp to px, in float format
  */
 fun Float.dp2px(): Float {
     return Aladdin.context?.let {
         it.app.resources.displayMetrics.density * this
     } ?: 0f
+}
+
+/**
+ * dp to px, in int format
+ */
+fun View.dp2px(dp: Int): Int {
+    return (resources.displayMetrics.density * dp).toInt()
+}
+
+/**
+ * dp to px, in float format
+ */
+fun View.dp2px(dp: Float): Float {
+    return resources.displayMetrics.density * dp
 }

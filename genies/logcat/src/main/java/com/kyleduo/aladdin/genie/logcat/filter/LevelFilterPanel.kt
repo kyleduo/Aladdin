@@ -2,7 +2,6 @@ package com.kyleduo.aladdin.genie.logcat.filter
 
 import android.content.Context
 import android.content.res.ColorStateList
-import android.graphics.Rect
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,56 +13,27 @@ import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemLevelSelectorBinding
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatLevelSelectorPanelBinding
 import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
-import com.kyleduo.aladdin.ui.UIUtils
-import com.kyleduo.aladdin.ui.dp2px
-import com.kyleduo.aladdin.ui.inflateView
-import com.kyleduo.aladdin.ui.layoutInflater
+import com.kyleduo.aladdin.ui.*
 
 /**
  * @author kyleduo on 2021/6/22
  */
 class LevelFilterPanel(
-    private val container: ViewGroup,
+    container: ViewGroup,
     private val itemStyles: LogItemStyles,
     private val listener: OnFilterLevelsSelectedListener
-) : OnLogLevelSelectedChangeListener {
+) : FloatingPanel(container), OnLogLevelSelectedChangeListener {
 
-    private val binding by lazy {
-        AladdinGenieLogcatLevelSelectorPanelBinding.inflate(
-            container.context.layoutInflater(),
-            container,
-            false
-        ).also {
-            it.aladdinLogcatLevelSelectorClose.setOnClickListener {
-                dismiss()
-            }
+    private lateinit var binding: AladdinGenieLogcatLevelSelectorPanelBinding
+    override val contentLayoutResId: Int = R.layout.aladdin_genie_logcat_level_selector_panel
+
+    override fun onContentInflated(content: View) {
+        super.onContentInflated(content)
+        binding = AladdinGenieLogcatLevelSelectorPanelBinding.bind(content).also {
             it.aladdinLogcatLevelSelectorList.apply {
                 adapter = this@LevelFilterPanel.adapter
                 layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
-                addItemDecoration(object : RecyclerView.ItemDecoration() {
-                    override fun getItemOffsets(
-                        outRect: Rect,
-                        view: View,
-                        parent: RecyclerView,
-                        state: RecyclerView.State
-                    ) {
-                        val position =
-                            (view.layoutParams as RecyclerView.LayoutParams).viewLayoutPosition
-                        val base = 4f.dp2px().toInt()
-                        val bottom = if (position + 1 == parent.adapter?.itemCount) {
-                            base
-                        } else {
-                            0
-                        }
-
-                        outRect.set(
-                            base * 2,
-                            base,
-                            base * 2,
-                            bottom
-                        )
-                    }
-                })
+                addItemDecoration(SimpleOffsetDecoration(dp2px(8), dp2px(4)))
             }
         }
     }
@@ -76,18 +46,10 @@ class LevelFilterPanel(
         }
     }
 
-    fun show() {
-        val root = binding.root
-        (root.parent as? ViewGroup)?.removeView(root)
-
-        container.addView(root)
+    override fun onShow() {
+        super.onShow()
         adapter.items = makeItemList()
         adapter.notifyDataSetChanged()
-    }
-
-    fun dismiss() {
-        val root = binding.root
-        (root.parent as? ViewGroup)?.removeView(root)
     }
 
     private fun makeItemList(): List<LogLevelSelectorItem> {
