@@ -7,7 +7,7 @@ import com.kyleduo.aladdin.api.manager.AladdinManager
  */
 interface AladdinGenieManager : AladdinManager {
 
-    fun findGenie(key: String): AladdinGenie?
+    fun <T> findGenie(clz: Class<T>): T?
 
     fun allGenies(): List<AladdinGenie>
 }

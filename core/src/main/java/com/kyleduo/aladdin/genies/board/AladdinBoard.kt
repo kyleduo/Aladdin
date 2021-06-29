@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.kyleduo.aladdin.R
+import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
@@ -138,7 +139,7 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
     fun addGenies(genies: List<AladdinGenie>) {
         for (genie in genies) {
             if (genie is AladdinViewGenie) {
-                this.genies[genie.key] = genie
+                this.genies[genie.key()] = genie
             }
         }
 
@@ -148,12 +149,13 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
     fun hide() {
         selectedGenie = null
         agent.dismiss()
-        (context.genieManager.findGenie(EntryGenie.KEY) as? EntryGenie)?.show()
+        Aladdin.findGenie<EntryGenie>()?.show()
     }
 
     override fun onTabSelected(position: Int, genie: AladdinViewGenie) {
         selectedGenie = genie
     }
 
-    private fun AladdinViewGenie.panelTag() = "panel_$key"
+    private fun AladdinViewGenie.key() = apiClass.canonicalName ?: apiClass.name
+    private fun AladdinViewGenie.panelTag() = "panel_${key()}"
 }

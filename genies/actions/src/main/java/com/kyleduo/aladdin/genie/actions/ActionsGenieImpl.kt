@@ -35,14 +35,13 @@ import java.util.*
 class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener,
     OnItemClickListener<Action<Any>> {
     companion object {
-        const val KEY = "aladdin-genie-actions"
 
-        private const val TAG = "ActionsGenie"
+        private val TAG = ActionsGenieImpl::class.java.name
         private const val DEFAULT_GROUP_NAME = "--"
     }
 
     override val title: String = "Actions"
-    override val key: String = KEY
+    override val apiClass: Class<*> = ActionsGenie::class.java
 
     private lateinit var binding: AladdinGenieActionsPanelBinding
 

@@ -8,10 +8,13 @@ import com.kyleduo.aladdin.api.AladdinContext
  * @author kyleduo on 2021/5/18
  */
 abstract class AladdinGenie {
+
     /**
-     * a unique key for this [AladdinGenie].
+     * If this Genie is accessible in runtime, since we do not want any implementations of Genies
+     * run in release, so it's needed to declare a interface and override this property returning
+     * that interface's class.
      */
-    abstract val key: String
+    open val apiClass: Class<*> = this::class.java
 
     /**
      * [AladdinContext] instance. Injected before [onStart]

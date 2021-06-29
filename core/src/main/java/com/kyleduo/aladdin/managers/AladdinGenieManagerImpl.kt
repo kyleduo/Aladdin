@@ -1,5 +1,6 @@
 package com.kyleduo.aladdin.managers
 
+import android.util.Log
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.config.AladdinGenieConfigurator
 import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
@@ -15,7 +16,7 @@ class AladdinGenieManagerImpl(
     configurator: AladdinGenieConfigurator?
 ) : AladdinGenieManager {
 
-    private val genies = mutableMapOf<String, AladdinGenie>()
+    private val genies = mutableMapOf<Class<*>, AladdinGenie>()
 
     init {
         addGenie(EntryGenie())
@@ -33,20 +34,22 @@ class AladdinGenieManagerImpl(
     }
 
     override fun ready() {
+        Log.d("sssss", genies.toString())
         genies.forEach {
             it.value.onStart()
         }
     }
 
     private fun addGenie(genie: AladdinGenie) {
-        if (genies[genie.key] != null) {
-            throw IllegalStateException("Genie key conflicted. [${genie.key}] ")
+        if (genies[genie.apiClass] != null) {
+            throw IllegalStateException("Genie conflicted. [${genie.apiClass.canonicalName}] ")
         }
-        genies[genie.key] = genie
+        genies[genie.apiClass] = genie
     }
 
-    override fun findGenie(key: String): AladdinGenie? {
-        return genies[key]
+    @Suppress("UNCHECKED_CAST")
+    override fun <T> findGenie(clz: Class<T>): T? {
+        return genies[clz] as? T
     }
 
     override fun allGenies(): List<AladdinGenie> {

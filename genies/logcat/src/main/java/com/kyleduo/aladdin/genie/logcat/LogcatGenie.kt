@@ -37,13 +37,10 @@ class LogcatGenie(
 ) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener,
     OnItemClickListener<LogItem> {
     companion object {
-        const val KEY = "aladdin-genie-logcat"
         const val TAG = "LogcatGenie"
     }
 
     override val title: String = "Logcat"
-
-    override val key: String = KEY
 
     private val logItemStyles = LogItemStyles(logItemPalette)
 

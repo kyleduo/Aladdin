@@ -28,12 +28,9 @@ import com.kyleduo.aladdin.ui.dp2px
  * @author kyleduo on 2021/6/11
  */
 class InspectorGenieImpl : AladdinViewGenie(), InspectorGenie {
-    companion object {
-        const val KEY = "aladdin-inspector"
-    }
 
     override val title: String = "Inspector"
-    override val key: String = KEY
+    override val apiClass: Class<*> = InspectorGenie::class.java
 
     private val infoProviders = mutableListOf<InfoProvider>()
 

@@ -1,7 +1,6 @@
 package com.kyleduo.aladdin.api
 
 import android.app.Application
-import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
 
 /**
  * Entry point of Aladdin library.
@@ -51,7 +50,13 @@ object Aladdin {
         context.install()
     }
 
-    inline fun <reified Genie : AladdinGenie> findGenie(key: String): Genie? {
-        return context?.genieManager?.findGenie(key) as? Genie
+    inline fun <reified Genie> findGenie(): Genie? {
+        return context?.genieManager?.findGenie(Genie::class.java)
+    }
+
+    inline fun <reified Genie> withGenie(action: ((Genie) -> Unit)) {
+        context?.genieManager?.findGenie(Genie::class.java)?.let {
+            action(it)
+        }
     }
 }
