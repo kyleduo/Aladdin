@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
+import com.kyleduo.aladdin.genie.actions.api.ActionsGenie
 import com.kyleduo.aladdin.genie.actions.data.Action
 import com.kyleduo.aladdin.genie.actions.data.ActionGroupItem
 import com.kyleduo.aladdin.genie.actions.data.NoReceiverAction
@@ -22,16 +23,16 @@ import java.lang.ref.WeakReference
 import java.util.*
 
 /**
- * HookGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
- * you want to trigger some logic which is hard to simulate, you can expose an action to [ActionsGenie]
- * and you can trigger it through [ActionsGenie].
+ * ActionsGenie is useful when you need to outlet a trigger of an action in runtime. For example, if
+ * you want to trigger some logic which is hard to simulate, you can expose an action to [ActionsGenieImpl]
+ * and you can trigger it through [ActionsGenieImpl].
  *
- * [ActionsGenie] will track the reference of the receiver of actions so it's safe to use it with
+ * [ActionsGenieImpl] will track the reference of the receiver of actions so it's safe to use it with
  * Activity or other instance that has lifecycle.
  *
  * @author kyleduo on 2021/6/17
  */
-class ActionsGenie : AladdinViewGenie(), OnReferenceRecycledListener,
+class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener,
     OnItemClickListener<Action<Any>> {
     companion object {
         const val KEY = "aladdin-genie-actions"
@@ -131,7 +132,7 @@ class ActionsGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         adapter.notifyDataSetChanged()
     }
 
-    fun register(
+    override fun register(
         key: String,
         title: String,
         group: String,
@@ -142,7 +143,7 @@ class ActionsGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         }
     }
 
-    fun <R : Any> register(
+    override fun <R : Any> register(
         key: String,
         title: String,
         group: String,
@@ -192,7 +193,7 @@ class ActionsGenie : AladdinViewGenie(), OnReferenceRecycledListener,
         refreshActionsList()
     }
 
-    fun unregister(key: String, receiver: Any) {
+    override fun unregister(key: String, receiver: Any) {
         val ref = getReference(receiver, false) ?: return
 
         val actions = actionsMap[ref] ?: return
