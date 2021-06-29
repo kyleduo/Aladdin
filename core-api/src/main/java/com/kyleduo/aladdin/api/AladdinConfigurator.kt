@@ -1,9 +1,9 @@
 package com.kyleduo.aladdin.api
 
 import android.app.Application
-import com.kyleduo.aladdin.api.config.GenieConfigurator
-import com.kyleduo.aladdin.api.config.LifecycleConfigurator
-import com.kyleduo.aladdin.api.config.ViewConfigurator
+import com.kyleduo.aladdin.api.config.AladdinGenieConfigurator
+import com.kyleduo.aladdin.api.config.AladdinLifecycleConfigurator
+import com.kyleduo.aladdin.api.config.AladdinViewConfigurator
 
 /**
  * Configuration entry for Aladdin.
@@ -26,17 +26,17 @@ class AladdinConfigurator(val application: Application) {
         }) as T
     }
 
-    fun lifecycle(configBlock: ((LifecycleConfigurator) -> Unit)): AladdinConfigurator {
+    fun lifecycle(configBlock: ((AladdinLifecycleConfigurator) -> Unit)): AladdinConfigurator {
         configBlock(ensureConfigurator())
         return this
     }
 
-    fun view(configBlock: ((ViewConfigurator) -> Unit)): AladdinConfigurator {
+    fun view(configBlock: ((AladdinViewConfigurator) -> Unit)): AladdinConfigurator {
         configBlock(ensureConfigurator())
         return this
     }
 
-    fun genie(configBlock: ((GenieConfigurator) -> Unit)): AladdinConfigurator {
+    fun genie(configBlock: ((AladdinGenieConfigurator) -> Unit)): AladdinConfigurator {
         configBlock(ensureConfigurator())
         return this
     }

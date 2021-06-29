@@ -18,7 +18,7 @@ import com.kyleduo.aladdin.managers.view.ViewPositionStorage
 
 
 /**
- * View agent in [com.kyleduo.aladdin.api.manager.view.ViewMode.Global] mode.
+ * View agent in [com.kyleduo.aladdin.api.manager.view.AladdinViewMode.Global] mode.
  * The view will be added to the system window. In this situation
  * "android.permission.SYSTEM_ALERT_WINDOW" permission is required.
  *

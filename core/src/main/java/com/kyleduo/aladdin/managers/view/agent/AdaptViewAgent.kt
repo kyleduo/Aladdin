@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.FrameLayout
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.lifecycle.ActivityLifecycleCallbacksAdapter
-import com.kyleduo.aladdin.api.manager.lifecycle.LifecycleManager
+import com.kyleduo.aladdin.api.manager.lifecycle.AladdinLifecycleManager
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
@@ -15,7 +15,7 @@ import com.kyleduo.aladdin.managers.view.ViewPositionStorage
 import java.lang.ref.WeakReference
 
 /**
- * View agent in [com.kyleduo.aladdin.api.manager.view.ViewMode.Adaptive] mode.
+ * View agent in [com.kyleduo.aladdin.api.manager.view.AladdinViewMode.Adaptive] mode.
  * The view will be added to every [Activity]'s window.
  *
  * @author kyleduo on 2021/5/28
@@ -25,7 +25,7 @@ class AdaptViewAgent(
     val viewPositionStorage: ViewPositionStorage
 ) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener, View.OnAttachStateChangeListener {
 
-    private val lifecycleManager: LifecycleManager = context.lifecycleManager
+    private val lifecycleManager: AladdinLifecycleManager = context.lifecycleManager
 
     private val layoutParams = FrameLayout.LayoutParams(
         ViewGroup.LayoutParams.WRAP_CONTENT,

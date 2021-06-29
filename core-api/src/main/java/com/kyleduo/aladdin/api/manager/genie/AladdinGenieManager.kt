@@ -5,7 +5,7 @@ import com.kyleduo.aladdin.api.manager.AladdinManager
 /**
  * @author kyleduo on 2021/6/12
  */
-interface GenieManager : AladdinManager {
+interface AladdinGenieManager : AladdinManager {
 
     fun findGenie(key: String): AladdinGenie?
 

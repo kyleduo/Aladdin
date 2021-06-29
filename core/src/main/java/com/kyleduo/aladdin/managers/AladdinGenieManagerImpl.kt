@@ -1,19 +1,19 @@
 package com.kyleduo.aladdin.managers
 
 import com.kyleduo.aladdin.api.AladdinContext
-import com.kyleduo.aladdin.api.config.GenieConfigurator
+import com.kyleduo.aladdin.api.config.AladdinGenieConfigurator
 import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
-import com.kyleduo.aladdin.api.manager.genie.GenieManager
+import com.kyleduo.aladdin.api.manager.genie.AladdinGenieManager
 import com.kyleduo.aladdin.genies.board.BoardGenie
 import com.kyleduo.aladdin.genies.entry.EntryGenie
 
 /**
  * @author kyleduo on 2021/5/18
  */
-class GenieManagerImpl(
+class AladdinGenieManagerImpl(
     val context: AladdinContext,
-    configurator: GenieConfigurator?
-) : GenieManager {
+    configurator: AladdinGenieConfigurator?
+) : AladdinGenieManager {
 
     private val genies = mutableMapOf<String, AladdinGenie>()
 

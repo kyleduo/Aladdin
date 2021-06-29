@@ -10,7 +10,7 @@ import android.view.ViewConfiguration
 import android.view.animation.DecelerateInterpolator
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.view.AladdinView
-import com.kyleduo.aladdin.api.manager.view.SnapEdge
+import com.kyleduo.aladdin.api.manager.view.AladdinView.SnapEdge
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min

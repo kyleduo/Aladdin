@@ -7,9 +7,9 @@ import com.kyleduo.aladdin.api.manager.AladdinManager
  *
  * @author kyleduo on 2021/6/12
  */
-interface ViewManager : AladdinManager {
+interface AladdinViewManager : AladdinManager {
 
-    var mode: ViewMode
+    var mode: AladdinViewMode
 
     /**
      * Register an AladdinView to ViewManager

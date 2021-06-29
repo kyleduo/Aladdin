@@ -4,19 +4,19 @@ import android.app.Activity
 import android.app.Application
 import android.os.Bundle
 import com.kyleduo.aladdin.api.AladdinContext
-import com.kyleduo.aladdin.api.config.LifecycleConfigurator
+import com.kyleduo.aladdin.api.config.AladdinLifecycleConfigurator
 import com.kyleduo.aladdin.api.manager.lifecycle.AppLifecycleCallbacks
-import com.kyleduo.aladdin.api.manager.lifecycle.LifecycleManager
+import com.kyleduo.aladdin.api.manager.lifecycle.AladdinLifecycleManager
 
 /**
  * Listening activity lifecycle event and expose that.
  *
  * @author kyleduo on 2021/5/18
  */
-class LifecycleManagerImpl(
+class AladdinLifecycleManagerImpl(
     val context: AladdinContext,
-    lifecycle: LifecycleConfigurator?
-) : LifecycleManager, Application.ActivityLifecycleCallbacks {
+    lifecycle: AladdinLifecycleConfigurator?
+) : AladdinLifecycleManager, Application.ActivityLifecycleCallbacks {
 
     private var startedActivityCount = 0
 

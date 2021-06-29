@@ -7,7 +7,7 @@ import android.view.ViewGroup
  *
  * @author kyleduo on 2021/6/22
  */
-interface PanelController {
+interface AladdinPanelController {
 
     /**
      * Container of a panel. Typically the view of panel is not just added to board, otherwise, it

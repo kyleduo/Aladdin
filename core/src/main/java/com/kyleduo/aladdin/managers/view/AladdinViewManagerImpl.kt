@@ -2,12 +2,12 @@ package com.kyleduo.aladdin.managers.view
 
 import android.widget.Toast
 import com.kyleduo.aladdin.api.AladdinContext
-import com.kyleduo.aladdin.api.config.ViewConfigurator
+import com.kyleduo.aladdin.api.config.AladdinViewConfigurator
 import com.kyleduo.aladdin.api.manager.lifecycle.AppLifecycleCallbacks
 import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
-import com.kyleduo.aladdin.api.manager.view.ViewManager
-import com.kyleduo.aladdin.api.manager.view.ViewMode
+import com.kyleduo.aladdin.api.manager.view.AladdinViewManager
+import com.kyleduo.aladdin.api.manager.view.AladdinViewMode
 import com.kyleduo.aladdin.managers.view.agent.AdaptViewAgent
 import com.kyleduo.aladdin.managers.view.agent.GlobalViewAgent
 import com.kyleduo.aladdin.utils.PermissionUtils
@@ -17,12 +17,12 @@ import com.kyleduo.aladdin.utils.PermissionUtils
  *
  * @author kyleduo on 2021/5/25
  */
-class ViewManagerImpl(
+class AladdinViewManagerImpl(
     val context: AladdinContext,
-    configurator: ViewConfigurator?
-) : ViewManager, AppLifecycleCallbacks {
+    configurator: AladdinViewConfigurator?
+) : AladdinViewManager, AppLifecycleCallbacks {
 
-    override var mode: ViewMode = configurator?.viewMode ?: ViewMode.Global
+    override var mode: AladdinViewMode = configurator?.viewMode ?: AladdinViewMode.Global
 
     private val views = mutableMapOf<Any, AladdinViewEntry>()
     private val viewPositionStorage = ViewPositionStorage(context)
@@ -42,7 +42,7 @@ class ViewManagerImpl(
     }
 
     private fun createViewAgent(): AladdinViewAgent {
-        return if (mode == ViewMode.Global) {
+        return if (mode == AladdinViewMode.Global) {
             GlobalViewAgent(context, viewPositionStorage)
         } else {
             AdaptViewAgent(context, viewPositionStorage)
@@ -50,7 +50,7 @@ class ViewManagerImpl(
     }
 
     private fun requestAlertWindowPermissionIfNeeded() {
-        if (mode == ViewMode.Global) {
+        if (mode == AladdinViewMode.Global) {
             if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
                 Toast.makeText(
                     context.app,
@@ -64,7 +64,7 @@ class ViewManagerImpl(
     }
 
     private fun rebindAgents() {
-        if (mode == ViewMode.Adaptive || PermissionUtils.hasAlertWindowPermission(context.app)) {
+        if (mode == AladdinViewMode.Adaptive || PermissionUtils.hasAlertWindowPermission(context.app)) {
             views.forEach {
                 if (!it.value.hasAgentBound) {
                     it.value.view.bindAgent(it.value.agent)

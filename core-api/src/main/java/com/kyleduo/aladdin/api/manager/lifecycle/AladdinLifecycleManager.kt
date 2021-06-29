@@ -6,7 +6,7 @@ import com.kyleduo.aladdin.api.manager.AladdinManager
 /**
  * @author kyleduo on 2021/6/12
  */
-interface LifecycleManager : AladdinManager {
+interface AladdinLifecycleManager : AladdinManager {
 
     fun registerAppLifecycleCallbacks(callback: AppLifecycleCallbacks)
 

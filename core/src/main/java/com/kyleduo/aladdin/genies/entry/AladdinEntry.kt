@@ -6,7 +6,6 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.kyleduo.aladdin.R
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.manager.view.AladdinView
-import com.kyleduo.aladdin.api.manager.view.SnapEdge
 import com.kyleduo.aladdin.genies.board.BoardGenie
 import com.kyleduo.aladdin.ui.dp2px
 

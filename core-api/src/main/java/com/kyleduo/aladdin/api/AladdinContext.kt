@@ -1,9 +1,9 @@
 package com.kyleduo.aladdin.api
 
 import android.app.Application
-import com.kyleduo.aladdin.api.manager.genie.GenieManager
-import com.kyleduo.aladdin.api.manager.lifecycle.LifecycleManager
-import com.kyleduo.aladdin.api.manager.view.ViewManager
+import com.kyleduo.aladdin.api.manager.genie.AladdinGenieManager
+import com.kyleduo.aladdin.api.manager.lifecycle.AladdinLifecycleManager
+import com.kyleduo.aladdin.api.manager.view.AladdinViewManager
 
 /**
  * Context for Aladdin implementation and extensions.
@@ -14,11 +14,11 @@ interface AladdinContext {
 
     val app: Application
 
-    val lifecycleManager: LifecycleManager
+    val lifecycleManager: AladdinLifecycleManager
 
-    val viewManager: ViewManager
+    val viewManager: AladdinViewManager
 
-    val genieManager: GenieManager
+    val genieManager: AladdinGenieManager
 
     fun install()
 }

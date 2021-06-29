@@ -18,7 +18,7 @@ abstract class AladdinViewGenie : AladdinGenie() {
     /**
      * Inject before the view is added to board
      */
-    lateinit var panelController: PanelController
+    lateinit var panelController: AladdinPanelController
 
     /**
      * create panel view
