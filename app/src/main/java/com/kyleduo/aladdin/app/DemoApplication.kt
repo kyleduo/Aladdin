@@ -4,7 +4,6 @@ import android.app.Application
 import android.graphics.Color
 import android.view.View
 import android.view.ViewGroup
-import com.kyleduo.aladdin.AladdinContextFactoryImpl
 import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.api.manager.view.ViewMode
@@ -30,7 +29,6 @@ class DemoApplication : Application() {
             .addGenie(TestViewGenie(Color.CYAN))
             .addGenie(HookGenie())
             .end()
-            .contextFactory(AladdinContextFactoryImpl())
             .install()
     }
 

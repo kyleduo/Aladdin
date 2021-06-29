@@ -18,14 +18,39 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
  */
 @Suppress("unused")
 object Aladdin {
+    private const val CONTEXT_IMPL_CLASS_NAME = "com.kyleduo.aladdin.AladdinContextImpl"
 
-    lateinit var context: AladdinContext
+    var context: AladdinContext? = null
+        private set
 
     fun with(application: Application): AladdinConfigurator {
         return AladdinConfigurator(application)
     }
 
+    internal fun install(configurator: AladdinConfigurator) {
+        val contextImplClass = try {
+            Class.forName(CONTEXT_IMPL_CLASS_NAME)
+        } catch (e: ClassNotFoundException) {
+            return
+        }
+
+        val context = try {
+            contextImplClass
+                .getDeclaredConstructor(AladdinConfigurator::class.java)
+                .newInstance(configurator) as? AladdinContext
+        } catch (e: Exception) {
+            error("Fail to create AladdinContext ${e.message}")
+        }
+
+        if (context !is AladdinContext) {
+            error("Fail to create AladdinContext")
+        }
+
+        this.context = context
+        context.install()
+    }
+
     inline fun <reified Genie : AladdinGenie> findGenie(key: String): Genie? {
-        return context.genieManager.findGenie(key) as? Genie
+        return context?.genieManager?.findGenie(key) as? Genie
     }
 }

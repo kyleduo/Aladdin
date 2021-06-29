@@ -21,12 +21,16 @@ fun ViewGroup.inflateView(layoutRes: Int): View =
  * dp to px, in int format
  */
 fun Int.dp2px(): Int {
-    return (Aladdin.context.app.resources.displayMetrics.density * this).toInt()
+    return Aladdin.context?.let {
+        (it.app.resources.displayMetrics.density * this).toInt()
+    } ?: 0
 }
 
 /**
  * dp to px, in int format
  */
 fun Float.dp2px(): Float {
-    return Aladdin.context.app.resources.displayMetrics.density * this
+    return Aladdin.context?.let {
+        it.app.resources.displayMetrics.density * this
+    } ?: 0f
 }

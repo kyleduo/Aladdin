@@ -15,7 +15,6 @@ class AladdinConfigurator(
     val application: Application
 ) {
 
-    private var aladdinContextFactory: AladdinContextFactory? = null
     private val configurators =
         mutableMapOf<Class<out AbstractManagerConfigurator>, AbstractManagerConfigurator>()
 
@@ -42,22 +41,7 @@ class AladdinConfigurator(
         }
     }
 
-    fun contextFactory(aladdinContextFactory: AladdinContextFactory): AladdinConfigurator {
-        this.aladdinContextFactory = aladdinContextFactory
-        return this
-    }
-
     fun install() {
-        // instance context and set to aladdin
-        if (aladdinContextFactory == null) {
-            error("No AladdinContextFactory found.")
-        }
-
-        val context = aladdinContextFactory?.createAladdinContext(this)
-            ?: error("Fail to create AladdinContext")
-
-        Aladdin.context = context
-
-        context.install()
+        Aladdin.install(this)
     }
 }
