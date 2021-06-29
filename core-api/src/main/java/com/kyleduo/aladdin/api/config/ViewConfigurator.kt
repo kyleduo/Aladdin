@@ -1,13 +1,12 @@
 package com.kyleduo.aladdin.api.config
 
-import com.kyleduo.aladdin.api.AladdinConfigurator
 import com.kyleduo.aladdin.api.manager.view.ViewMode
 
 /**
  * @author kyleduo on 2021/6/12
  */
-class ViewConfigurator(aladdinConfigurator: AladdinConfigurator) :
-    AbstractManagerConfigurator(aladdinConfigurator) {
+@Suppress("unused")
+class ViewConfigurator {
 
     var viewMode: ViewMode? = null
 
@@ -15,5 +14,4 @@ class ViewConfigurator(aladdinConfigurator: AladdinConfigurator) :
         this.viewMode = mode
         return this
     }
-
 }

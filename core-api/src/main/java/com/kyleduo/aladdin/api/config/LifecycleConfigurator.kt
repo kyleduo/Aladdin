@@ -1,13 +1,12 @@
 package com.kyleduo.aladdin.api.config
 
 import android.app.Activity
-import com.kyleduo.aladdin.api.AladdinConfigurator
 
 /**
  * @author kyleduo on 2021/6/12
  */
-class LifecycleConfigurator(aladdinConfigurator: AladdinConfigurator) :
-    AbstractManagerConfigurator(aladdinConfigurator) {
+@Suppress("MemberVisibilityCanBePrivate", "unused")
+class LifecycleConfigurator {
 
     val activityWhitelist: MutableList<Class<Activity>> = mutableListOf()
     val activityBlacklist: MutableList<Class<Activity>> = mutableListOf()

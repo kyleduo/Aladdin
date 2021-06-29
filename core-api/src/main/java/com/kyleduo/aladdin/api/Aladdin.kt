@@ -31,6 +31,7 @@ object Aladdin {
         val contextImplClass = try {
             Class.forName(CONTEXT_IMPL_CLASS_NAME)
         } catch (e: ClassNotFoundException) {
+            // AladdinContextImpl class is not found, probably in release mode, nothing happens.
             return
         }
 

@@ -7,6 +7,15 @@ android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
 
+    signingConfigs {
+        release {
+            keyAlias 'aladdin'
+            keyPassword 'aladdin'
+            storeFile rootProject.file('release_keystore_placeholder.keystore')
+            storePassword 'aladdin'
+        }
+    }
+
     defaultConfig {
         applicationId "com.kyleduo.aladdin.app"
         minSdkVersion 21
@@ -20,6 +29,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -41,7 +51,9 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
-    implementation project(':core')
+    implementation project(':core-api')
+    debugImplementation project(':core')
+
     implementation project(':genies:appinfo')
     implementation project(':genies:logcat')
     implementation project(':genies:hook')
