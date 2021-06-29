@@ -236,6 +236,7 @@ class LogcatGenie(
     }
 
     private fun onItemClick(item: LogItem) {
-        logDetailPanel.show(item)
+        logDetailPanel.item = item
+        logDetailPanel.show()
     }
 }

@@ -5,41 +5,40 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
+import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatDetailPanelBinding
 import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
+import com.kyleduo.aladdin.ui.FloatingPanel
 import com.kyleduo.aladdin.ui.UIUtils
 import com.kyleduo.aladdin.ui.dp2px
-import com.kyleduo.aladdin.ui.layoutInflater
 
 
 /**
  * @author kyleduo on 2021/6/23
  */
 class LogcatDetailPanel(
-    private val container: ViewGroup,
+    container: ViewGroup,
     private val logItemStyles: LogItemStyles,
-) {
+) : FloatingPanel(container) {
 
-    private val binding by lazy {
-        AladdinGenieLogcatDetailPanelBinding.inflate(
-            container.context.layoutInflater(),
-            container,
-            false
-        ).also {
-            it.aladdinLogcatLogDetailClose.setOnClickListener {
-                dismiss()
-            }
-        }
+    private lateinit var binding: AladdinGenieLogcatDetailPanelBinding
+    override val contentLayoutResId: Int = R.layout.aladdin_genie_logcat_detail_panel
+
+    var item: LogItem? = null
+
+    override fun onContentInflated(content: View) {
+        super.onContentInflated(content)
+        binding = AladdinGenieLogcatDetailPanelBinding.bind(content)
     }
 
-    fun show(item: LogItem) {
-        val root = binding.root
-        (root.parent as? ViewGroup)?.removeView(root)
+    override fun onShow() {
+        super.onShow()
 
-        container.addView(root)
+        val item = this.item ?: return
 
         val content: String = item.content.replace("\n", "\n\n")
         val ss: Spannable = SpannableString(content)
@@ -58,11 +57,12 @@ class LogcatDetailPanel(
             setTextColor(itemStyle.textColor)
         }
 
-        binding.aladdinLogcatLogDetailPanelContent.background = itemStyle.detailBackground
-        binding.aladdinLogcatLogDetailClose.imageTintList =
+        rootBinding.aladdinDesignFloatingPanelClose.imageTintList =
             ColorStateList.valueOf(itemStyle.badgeTextColor)
-        binding.aladdinLogcatLogDetailClose.background =
+        rootBinding.aladdinDesignFloatingPanelClose.background =
             UIUtils.createRoundCornerDrawable(itemStyle.badgeBackgroundColor, 4f.dp2px())
+
+        binding.aladdinLogcatLogDetailPanelContent.background = itemStyle.detailBackground
         binding.aladdinLogcatLogDetailLevel.text = item.level.name
         binding.aladdinLogcatLogDetailTime.text = item.time
         binding.aladdinLogcatLogDetailTag.text = item.tag
@@ -73,10 +73,5 @@ class LogcatDetailPanel(
         binding.aladdinLogcatLogDetailTid.applyStyle()
         binding.aladdinLogcatLogDetailTag.applyStyle()
         binding.aladdinLogcatLogDetailContent.applyStyle()
-    }
-
-    fun dismiss() {
-        val root = binding.root
-        (root.parent as? ViewGroup)?.removeView(root)
     }
 }
