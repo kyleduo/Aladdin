@@ -6,8 +6,8 @@ import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.RelativeSizeSpan
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
+import com.kyleduo.aladdin.api.manager.genie.AladdinPanelController
 import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatDetailPanelBinding
@@ -21,9 +21,9 @@ import com.kyleduo.aladdin.ui.dp2px
  * @author kyleduo on 2021/6/23
  */
 class LogcatDetailPanel(
-    container: ViewGroup,
+    panelController: AladdinPanelController,
     private val logItemStyles: LogItemStyles,
-) : FloatingPanel(container) {
+) : FloatingPanel(panelController) {
 
     private lateinit var binding: AladdinGenieLogcatDetailPanelBinding
     override val contentLayoutResId: Int = R.layout.aladdin_genie_logcat_detail_panel

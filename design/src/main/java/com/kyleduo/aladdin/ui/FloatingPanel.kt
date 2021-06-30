@@ -2,14 +2,18 @@ package com.kyleduo.aladdin.ui
 
 import android.view.View
 import android.view.ViewGroup
+import com.kyleduo.aladdin.api.manager.genie.AladdinPanelController
 import com.kyleduo.aladdin.ui.databinding.AladdinDesignFloatingPanelBinding
 
 /**
  * @author kyleduo on 2021/6/29
  */
+@Suppress("CanBeParameter", "MemberVisibilityCanBePrivate")
 abstract class FloatingPanel(
-    @Suppress("MemberVisibilityCanBePrivate") val container: ViewGroup
+    val panelController: AladdinPanelController,
 ) {
+
+    protected val container = panelController.panelContainer
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected val rootBinding by lazy {

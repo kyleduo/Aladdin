@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
 import com.drakeet.multitype.MultiTypeAdapter
+import com.kyleduo.aladdin.api.manager.genie.AladdinPanelController
 import com.kyleduo.aladdin.genie.logcat.R
 import com.kyleduo.aladdin.genie.logcat.data.LogLevel
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemLevelSelectorBinding
@@ -19,10 +20,10 @@ import com.kyleduo.aladdin.ui.*
  * @author kyleduo on 2021/6/22
  */
 class LevelFilterPanel(
-    container: ViewGroup,
+    panelController: AladdinPanelController,
     private val itemStyles: LogItemStyles,
     private val listener: OnFilterLevelsSelectedListener
-) : FloatingPanel(container), OnLogLevelSelectedChangeListener {
+) : FloatingPanel(panelController), OnLogLevelSelectedChangeListener {
 
     private lateinit var binding: AladdinGenieLogcatLevelSelectorPanelBinding
     override val contentLayoutResId: Int = R.layout.aladdin_genie_logcat_level_selector_panel

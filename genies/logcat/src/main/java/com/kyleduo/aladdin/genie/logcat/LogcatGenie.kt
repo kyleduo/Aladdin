@@ -68,7 +68,7 @@ class LogcatGenie(
             updateLevelSelector(value)
         }
     private val levelFilterDelegate = lazy {
-        LevelFilterPanel(panelController.panelContainer, logItemStyles, this)
+        LevelFilterPanel(panelController, logItemStyles, this)
     }
     private val levelFilter by levelFilterDelegate
 
@@ -77,7 +77,7 @@ class LogcatGenie(
     private lateinit var binding: AladdinGenieLogcatPanelBinding
 
     private val logDetailPanel by lazy {
-        LogcatDetailPanel(panelController.panelContainer, logItemStyles)
+        LogcatDetailPanel(panelController, logItemStyles)
     }
 
     private val onItemClickListener = object : OnItemClickListener<LogItem> {
