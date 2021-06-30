@@ -14,7 +14,7 @@ abstract class AladdinGenie {
      * run in release, so it's needed to declare a interface and override this property returning
      * that interface's class.
      */
-    open val apiClass: Class<*> = this::class.java
+    abstract val apiClass: Class<*>
 
     /**
      * [AladdinContext] instance. Injected before [onStart]

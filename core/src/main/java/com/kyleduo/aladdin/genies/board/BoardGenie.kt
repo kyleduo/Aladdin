@@ -7,6 +7,7 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
  */
 class BoardGenie : AladdinGenie() {
     private val board by lazy { AladdinBoard(context) }
+    override val apiClass: Class<*> = BoardGenie::class.java
 
     override fun onStart() {
         context.viewManager.register(board)

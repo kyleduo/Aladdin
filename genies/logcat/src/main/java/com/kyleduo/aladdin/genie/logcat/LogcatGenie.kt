@@ -39,6 +39,7 @@ class LogcatGenie(
     }
 
     override val title: String = "Logcat"
+    override val apiClass: Class<*> = LogcatGenie::class.java
 
     private val logItemStyles = LogItemStyles(logItemPalette)
 

@@ -8,6 +8,7 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
 class EntryGenie : AladdinGenie() {
 
     private val entry by lazy { AladdinEntry(context) }
+    override val apiClass: Class<*> = EntryGenie::class.java
 
     override fun onStart() {
         context.viewManager.register(entry)
