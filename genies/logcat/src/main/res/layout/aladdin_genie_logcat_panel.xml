@@ -19,6 +19,40 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Verbose" />
 
+    <TextView
+        android:id="@+id/aladdin_logcat_regex_label"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/aladdin_design_input_background"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/aladdin_regex_filter"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_logcat_level_selector"
+        app:layout_constraintEnd_toStartOf="@id/aladdin_logcat_regex_clear"
+        app:layout_constraintStart_toEndOf="@id/aladdin_logcat_level_selector"
+        app:layout_constraintTop_toTopOf="@id/aladdin_logcat_level_selector" />
+
+    <TextView
+        android:id="@+id/aladdin_logcat_regex_clear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/aladdin_design_input_background"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/aladdin_logcat_regex_clear"
+        android:textColor="@color/aladdin_textSubhead"
+        android:textSize="@dimen/aladdin_textSubhead"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_logcat_level_selector"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/aladdin_logcat_level_selector" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/aladdin_logcat_list"
         android:layout_width="match_parent"

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:background="@color/aladdin_background">
+
+    <TextView
+        android:id="@+id/aladdin_design_simple_text_input_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/aladdin_design_simple_text_input_input"
+        android:textColor="@color/aladdin_textBody"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="LabelFor"
+        tools:text="Verbose" />
+
+    <EditText
+        android:id="@+id/aladdin_design_simple_text_input_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/aladdin_design_input_background"
+        android:gravity="center_vertical"
+        android:inputType="text"
+        android:lines="1"
+        android:minHeight="28dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textColor="@color/aladdin_textBody"
+        android:textColorHint="@color/aladdin_textCaption"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_design_simple_text_input_title" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

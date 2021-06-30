@@ -21,10 +21,7 @@ import com.kyleduo.aladdin.genie.logcat.view.DefaultLogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemPalette
 import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
 import com.kyleduo.aladdin.genie.logcat.view.LogItemViewDelegate
-import com.kyleduo.aladdin.ui.OnItemClickListener
-import com.kyleduo.aladdin.ui.UIUtils
-import com.kyleduo.aladdin.ui.dp2px
-import com.kyleduo.aladdin.ui.inflateView
+import com.kyleduo.aladdin.ui.*
 import java.util.*
 
 /**
@@ -80,6 +77,25 @@ class LogcatGenie(
         LogcatDetailPanel(panelController, logItemStyles)
     }
 
+    private var regex: Regex? = null
+        set(value) {
+            field = value
+            if (value == null) {
+                binding.aladdinLogcatRegexLabel.setText(R.string.aladdin_regex_filter)
+            } else {
+                binding.aladdinLogcatRegexLabel.text = value.pattern
+            }
+        }
+    private val regexInputPanel by lazy {
+        SimpleTextInputFloatingPanel(
+            panelController,
+            object : SimpleTextInputFloatingPanel.OnTextInputConfirmedListener {
+                override fun onTextInputConfirmed(text: String) {
+                    this@LogcatGenie.onTextInputConfirmed(text)
+                }
+            })
+    }
+
     private val onItemClickListener = object : OnItemClickListener<LogItem> {
         override fun onItemClick(position: Int, item: LogItem) {
             this@LogcatGenie.onItemClick(item)
@@ -98,6 +114,14 @@ class LogcatGenie(
 
             binding.aladdinLogcatLevelSelector.setOnClickListener {
                 showLevelSelector()
+            }
+
+            binding.aladdinLogcatRegexLabel.setOnClickListener {
+                showRegexFilterInput()
+            }
+
+            binding.aladdinLogcatRegexClear.setOnClickListener {
+                this.onTextInputConfirmed("")
             }
 
             filterLevels = filterLevels
@@ -181,13 +205,20 @@ class LogcatGenie(
         levelFilter.show()
     }
 
+    private fun showRegexFilterInput() {
+        regexInputPanel.show(
+            this.regex?.pattern ?: "",
+            context.app.getString(R.string.aladdin_regex_filter_input_title)
+        )
+    }
+
     override fun onLogItem(item: LogItem) {
         if (allItems.isNotEmpty()) {
             val first = allItems.first
-            if (first.maybeMerge(item)) {
+            if (first.canMerge(item)) {
                 val merged = first.merge(item)
                 allItems[0] = merged
-                if (filteredItems[0] == first) {
+                if (filteredItems.firstOrNull() == first) {
                     filteredItems[0] = merged
                 }
                 adapter.notifyItemChanged(0)
@@ -199,7 +230,7 @@ class LogcatGenie(
             allItems = LinkedList(allItems.subList(0, itemLimit))
         }
 
-        if (item.level !in filterLevels) {
+        if (!item.canPassFilter()) {
             return
         }
         filteredItems.addFirst(item)
@@ -223,20 +254,41 @@ class LogcatGenie(
         }
     }
 
+    private fun doFilter() {
+        filteredItems.clear()
+        filteredItems.addAll(allItems.filter { it.canPassFilter() })
+        adapter.notifyDataSetChanged()
+        binding.aladdinLogcatList.scrollToPosition(0)
+    }
+
     override fun onFilterLevelsSelected(levels: List<LogLevel>) {
         if (levels == filterLevels) {
             return
         }
-
         filterLevels = levels
-        filteredItems.clear()
-        filteredItems.addAll(allItems.filter { it.level in filterLevels })
-        adapter.notifyDataSetChanged()
-        binding.aladdinLogcatList.scrollToPosition(0)
+
+        doFilter()
     }
 
     private fun onItemClick(item: LogItem) {
         logDetailPanel.item = item
         logDetailPanel.show()
+    }
+
+    private fun onTextInputConfirmed(text: String) {
+        if (regex?.pattern == text) {
+            return
+        }
+        regex = if (text.isEmpty()) {
+            null
+        } else {
+            Regex(text)
+        }
+
+        doFilter()
+    }
+
+    private fun LogItem.canPassFilter(): Boolean {
+        return level in filterLevels && (regex?.containsMatchIn(raw) ?: true)
     }
 }

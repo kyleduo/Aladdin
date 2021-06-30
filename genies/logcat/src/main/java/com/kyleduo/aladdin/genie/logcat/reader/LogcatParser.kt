@@ -31,6 +31,6 @@ class LogcatParser {
         val tag = result.groups[6]?.value ?: ""
         val content = result.groups[7]?.value ?: ""
 
-        return LogItem(level, time, tid, tag, content)
+        return LogItem(level, time, tid, tag, content, message)
     }
 }

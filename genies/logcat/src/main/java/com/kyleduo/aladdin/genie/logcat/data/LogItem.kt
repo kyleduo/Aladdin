@@ -8,15 +8,16 @@ data class LogItem(
     val time: String,
     val tid: String,
     val tag: String,
-    val content: String
+    val content: String,
+    val raw: String
 ) {
     companion object {
         fun error(reason: String, origin: String): LogItem {
-            return LogItem(LogLevel.Error, "", "", reason, origin)
+            return LogItem(LogLevel.Error, "", "", reason, origin, origin)
         }
     }
 
-    fun maybeMerge(another: LogItem): Boolean {
+    fun canMerge(another: LogItem): Boolean {
         return level == another.level &&
                 time == another.time &&
                 tid == another.tid &&
@@ -24,6 +25,6 @@ data class LogItem(
     }
 
     fun merge(another: LogItem): LogItem {
-        return copy(content = "$content\n${another.content}")
+        return copy(content = "$content\n${another.content}", raw = "$raw\n${another.raw}")
     }
 }

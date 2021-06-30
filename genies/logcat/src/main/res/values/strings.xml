@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="aladdin_level_filter">Level Filter</string>
+    <string name="aladdin_regex_filter">regex filter</string>
+    <string name="aladdin_regex_filter_input_title">Regex Filter</string>
+    <string name="aladdin_logcat_regex_clear">CLEAR</string>
 </resources>
