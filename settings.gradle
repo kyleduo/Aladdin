@@ -3,11 +3,13 @@ rootProject.name = 'Aladdin'
 include ':app'
 
 include ':core'
+include ':core-api'
+
+include ':design'
 
 include ':genies:inspector'
-include ':design'
-include ':core-api'
-include ':genies:logcat'
-include ':genies:actions'
 include ':genies:inspector-api'
+include ':genies:actions'
 include ':genies:actions-api'
+include ':genies:logcat'
+include ':genies:okhttp'
