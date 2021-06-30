@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="aladdin_input_history">Input History</string>
+    <string name="aladdin_clear">CLEAR</string>
+</resources>

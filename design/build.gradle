@@ -39,5 +39,7 @@ dependencies {
     implementation "androidx.recyclerview:recyclerview:$ANDROID_X_RECYCLER_VIEW"
     implementation "androidx.constraintlayout:constraintlayout:$ANDROID_X_CONSTRAINT_LAYOUT"
 
+    implementation "com.drakeet.multitype:multitype:$MULTI_TYPE"
+
     implementation project(':core-api')
 }

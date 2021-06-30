@@ -38,4 +38,42 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/aladdin_design_simple_text_input_title" />
 
+    <TextView
+        android:id="@+id/aladdin_design_simple_text_input_history_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minHeight="24dp"
+        android:paddingEnd="4dp"
+        android:text="@string/aladdin_input_history"
+        android:textColor="@color/aladdin_textSubhead"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_design_simple_text_input_input" />
+
+    <TextView
+        android:id="@+id/aladdin_design_simple_text_input_history_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="24dp"
+        android:paddingStart="4dp"
+        android:paddingEnd="4dp"
+        android:text="@string/aladdin_clear"
+        android:textColor="@color/aladdin_textBody"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_design_simple_text_input_history_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/aladdin_design_simple_text_input_history_title" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/aladdin_design_simple_text_input_history_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_design_simple_text_input_history_title" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

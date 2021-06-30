@@ -34,6 +34,8 @@ class LogcatGenie(
 ) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
     companion object {
         const val TAG = "LogcatGenie"
+
+        private const val REGEX_FILTER_KEY = "logcat_regex_filter"
     }
 
     override val title: String = "Logcat"
@@ -207,8 +209,9 @@ class LogcatGenie(
 
     private fun showRegexFilterInput() {
         regexInputPanel.show(
-            this.regex?.pattern ?: "",
-            context.app.getString(R.string.aladdin_regex_filter_input_title)
+            REGEX_FILTER_KEY,
+            context.app.getString(R.string.aladdin_regex_filter_input_title),
+            this.regex?.pattern ?: ""
         )
     }
 
