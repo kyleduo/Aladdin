@@ -10,6 +10,8 @@ import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpPanelBindi
 import com.kyleduo.aladdin.ui.SimpleTextInputFloatingPanel
 import com.kyleduo.aladdin.ui.inflateView
 import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.*
@@ -60,7 +62,7 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
     /**
      * Whether log is enabled
      */
-    private var isLogEnabled = false
+    private var isLogEnabled = true
 
     private val proxyHostPanel by lazy {
         SimpleTextInputFloatingPanel(
@@ -70,6 +72,26 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
                     this@OkHttpGenieImpl.onTextInputConfirmed(text)
                 }
             })
+    }
+
+    private val onInterceptRequestListener = object : OnInterceptRequestListener {
+        override fun onRequestStarted(request: Request) {
+            if (!isLogEnabled) {
+                return
+            }
+        }
+
+        override fun onRequestSuccess(request: Request, response: Response) {
+            if (!isLogEnabled) {
+                return
+            }
+        }
+
+        override fun onRequestFailed(request: Request, error: Throwable) {
+            if (!isLogEnabled) {
+                return
+            }
+        }
     }
 
     override fun createPanel(container: ViewGroup): View {
@@ -125,6 +147,10 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
 
         clients.forEach {
             OkHttpHelper.forceSetProxy(it, realProxy)
+            OkHttpHelper.forceAddInterceptor(
+                it,
+                OkHttpLoggerInterceptor(onInterceptRequestListener)
+            )
         }
     }
 

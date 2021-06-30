@@ -14,12 +14,32 @@ object OkHttpHelper {
         }
     }
 
+    private val interceptorsField by lazy {
+        OkHttpClient::class.java.getDeclaredField("interceptors").also {
+            it.isAccessible = true
+        }
+    }
+
     fun forceSetProxy(client: OkHttpClient, proxy: Proxy?) {
         if (client.proxy == proxy) {
             return
         }
 
         proxyField.set(client, proxy)
+
+        client.connectionPool.evictAll()
+    }
+
+    fun forceAddInterceptor(client: OkHttpClient, interceptor: OkHttpLoggerInterceptor) {
+        if (interceptor in client.interceptors) {
+            return
+        }
+
+        val newList = client.interceptors.toMutableList().also {
+            it.add(interceptor)
+        }.toList()
+
+        interceptorsField.set(client, newList)
 
         client.connectionPool.evictAll()
     }
