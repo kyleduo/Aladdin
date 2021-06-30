@@ -79,13 +79,20 @@ class LogcatGenie(
         LogcatDetailPanel(panelController, logItemStyles)
     }
 
+    @Suppress("DEPRECATION")
     private var regex: Regex? = null
         set(value) {
             field = value
             if (value == null) {
-                binding.aladdinLogcatRegexLabel.setText(R.string.aladdin_regex_filter)
+                binding.aladdinLogcatRegexLabel.apply {
+                    setText(R.string.aladdin_regex_filter)
+                    setTextColor(context.resources.getColor(R.color.aladdin_textCaption))
+                }
             } else {
-                binding.aladdinLogcatRegexLabel.text = value.pattern
+                binding.aladdinLogcatRegexLabel.apply {
+                    text = value.pattern
+                    setTextColor(context.resources.getColor(R.color.aladdin_textBody))
+                }
             }
         }
     private val regexInputPanel by lazy {
