@@ -9,5 +9,5 @@ import okhttp3.OkHttpClient
  */
 interface OkHttpClientProvider {
 
-    fun provideClient(): OkHttpClient
+    fun provideClient(): OkHttpClient?
 }

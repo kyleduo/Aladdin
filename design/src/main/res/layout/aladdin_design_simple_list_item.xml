@@ -3,7 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="32dp">
+    android:background="@color/aladdin_design_pressable_item_background_color"
+    android:minHeight="36dp">
 
     <TextView
         android:id="@android:id/text1"

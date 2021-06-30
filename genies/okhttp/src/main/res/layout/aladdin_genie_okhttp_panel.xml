@@ -1,6 +1,110 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_logging_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/aladdin_okhttp_logging"
+        android:textColor="@color/aladdin_textBody"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.kyleduo.switchbutton.SwitchButton
+        android:id="@+id/aladdin_genie_okhttp_logging_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:kswThumbHeight="16dp"
+        app:kswThumbRangeRatio="2"
+        app:kswThumbWidth="16dp"
+        app:kswTintColor="#FFF99383"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_genie_okhttp_proxy_host"
+        app:layout_constraintStart_toStartOf="@id/aladdin_genie_okhttp_logging_label"
+        app:layout_constraintTop_toTopOf="@id/aladdin_genie_okhttp_proxy_host" />
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/aladdin_genie_okhttp_logging_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="aladdin_genie_okhttp_logging_label,aladdin_genie_okhttp_logging_switch" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_proxy_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/aladdin_okhttp_proxy"
+        android:textColor="@color/aladdin_textBody"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintStart_toEndOf="@id/aladdin_genie_okhttp_logging_barrier"
+        app:layout_constraintTop_toTopOf="@id/aladdin_genie_okhttp_logging_label" />
+
+    <com.kyleduo.switchbutton.SwitchButton
+        android:id="@+id/aladdin_genie_okhttp_proxy_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        app:kswThumbHeight="16dp"
+        app:kswThumbRangeRatio="2"
+        app:kswThumbWidth="16dp"
+        app:kswTintColor="#FFE36A7A"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_genie_okhttp_proxy_host"
+        app:layout_constraintStart_toStartOf="@id/aladdin_genie_okhttp_proxy_label"
+        app:layout_constraintTop_toTopOf="@id/aladdin_genie_okhttp_proxy_host" />
+
+
+    <androidx.constraintlayout.widget.Barrier
+        android:id="@+id/aladdin_genie_okhttp_proxy_barrier"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:barrierDirection="end"
+        app:constraint_referenced_ids="aladdin_genie_okhttp_proxy_label,aladdin_genie_okhttp_proxy_switch" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_proxy_host_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:text="@string/aladdin_okhttp_proxy_host"
+        android:textColor="@color/aladdin_textBody"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintStart_toEndOf="@id/aladdin_genie_okhttp_proxy_barrier"
+        app:layout_constraintTop_toTopOf="@id/aladdin_genie_okhttp_proxy_label" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_proxy_host"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/aladdin_design_input_background"
+        android:fontFamily="monospace"
+        android:paddingStart="8dp"
+        android:paddingTop="4dp"
+        android:paddingEnd="8dp"
+        android:paddingBottom="4dp"
+        android:text="@string/aladdin_okhttp_proxy_host_placeholder"
+        android:textColor="@color/aladdin_textCaption"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/aladdin_genie_okhttp_proxy_host_label"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_genie_okhttp_proxy_host_label" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/aladdin_genie_okhttp_logging_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_genie_okhttp_proxy_host" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

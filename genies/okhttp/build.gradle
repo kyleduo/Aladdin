@@ -44,6 +44,7 @@ dependencies {
 
     implementation "com.drakeet.multitype:multitype:$MULTI_TYPE"
     implementation "com.squareup.okhttp3:okhttp:$OKHTTP"
+    implementation "com.kyleduo.switchbutton:library:$SWITCH_BUTTON"
 
     implementation project(':design')
     implementation project(':core-api')

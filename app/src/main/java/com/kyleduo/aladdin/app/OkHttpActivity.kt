@@ -5,12 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
-import com.kyleduo.aladdin.api.Aladdin
 import com.kyleduo.aladdin.app.databinding.ActivityOkHttpBinding
-import com.kyleduo.aladdin.genie.okhttp.api.OkHttpGenie
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.StringListItemDelegate
 import kotlinx.coroutines.launch
+import java.io.IOException
 
 /**
  * @author kyleduo on 2021/6/30
@@ -52,6 +51,10 @@ class OkHttpActivity : AppCompatActivity(), OnItemClickListener<String> {
     }
 
     private fun get() = lifecycleScope.launch {
-        api.get("value1")
+        try {
+            api.get("value1")
+        } catch (e: IOException) {
+            e.printStackTrace()
+        }
     }
 }
