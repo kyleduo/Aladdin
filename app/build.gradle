@@ -54,10 +54,12 @@ dependencies {
     implementation project(':core-api')
     implementation project(':genies:inspector-api')
     implementation project(':genies:actions-api')
+    implementation project(':genies:okhttp-api')
 
     debugImplementation project(':core')
     debugImplementation project(':genies:inspector')
     debugImplementation project(':genies:logcat')
     debugImplementation project(':genies:actions')
+    debugImplementation project(':genies:okhttp')
 
 }

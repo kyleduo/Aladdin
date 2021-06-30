@@ -28,9 +28,6 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
-    }
 }
 
 dependencies {
@@ -38,14 +35,6 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_SDK_LIB"
 
     implementation "androidx.core:core-ktx:$ANDROID_X_CORE_X"
-    implementation "androidx.appcompat:appcompat:$ANDROID_X_APPCOMPAT"
-    implementation "androidx.recyclerview:recyclerview:$ANDROID_X_RECYCLER_VIEW"
-    implementation "androidx.constraintlayout:constraintlayout:$ANDROID_X_CONSTRAINT_LAYOUT"
 
-    implementation "com.drakeet.multitype:multitype:$MULTI_TYPE"
     implementation "com.squareup.okhttp3:okhttp:$OKHTTP"
-
-    implementation project(':design')
-    implementation project(':core-api')
-    implementation project(':genies:okhttp-api')
 }
