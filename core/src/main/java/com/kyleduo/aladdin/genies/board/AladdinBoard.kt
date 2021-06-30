@@ -119,6 +119,10 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
             )
             it.tag = genie.panelTag()
             it.visibility = View.GONE
+            // Perhaps there's an EditText in a panel, this property can make sure that EditText
+            // lose focus while other panel is selected, and the EditText not request focus
+            // atomically after this panel is selected.
+            it.isFocusableInTouchMode = true
         }
         genie.panelController = BoardPanelController(geniePanelContainer, this)
         geniePanelContainer.addView(genie.createPanel(geniePanelContainer))

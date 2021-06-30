@@ -70,4 +70,9 @@ interface AladdinViewAgent {
      * if the view is not been shown, this function does nothing
      */
     fun activate()
+
+    /**
+     * Whether the view can receive soft keyboard event.
+     */
+    var isSoftInputEnabled: Boolean
 }

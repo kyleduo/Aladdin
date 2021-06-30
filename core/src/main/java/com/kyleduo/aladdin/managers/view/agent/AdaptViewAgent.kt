@@ -67,6 +67,8 @@ class AdaptViewAgent(
         toActivity.addAladdinView(view)
     }
 
+    override var isSoftInputEnabled: Boolean = true // no effect in Adaptive mode.
+
     override fun bind(view: AladdinView) {
         this.view = view
 

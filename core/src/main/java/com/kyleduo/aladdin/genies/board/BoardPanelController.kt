@@ -1,8 +1,8 @@
 package com.kyleduo.aladdin.genies.board
 
 import android.view.ViewGroup
-import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.api.manager.genie.AladdinPanelController
+import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 
 /**
  * Implementation of [AladdinPanelController] with [AladdinBoard].
@@ -13,6 +13,12 @@ class BoardPanelController(
     override val panelContainer: ViewGroup,
     val board: AladdinBoard
 ) : AladdinPanelController {
+
+    override var isSoftInputEnabled: Boolean
+        get() = board.agent.isSoftInputEnabled
+        set(value) {
+            board.agent.isSoftInputEnabled = value
+        }
 
     override fun hide() {
         board.hide()

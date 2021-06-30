@@ -16,6 +16,13 @@ interface AladdinPanelController {
     val panelContainer: ViewGroup
 
     /**
+     * Set whether soft input is enabled. This property takes effect in
+     * [com.kyleduo.aladdin.api.manager.view.AladdinViewMode.Global] mode. By default, any view
+     * in Global mode will not receive any soft keyboard input events.
+     */
+    var isSoftInputEnabled: Boolean
+
+    /**
      * hide the panel (board)
      */
     fun hide()

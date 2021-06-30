@@ -56,6 +56,22 @@ class GlobalViewAgent(
         )
     }
 
+    override var isSoftInputEnabled: Boolean = false
+        set(value) {
+            field = value
+
+            if (value) {
+                // DON'T known why FLAG_ALT_FOCUSABLE_IM is not working here,
+                // So it's needed to toggle the FLAG_NOT_FOCUSABLE flag.
+                layoutParams.flags =
+                    layoutParams.flags and (WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE).inv()
+            } else {
+                layoutParams.flags =
+                    layoutParams.flags or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+            }
+            updateLayout()
+        }
+
     override fun bind(view: AladdinView) {
         this.view = view
 
