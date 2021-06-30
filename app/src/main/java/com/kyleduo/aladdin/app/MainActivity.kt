@@ -18,29 +18,22 @@ class MainActivity : AppCompatActivity() {
         }
 
         Aladdin.withGenie<ActionsGenie> {
-            for (i in 1..10) {
-                it.register(
-                    "showToastInMain - $i",
-                    "open activity [$i]",
-                    "Demo - Main - ${i / 5}",
-                    this
-                ) { r ->
-                    r.startActivity(Intent(r, NormalActivity::class.java))
-                }
-            }
-
             it.register(
                 "showToastInMain",
                 "open activity",
-                "",
+                "Demo",
                 this
             ) { r ->
                 r.startActivity(Intent(r, NormalActivity::class.java))
             }
+
+            it.register("goto OkHttpActivity", "open OkHttpActivity", "Demo", this) { r ->
+                r.startActivity(Intent(r, OkHttpActivity::class.java))
+            }
         }
 
         Aladdin.withGenie<ActionsGenie> {
-            it.register("no_receiver", "no receiver", "Demo - Main") {
+            it.register("no_receiver", "Log.d()", "No Receiver") {
                 Log.d("MainActivity", "from no receiver action")
             }
         }
