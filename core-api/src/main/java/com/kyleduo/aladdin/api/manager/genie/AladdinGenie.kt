@@ -25,11 +25,11 @@ abstract class AladdinGenie {
      * Lifecycle callback for start.
      * This function would be invoked after Aladdin has been initialized properly.
      */
-    abstract fun onStart()
+    open fun onStart() {}
 
     /**
      * Lifecycle callback for stop.
      * This function would be invoked when Aladdin is going to be stopped.
      */
-    abstract fun onStop()
+    open fun onStop() {}
 }

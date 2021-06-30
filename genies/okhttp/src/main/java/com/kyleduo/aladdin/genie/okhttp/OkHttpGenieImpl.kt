@@ -97,15 +97,6 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
         binding.aladdinGenieOkhttpProxySwitch.setCheckedImmediately(isProxyEnabled)
     }
 
-    override fun onDeselected() {
-    }
-
-    override fun onStart() {
-    }
-
-    override fun onStop() {
-    }
-
     override fun registerOkHttpClientProvider(provider: OkHttpClientProvider) {
         providers.add(provider)
 

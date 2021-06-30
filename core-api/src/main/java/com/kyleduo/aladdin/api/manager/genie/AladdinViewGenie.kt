@@ -28,10 +28,10 @@ abstract class AladdinViewGenie : AladdinGenie() {
     /**
      * Lifecycle callback invoked after the panel has been selected.
      */
-    abstract fun onSelected()
+    open fun onSelected() {}
 
     /**
      * Lifecycle callback invoked after the panel has been deselected.
      */
-    abstract fun onDeselected()
+    open fun onDeselected() {}
 }
