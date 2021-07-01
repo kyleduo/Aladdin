@@ -10,6 +10,7 @@ import com.kyleduo.aladdin.genie.okhttp.api.OkHttpClientProvider
 import com.kyleduo.aladdin.genie.okhttp.api.OkHttpGenie
 import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpPanelBinding
+import com.kyleduo.aladdin.genie.okhttp.detail.OkHttpLogDetailPanel
 import com.kyleduo.aladdin.genie.okhttp.view.HttpLogItemViewDelegate
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.SimpleTextInputFloatingPanel
@@ -120,6 +121,10 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
                 onLogItemClicked(item)
             }
         }
+    }
+
+    private val detailPanel by lazy {
+        OkHttpLogDetailPanel(panelController)
     }
 
     override fun createPanel(container: ViewGroup): View {
@@ -235,6 +240,6 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
     }
 
     private fun onLogItemClicked(log: HttpLog) {
-
+        detailPanel.show(log)
     }
 }
