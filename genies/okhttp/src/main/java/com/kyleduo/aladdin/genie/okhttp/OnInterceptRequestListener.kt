@@ -1,16 +1,13 @@
 package com.kyleduo.aladdin.genie.okhttp
 
-import okhttp3.Request
-import okhttp3.Response
+import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 
 /**
  * @author kyleduo on 2021/7/1
  */
 interface OnInterceptRequestListener {
 
-    fun onRequestStarted(request: Request)
+    fun onRequestStarted(log: HttpLog)
 
-    fun onRequestSuccess(request: Request, response: Response)
-
-    fun onRequestFailed(request: Request, error: Throwable)
+    fun onRequestFinished(log: HttpLog)
 }

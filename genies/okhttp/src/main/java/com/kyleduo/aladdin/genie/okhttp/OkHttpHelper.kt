@@ -50,4 +50,10 @@ object OkHttpHelper {
             client.connectionPool.evictAll()
         }
     }
+
+    fun setLogEnabled(client: OkHttpClient, isLogEnabled: Boolean) {
+        val found =
+            client.interceptors.find { it is OkHttpLoggerInterceptor } as? OkHttpLoggerInterceptor ?: return
+        found.isLogEnabled = isLogEnabled
+    }
 }

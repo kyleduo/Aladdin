@@ -11,7 +11,11 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object ApiClientFactory {
 
-    private const val BASE_URL = "https://httpbin.org"
+    private val BASE_URL = if (BuildConfig.HTTPBIN_DOMAIN.isEmpty()) {
+        "https://httpbin.org"
+    } else {
+        BuildConfig.HTTPBIN_DOMAIN
+    }
 
     private val client: OkHttpClient by lazy {
         val logging = HttpLoggingInterceptor()

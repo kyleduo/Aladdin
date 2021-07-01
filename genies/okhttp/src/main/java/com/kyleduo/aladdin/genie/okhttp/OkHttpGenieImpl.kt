@@ -3,15 +3,18 @@ package com.kyleduo.aladdin.genie.okhttp
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.okhttp.api.OkHttpClientProvider
 import com.kyleduo.aladdin.genie.okhttp.api.OkHttpGenie
+import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpPanelBinding
+import com.kyleduo.aladdin.genie.okhttp.view.HttpLogItemViewDelegate
+import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.SimpleTextInputFloatingPanel
 import com.kyleduo.aladdin.ui.inflateView
 import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.Response
 import java.net.InetSocketAddress
 import java.net.Proxy
 import java.util.*
@@ -56,13 +59,21 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
     private var isProxyEnabled = false
         set(value) {
             field = proxy?.let { value } ?: false
-            refreshClients()
+            initClients()
         }
 
     /**
      * Whether log is enabled
      */
-    private var isLogEnabled = true
+    private var isLogEnabled = false
+        set(value) {
+            field = value
+
+            if (value) {
+                initClients()
+            }
+            refreshIsLogEnabled(value)
+        }
 
     private val proxyHostPanel by lazy {
         SimpleTextInputFloatingPanel(
@@ -75,21 +86,38 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
     }
 
     private val onInterceptRequestListener = object : OnInterceptRequestListener {
-        override fun onRequestStarted(request: Request) {
+        override fun onRequestStarted(log: HttpLog) {
             if (!isLogEnabled) {
                 return
             }
+            logs.add(0, log)
+            adapter.notifyItemInserted(0)
         }
 
-        override fun onRequestSuccess(request: Request, response: Response) {
+        override fun onRequestFinished(log: HttpLog) {
             if (!isLogEnabled) {
                 return
             }
+            val index = logs.indexOfFirst { it.id == log.id }
+            if (index >= 0) {
+                logs[index] = log
+                adapter.notifyItemChanged(index)
+            }
         }
+    }
 
-        override fun onRequestFailed(request: Request, error: Throwable) {
-            if (!isLogEnabled) {
-                return
+    private val logs = mutableListOf<HttpLog>()
+    private val adapter by lazy {
+        MultiTypeAdapter().also {
+            it.items = logs
+            it.register(HttpLog::class.java, HttpLogItemViewDelegate(onItemClickListener))
+        }
+    }
+
+    private val onItemClickListener by lazy {
+        object : OnItemClickListener<HttpLog> {
+            override fun onItemClick(position: Int, item: HttpLog) {
+                onLogItemClicked(item)
             }
         }
     }
@@ -110,29 +138,35 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
                     proxy?.getConfig() ?: ""
                 )
             }
+            binding.aladdinGenieOkhttpLoggingSwitch.setCheckedImmediately(isLogEnabled)
             binding.aladdinGenieOkhttpProxySwitch.isEnabled = proxy != null
+            binding.aladdinGenieOkhttpLoggingList.apply {
+                adapter = this@OkHttpGenieImpl.adapter
+                layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                itemAnimator = null
+            }
         }
     }
 
     override fun onSelected() {
-        refreshClients()
+        initClients()
         binding.aladdinGenieOkhttpProxySwitch.setCheckedImmediately(isProxyEnabled)
     }
 
     override fun registerOkHttpClientProvider(provider: OkHttpClientProvider) {
         providers.add(provider)
 
-        refreshClients()
+        initClients()
     }
 
     override fun unregisterOkHttpClientProvider(provider: OkHttpClientProvider) {
         providers.remove(provider)
         providerClients.remove(provider)
 
-        refreshClients()
+        initClients()
     }
 
-    private fun refreshClients() {
+    private fun initClients() {
         val clients = providers.mapNotNull {
             providerClients[it] ?: it.provideClient().also { client ->
                 providerClients[it] = client
@@ -145,12 +179,31 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
 
         val realProxy = if (isProxyEnabled) proxy else null
 
-        clients.forEach {
-            OkHttpHelper.forceSetProxy(it, realProxy)
+        clients.forEach { client ->
+            OkHttpHelper.forceSetProxy(client, realProxy)
             OkHttpHelper.forceAddInterceptor(
-                it,
-                OkHttpLoggerInterceptor(onInterceptRequestListener)
+                client,
+                OkHttpLoggerInterceptor(
+                    isLogEnabled,
+                    onInterceptRequestListener
+                )
             )
+        }
+    }
+
+    private fun refreshIsLogEnabled(isLogEnabled: Boolean) {
+        val clients = providers.mapNotNull {
+            providerClients[it] ?: it.provideClient().also { client ->
+                providerClients[it] = client
+            }
+        }.toList()
+
+        if (clients.isEmpty()) {
+            return
+        }
+
+        clients.forEach {
+            OkHttpHelper.setLogEnabled(it, isLogEnabled)
         }
     }
 
@@ -174,12 +227,16 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
 
         proxy = Proxy(Proxy.Type.HTTP, InetSocketAddress.createUnresolved(ip, port))
 
-        refreshClients()
+        initClients()
     }
 
     private fun Proxy.getConfig(): String {
         return (address() as? InetSocketAddress)?.let { address ->
             address.hostName + ":" + address.port
         } ?: ""
+    }
+
+    private fun onLogItemClicked(log: HttpLog) {
+
     }
 }

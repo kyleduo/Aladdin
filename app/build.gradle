@@ -3,6 +3,9 @@ plugins {
     id 'kotlin-android'
 }
 
+Properties localProp = new Properties()
+localProp.load(new FileInputStream(file(rootProject.file("local.properties"))))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -22,6 +25,13 @@ android {
         targetSdkVersion 30
         versionCode 1
         versionName "1.0"
+
+        def httpbinDomain = localProp.getProperty("httpbinDomain")
+        if (httpbinDomain != null) {
+            buildConfigField "String", "HTTPBIN_DOMAIN", "\"${httpbinDomain}\""
+        } else {
+            buildConfigField "String", "HTTPBIN_DOMAIN", "\"\""
+        }
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <network-security-config>
     <base-config />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.10.10.39</domain>
+    </domain-config>
     <debug-overrides cleartextTrafficPermitted="true">
         <trust-anchors>
             <certificates src="system" />
