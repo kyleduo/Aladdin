@@ -1,9 +1,12 @@
 package com.kyleduo.aladdin.ui
 
+import android.content.ClipData
+import android.content.ClipboardManager
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.kyleduo.aladdin.api.Aladdin
 
 /**
@@ -47,4 +50,17 @@ fun View.dp2px(dp: Int): Int {
  */
 fun View.dp2px(dp: Float): Float {
     return resources.displayMetrics.density * dp
+}
+
+/**
+ * Make the TextView support copy content to clipboard when long clicked.
+ */
+fun <T : View> T.supportCopy(textProvider: (T) -> CharSequence) {
+    setOnLongClickListener {
+        val clipboardManager =
+            it.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboardManager.setPrimaryClip(ClipData.newPlainText("Simple", textProvider(this)))
+        Toast.makeText(it.context, "Copied!", Toast.LENGTH_SHORT).show()
+        true
+    }
 }

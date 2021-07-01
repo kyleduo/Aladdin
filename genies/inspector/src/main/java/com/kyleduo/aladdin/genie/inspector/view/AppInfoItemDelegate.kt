@@ -8,6 +8,7 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.inspector.R
 import com.kyleduo.aladdin.genie.inspector.databinding.AladdinGenieInfoLayoutItemBinding
 import com.kyleduo.aladdin.ui.inflateView
+import com.kyleduo.aladdin.ui.supportCopy
 
 /**
  * @author kyleduo on 2021/6/11
@@ -32,7 +33,11 @@ class AppInfoItemDelegate : ItemViewDelegate<InfoItemViewData, AppInfoItemViewHo
 }
 
 class AppInfoItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val binding = AladdinGenieInfoLayoutItemBinding.bind(itemView)
+    private val binding = AladdinGenieInfoLayoutItemBinding.bind(itemView).also { binding ->
+        binding.aladdinInfoItemValueText.supportCopy {
+            it.text
+        }
+    }
 
     fun bind(item: InfoItemViewData) {
         binding.aladdinInfoItemNameText.text = item.name

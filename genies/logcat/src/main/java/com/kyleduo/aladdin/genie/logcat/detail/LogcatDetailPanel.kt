@@ -15,6 +15,7 @@ import com.kyleduo.aladdin.genie.logcat.view.LogItemStyles
 import com.kyleduo.aladdin.ui.FloatingPanel
 import com.kyleduo.aladdin.ui.UIUtils
 import com.kyleduo.aladdin.ui.dp2px
+import com.kyleduo.aladdin.ui.supportCopy
 
 
 /**
@@ -33,6 +34,9 @@ class LogcatDetailPanel(
     override fun onContentInflated(content: View) {
         super.onContentInflated(content)
         binding = AladdinGenieLogcatDetailPanelBinding.bind(content)
+        binding.aladdinLogcatLogDetailContent.supportCopy {
+            item?.raw ?: ""
+        }
     }
 
     override fun onShow() {

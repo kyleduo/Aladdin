@@ -10,6 +10,7 @@ import com.kyleduo.aladdin.genie.logcat.data.LogItem
 import com.kyleduo.aladdin.genie.logcat.databinding.AladdinGenieLogcatItemBinding
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.inflateView
+import com.kyleduo.aladdin.ui.supportCopy
 
 /**
  * @author kyleduo on 2021/6/13
@@ -37,12 +38,13 @@ class LogItemViewHolder(
     private val onItemClickListener: OnItemClickListener<LogItem>
 ) : RecyclerView.ViewHolder(itemView) {
 
-    companion object;
-
     private val binding = AladdinGenieLogcatItemBinding.bind(itemView)
 
     @Suppress("UnnecessaryVariable")
     fun bind(item: LogItem) {
+        binding.root.supportCopy {
+            item.raw
+        }
         binding.aladdinLogcatItemLevelBadge.text = item.level.badge
         binding.aladdinLogcatItemTime.text = item.time
         binding.aladdinLogcatItemTag.text = item.tag
