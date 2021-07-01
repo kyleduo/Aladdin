@@ -2,6 +2,7 @@ package com.kyleduo.aladdin.genie.okhttp
 
 import okhttp3.OkHttpClient
 import java.net.Proxy
+import java.util.concurrent.Executors
 
 /**
  * @author kyleduo on 2021/6/30
@@ -20,6 +21,8 @@ object OkHttpHelper {
         }
     }
 
+    private val executor = Executors.newScheduledThreadPool(0)
+
     fun forceSetProxy(client: OkHttpClient, proxy: Proxy?) {
         if (client.proxy == proxy) {
             return
@@ -27,7 +30,9 @@ object OkHttpHelper {
 
         proxyField.set(client, proxy)
 
-        client.connectionPool.evictAll()
+        executor.execute {
+            client.connectionPool.evictAll()
+        }
     }
 
     fun forceAddInterceptor(client: OkHttpClient, interceptor: OkHttpLoggerInterceptor) {
@@ -41,6 +46,8 @@ object OkHttpHelper {
 
         interceptorsField.set(client, newList)
 
-        client.connectionPool.evictAll()
+        executor.execute {
+            client.connectionPool.evictAll()
+        }
     }
 }
