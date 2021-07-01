@@ -26,11 +26,11 @@ android {
         versionCode 1
         versionName "1.0"
 
-        def httpbinDomain = localProp.getProperty("httpbinDomain")
+        def httpbinDomain = localProp.getProperty("httpbinBaseUrl")
         if (httpbinDomain != null) {
-            buildConfigField "String", "HTTPBIN_DOMAIN", "\"${httpbinDomain}\""
+            buildConfigField "String", "HTTPBIN_BASE_URL", "\"${httpbinDomain}\""
         } else {
-            buildConfigField "String", "HTTPBIN_DOMAIN", "\"\""
+            buildConfigField "String", "HTTPBIN_BASE_URL", "\"\""
         }
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

@@ -17,13 +17,13 @@ data class RequestLog(
     val url: URL,
     val method: String,
     val headers: List<Pair<String, String>>,
-    val requestBody: String,
+    val body: String,
 )
 
 data class ResponseLog(
-    val responseCode: Int = 0,
-    val responseHeaders: List<Pair<String, String>>? = null,
-    val responseBody: String? = null,
-    val responseBodySize: Long? = 0,
+    val statusCode: Int = 0,
+    val headers: List<Pair<String, String>>? = null,
+    val body: String? = null,
+    val bodyLength: Long? = 0,
     val errorMessage: String? = null,
 )

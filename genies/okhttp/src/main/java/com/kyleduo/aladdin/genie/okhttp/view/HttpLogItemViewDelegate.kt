@@ -3,12 +3,15 @@ package com.kyleduo.aladdin.genie.okhttp.view
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.okhttp.R
 import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpLogItemBinding
 import com.kyleduo.aladdin.ui.OnItemClickListener
+import com.kyleduo.aladdin.ui.UIUtils
+import com.kyleduo.aladdin.ui.dp2px
 import com.kyleduo.aladdin.ui.inflateView
 
 /**
@@ -34,6 +37,26 @@ class HttpLogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
     private val binding = AladdinGenieOkhttpLogItemBinding.bind(itemView)
 
     fun bind(log: HttpLog) {
-        binding.aladdinGenieOkhttpLogItemTest.text = log.toString()
+        val finished = log.response != null
+        val response = log.response
+        val statusColor = when {
+            response == null -> 0xFF3B84DB.toInt()
+            response.statusCode / 100 == 2 -> 0xFF21B818.toInt()
+            else -> 0xFFE75656.toInt()
+        }
+        binding.aladdinGenieOkhttpLogItemStatus.background =
+            UIUtils.createRoundCornerDrawable(statusColor, itemView.dp2px(4f))
+        binding.aladdinGenieOkhttpLogItemStatus.text = response?.statusCode?.toString() ?: "..."
+
+        binding.aladdinGenieOkhttpLogItemMethod.text = log.request.method
+        binding.aladdinGenieOkhttpLogItemUrl.text = log.request.url.toString()
+
+        binding.aladdinGenieOkhttpLogItemResponseIcon.isVisible = finished
+        binding.aladdinGenieOkhttpLogItemResponse.isVisible = finished
+
+        if (finished) {
+            binding.aladdinGenieOkhttpLogItemResponse.text =
+                (response?.body ?: response?.errorMessage ?: "").replace("\n", " ")
+        }
     }
 }

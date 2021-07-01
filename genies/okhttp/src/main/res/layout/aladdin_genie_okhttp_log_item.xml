@@ -1,13 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/aladdin_design_pressable_item_background_color"
+    tools:layout_width="375dp">
 
     <TextView
-        android:id="@+id/aladdin_genie_okhttp_log_item_test"
-        android:layout_width="match_parent"
+        android:id="@+id/aladdin_genie_okhttp_log_item_status"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:minWidth="24dp"
+        android:paddingStart="4dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="1dp"
+        android:textColor="@color/aladdin_white"
+        android:textSize="@dimen/aladdin_textCaption"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="#ff21B818"
+        tools:ignore="SpUsage"
+        tools:text="200" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_log_item_method"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/aladdin_genie_okhttp_log_item_method_background"
+        android:gravity="center"
+        android:lines="1"
+        android:minWidth="24dp"
+        android:minHeight="12dp"
+        android:paddingStart="4dp"
+        android:paddingTop="1dp"
+        android:paddingEnd="4dp"
+        android:paddingBottom="1dp"
+        android:textAllCaps="true"
+        android:textColor="@color/aladdin_white"
+        android:textSize="@dimen/aladdin_textCaption"
+        app:layout_constraintStart_toEndOf="@id/aladdin_genie_okhttp_log_item_status"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpUsage"
+        tools:text="get" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_log_item_url"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:fontFamily="monospace"
+        android:maxLines="2"
+        android:minHeight="12dp"
+        android:textColor="@color/aladdin_textCaption"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_genie_okhttp_log_item_status"
+        tools:ignore="SpUsage"
+        tools:text="https://httpbin.org/\nget" />
+
+    <ImageView
+        android:id="@+id/aladdin_genie_okhttp_log_item_response_icon"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:layout_marginTop="4dp"
+        android:src="@drawable/aladdin_genie_okhttp_response_icon"
+        app:layout_constraintStart_toStartOf="@id/aladdin_genie_okhttp_log_item_url"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_genie_okhttp_log_item_url"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/aladdin_genie_okhttp_log_item_response"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:maxLines="2"
+        android:minHeight="12dp"
+        android:textColor="@color/aladdin_textCaption"
+        android:textSize="@dimen/aladdin_textBody"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/aladdin_genie_okhttp_log_item_response_icon"
+        app:layout_constraintTop_toBottomOf="@id/aladdin_genie_okhttp_log_item_url"
+        tools:ignore="SpUsage"
+        tools:text="{}" />
+
+    <View
+        android:id="@+id/aladdin_genie_okhttp_log_item_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#FFE0E0E0"
+        app:layout_constraintBottom_toBottomOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

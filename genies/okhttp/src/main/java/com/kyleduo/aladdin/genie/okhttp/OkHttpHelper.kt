@@ -35,13 +35,17 @@ object OkHttpHelper {
         }
     }
 
-    fun forceAddInterceptor(client: OkHttpClient, interceptor: OkHttpLoggerInterceptor) {
-        if (interceptor in client.interceptors) {
+    fun forceAddInterceptor(
+        client: OkHttpClient,
+        isLogEnabled: Boolean = false,
+        listener: OnInterceptRequestListener
+    ) {
+        if (client.interceptors.find { it is OkHttpLoggerInterceptor } != null) {
             return
         }
 
         val newList = client.interceptors.toMutableList().also {
-            it.add(interceptor)
+            it.add(OkHttpLoggerInterceptor(isLogEnabled, listener))
         }.toList()
 
         interceptorsField.set(client, newList)
@@ -53,7 +57,8 @@ object OkHttpHelper {
 
     fun setLogEnabled(client: OkHttpClient, isLogEnabled: Boolean) {
         val found =
-            client.interceptors.find { it is OkHttpLoggerInterceptor } as? OkHttpLoggerInterceptor ?: return
+            client.interceptors.find { it is OkHttpLoggerInterceptor } as? OkHttpLoggerInterceptor
+                ?: return
         found.isLogEnabled = isLogEnabled
     }
 }

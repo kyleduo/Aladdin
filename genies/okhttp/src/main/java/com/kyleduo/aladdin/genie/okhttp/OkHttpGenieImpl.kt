@@ -183,10 +183,8 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
             OkHttpHelper.forceSetProxy(client, realProxy)
             OkHttpHelper.forceAddInterceptor(
                 client,
-                OkHttpLoggerInterceptor(
-                    isLogEnabled,
-                    onInterceptRequestListener
-                )
+                isLogEnabled,
+                onInterceptRequestListener
             )
         }
     }

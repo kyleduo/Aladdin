@@ -11,10 +11,10 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 object ApiClientFactory {
 
-    private val BASE_URL = if (BuildConfig.HTTPBIN_DOMAIN.isEmpty()) {
+    private val BASE_URL = if (BuildConfig.HTTPBIN_BASE_URL.isEmpty()) {
         "https://httpbin.org"
     } else {
-        BuildConfig.HTTPBIN_DOMAIN
+        BuildConfig.HTTPBIN_BASE_URL
     }
 
     private val client: OkHttpClient by lazy {
