@@ -35,6 +35,11 @@ class HttpLogItemViewDelegate(
 
 class HttpLogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+    companion object {
+
+        private const val RESPONSE_BODY_LIMIT = 200
+    }
+
     private val binding = AladdinGenieOkhttpLogItemBinding.bind(itemView)
 
     fun bind(log: HttpLog) {
@@ -60,8 +65,14 @@ class HttpLogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         binding.aladdinGenieOkhttpLogItemResponse.isVisible = finished
 
         if (finished) {
-            binding.aladdinGenieOkhttpLogItemResponse.text =
-                (response?.body ?: response?.errorMessage ?: "").replace("\n", " ")
+            val body = response?.body?.let {
+                if (it.length > RESPONSE_BODY_LIMIT) {
+                    it.subSequence(0, RESPONSE_BODY_LIMIT).toString()
+                } else {
+                    it
+                }.replace("\n", " ")
+            }
+            binding.aladdinGenieOkhttpLogItemResponse.text = (body ?: response?.errorMessage ?: "")
         }
     }
 }

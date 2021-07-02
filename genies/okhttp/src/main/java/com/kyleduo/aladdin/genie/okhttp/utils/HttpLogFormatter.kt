@@ -82,4 +82,25 @@ internal object HttpLogFormatter {
             }
         }
     }
+
+    /**
+     * format header
+     */
+    fun formatHeaders(context: Context, headers: List<Pair<String, String>>): CharSequence {
+        if (headers.isEmpty()) {
+            return "[]"
+        }
+        return SpannableStringBuilder().apply {
+            headers.forEach { header ->
+                append(
+                    header.first + " = ",
+                    ForegroundColorSpan(context.resources.getColor(R.color.aladdin_textCaption)),
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                append(header.second)
+                append("\n")
+            }
+            delete(length - 1, length)
+        }
+    }
 }

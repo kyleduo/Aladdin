@@ -10,6 +10,7 @@ import com.kyleduo.aladdin.genie.okhttp.utils.HttpLogFormatter
 import com.kyleduo.aladdin.ui.FloatingPanel
 import com.kyleduo.aladdin.ui.UIUtils
 import com.kyleduo.aladdin.ui.dp2px
+import com.kyleduo.aladdin.ui.supportCopy
 
 /**
  * @author kyleduo on 2021/7/2
@@ -22,6 +23,12 @@ class OkHttpLogDetailPanel(panelController: AladdinPanelController) :
     override fun onContentInflated(content: View) {
         super.onContentInflated(content)
         binding = AladdinGenieOkhttpLogDetailPanelBinding.bind(content)
+
+        binding.aladdinGenieOkhttpLogDetailUrl.supportCopy()
+        binding.aladdinGenieOkhttpLogDetailRequestHeaders.supportCopy()
+        binding.aladdinGenieOkhttpLogDetailRequestBody.supportCopy()
+        binding.aladdinGenieOkhttpLogDetailResponseHeaders.supportCopy()
+        binding.aladdinGenieOkhttpLogDetailResponseBody.supportCopy()
     }
 
     private var log: HttpLog? = null
@@ -63,7 +70,12 @@ class OkHttpLogDetailPanel(panelController: AladdinPanelController) :
                 binding.aladdinGenieOkhttpLogDetailResponseBody.text = it.errorMessage
             } else {
                 binding.aladdinGenieOkhttpLogDetailResponseHeaders.text =
-                    it.headers?.let { headers -> formatHeaders(headers) }
+                    it.headers?.let { headers ->
+                        HttpLogFormatter.formatHeaders(
+                            binding.root.context,
+                            headers
+                        )
+                    }
                 binding.aladdinGenieOkhttpLogDetailResponseBody.text = it.body.toString()
             }
         }
@@ -85,16 +97,8 @@ class OkHttpLogDetailPanel(panelController: AladdinPanelController) :
             HttpLogFormatter.formatDuration(binding.root.context, log.durationInMs)
         binding.aladdinGenieOkhttpLogDetailUrl.text =
             HttpLogFormatter.formatUrl(binding.root.context, log.request.url)
-        binding.aladdinGenieOkhttpLogDetailRequestHeaders.text = formatHeaders(log.request.headers)
+        binding.aladdinGenieOkhttpLogDetailRequestHeaders.text =
+            HttpLogFormatter.formatHeaders(binding.root.context, log.request.headers)
         binding.aladdinGenieOkhttpLogDetailRequestBody.text = log.request.body
-    }
-
-    private fun formatHeaders(headers: List<Pair<String, String>>): String {
-        if (headers.isEmpty()) {
-            return "[]"
-        }
-        return headers.joinToString(";\n") {
-            "${it.first} = ${it.second}"
-        }
     }
 }
