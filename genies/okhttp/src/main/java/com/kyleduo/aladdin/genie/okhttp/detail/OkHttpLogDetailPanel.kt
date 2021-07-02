@@ -31,8 +31,23 @@ class OkHttpLogDetailPanel(panelController: AladdinPanelController) :
         super.show()
     }
 
+    fun updateLogIfNeed(log: HttpLog) {
+        if (!isShowing) {
+            return
+        }
+        if (this.log?.id != log.id) {
+            return
+        }
+        this.log = log
+        updateContent()
+    }
+
     override fun onShow() {
         super.onShow()
+        updateContent()
+    }
+
+    private fun updateContent() {
         val log = log ?: return
 
         val hasResponse = log.response != null

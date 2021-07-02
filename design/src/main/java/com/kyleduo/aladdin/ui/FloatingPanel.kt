@@ -14,6 +14,8 @@ abstract class FloatingPanel(
 ) {
 
     protected val container = panelController.panelContainer
+    var isShowing = false
+        private set
 
     @Suppress("MemberVisibilityCanBePrivate")
     protected val rootBinding by lazy {
@@ -38,6 +40,7 @@ abstract class FloatingPanel(
         removeFromSuper()
         container.addView(rootBinding.root)
 
+        isShowing = true
         onShow()
     }
 
@@ -45,6 +48,7 @@ abstract class FloatingPanel(
         removeFromSuper()
 
         onDismiss()
+        isShowing = false
     }
 
     private fun removeFromSuper() {

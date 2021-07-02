@@ -104,6 +104,7 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
                 logs[index] = log
                 adapter.notifyItemChanged(index)
             }
+            detailPanel.updateLogIfNeed(log)
         }
     }
 
