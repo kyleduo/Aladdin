@@ -6,6 +6,7 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinPanelController
 import com.kyleduo.aladdin.genie.okhttp.R
 import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpLogDetailPanelBinding
+import com.kyleduo.aladdin.genie.okhttp.utils.HttpLogFormatter
 import com.kyleduo.aladdin.ui.FloatingPanel
 import com.kyleduo.aladdin.ui.UIUtils
 import com.kyleduo.aladdin.ui.dp2px
@@ -63,9 +64,12 @@ class OkHttpLogDetailPanel(panelController: AladdinPanelController) :
         binding.aladdinGenieOkhttpLogDetailStatus.text =
             log.response?.statusCode?.toString() ?: "..."
         binding.aladdinGenieOkhttpLogDetailMethod.text = log.request.method
-        binding.aladdinGenieOkhttpLogDetailStart.text = log.startTime.toString()
-        binding.aladdinGenieOkhttpLogDetailDuration.text = log.durationInMs.toString()
-        binding.aladdinGenieOkhttpLogDetailUrl.text = log.request.url.toString()
+        binding.aladdinGenieOkhttpLogDetailStart.text =
+            HttpLogFormatter.formatStartTime(binding.root.context, log.startTime)
+        binding.aladdinGenieOkhttpLogDetailDuration.text =
+            HttpLogFormatter.formatDuration(binding.root.context, log.durationInMs)
+        binding.aladdinGenieOkhttpLogDetailUrl.text =
+            HttpLogFormatter.formatUrl(binding.root.context, log.request.url)
         binding.aladdinGenieOkhttpLogDetailRequestHeaders.text = formatHeaders(log.request.headers)
         binding.aladdinGenieOkhttpLogDetailRequestBody.text = log.request.body
     }

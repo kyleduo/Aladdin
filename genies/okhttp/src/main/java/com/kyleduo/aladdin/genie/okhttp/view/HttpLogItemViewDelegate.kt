@@ -9,6 +9,7 @@ import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.okhttp.R
 import com.kyleduo.aladdin.genie.okhttp.data.HttpLog
 import com.kyleduo.aladdin.genie.okhttp.databinding.AladdinGenieOkhttpLogItemBinding
+import com.kyleduo.aladdin.genie.okhttp.utils.HttpLogFormatter
 import com.kyleduo.aladdin.ui.OnItemClickListener
 import com.kyleduo.aladdin.ui.UIUtils
 import com.kyleduo.aladdin.ui.dp2px
@@ -47,9 +48,13 @@ class HttpLogItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) 
         binding.aladdinGenieOkhttpLogItemStatus.background =
             UIUtils.createRoundCornerDrawable(statusColor, itemView.dp2px(4f))
         binding.aladdinGenieOkhttpLogItemStatus.text = response?.statusCode?.toString() ?: "..."
-
+        binding.aladdinGenieOkhttpLogDetailStart.text =
+            HttpLogFormatter.formatStartTime(binding.root.context, log.startTime)
+        binding.aladdinGenieOkhttpLogDetailDuration.text =
+            HttpLogFormatter.formatDuration(binding.root.context, log.durationInMs)
         binding.aladdinGenieOkhttpLogItemMethod.text = log.request.method
-        binding.aladdinGenieOkhttpLogItemUrl.text = log.request.url.toString()
+        binding.aladdinGenieOkhttpLogItemUrl.text =
+            HttpLogFormatter.formatUrl(binding.root.context, log.request.url)
 
         binding.aladdinGenieOkhttpLogItemResponseIcon.isVisible = finished
         binding.aladdinGenieOkhttpLogItemResponse.isVisible = finished

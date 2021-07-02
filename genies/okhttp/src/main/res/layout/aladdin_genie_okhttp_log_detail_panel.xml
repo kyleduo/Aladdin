@@ -87,7 +87,8 @@
                 android:layout_marginStart="8dp"
                 android:text="@string/aladdin_genie_okhttp_request"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textSubhead" />
+                android:textSize="@dimen/aladdin_textSubhead"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_url"
@@ -99,7 +100,6 @@
                 android:ellipsize="end"
                 android:fontFamily="monospace"
                 android:maxLines="2"
-                android:minHeight="12dp"
                 android:textColor="@color/aladdin_textCaption"
                 android:textSize="@dimen/aladdin_textBody"
                 tools:ignore="SpUsage"
@@ -113,7 +113,8 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/aladdin_genie_okhttp_headers"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textBody" />
+                android:textSize="@dimen/aladdin_textBody"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_request_headers"
@@ -138,7 +139,8 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/aladdin_genie_okhttp_body"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textBody" />
+                android:textSize="@dimen/aladdin_textBody"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_request_body"
@@ -169,7 +171,8 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/aladdin_genie_okhttp_response"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textSubhead" />
+                android:textSize="@dimen/aladdin_textSubhead"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_response_headers_title"
@@ -179,7 +182,8 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/aladdin_genie_okhttp_headers"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textBody" />
+                android:textSize="@dimen/aladdin_textBody"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_response_headers"
@@ -204,7 +208,8 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/aladdin_genie_okhttp_body"
                 android:textColor="@color/aladdin_textSubhead"
-                android:textSize="@dimen/aladdin_textBody" />
+                android:textSize="@dimen/aladdin_textBody"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/aladdin_genie_okhttp_log_detail_response_body"

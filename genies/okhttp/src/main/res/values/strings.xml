@@ -8,4 +8,6 @@
     <string name="aladdin_genie_okhttp_headers">HEADERS</string>
     <string name="aladdin_genie_okhttp_body">BODY</string>
     <string name="aladdin_genie_okhttp_response">Response</string>
+    <string name="aladdin_genie_okhttp_start_time_prefix">start:&#160;</string>
+    <string name="aladdin_genie_okhttp_duration_suffix">&#160;ms</string>
 </resources>
