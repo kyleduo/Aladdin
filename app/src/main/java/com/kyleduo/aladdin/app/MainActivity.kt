@@ -17,7 +17,7 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, NormalActivity::class.java))
         }
 
-        Aladdin.withGenie<ActionsGenie> {
+        Aladdin.withGenie(ActionsGenie::class.java) {
             it.register(
                 "showToastInMain",
                 "open activity",
@@ -32,7 +32,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        Aladdin.withGenie<ActionsGenie> {
+        Aladdin.withGenie(ActionsGenie::class.java) {
             it.register("no_receiver", "Log.d()", "No Receiver") {
                 Log.d("MainActivity", "from no receiver action")
             }
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie<ActionsGenie>()?.unregister(
+        Aladdin.findGenie(ActionsGenie::class.java)?.unregister(
             "showToastInMain",
             this
         )

@@ -21,11 +21,11 @@ class DemoApplication : Application(), InfoProvider {
 
         AladdinInitializer.initialize(this)
 
-        Aladdin.withGenie<InspectorGenie> {
+        Aladdin.withGenie(InspectorGenie::class.java) {
             it.registerInfoProvider(this)
         }
 
-        Aladdin.withGenie<OkHttpGenie> {
+        Aladdin.withGenie(OkHttpGenie::class.java) {
             it.registerOkHttpClientProvider(object : OkHttpClientProvider {
                 override fun provideClient(): OkHttpClient {
                     val method = ApiClientFactory::class.java.getDeclaredMethod("getClient")

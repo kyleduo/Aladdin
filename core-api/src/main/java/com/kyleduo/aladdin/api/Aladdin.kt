@@ -50,12 +50,12 @@ object Aladdin {
         context.install()
     }
 
-    inline fun <reified Genie> findGenie(): Genie? {
-        return context?.genieManager?.findGenie(Genie::class.java)
+    fun <Genie> findGenie(genieClass: Class<Genie>): Genie? {
+        return context?.genieManager?.findGenie(genieClass)
     }
 
-    inline fun <reified Genie> withGenie(action: ((Genie) -> Unit)) {
-        context?.genieManager?.findGenie(Genie::class.java)?.let {
+    fun <Genie> withGenie(genieClass: Class<Genie>, action: ((Genie) -> Unit)) {
+        context?.genieManager?.findGenie(genieClass)?.let {
             action(it)
         }
     }

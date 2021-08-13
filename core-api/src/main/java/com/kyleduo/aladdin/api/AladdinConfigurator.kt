@@ -20,24 +20,25 @@ class AladdinConfigurator(val application: Application) {
         return configurators[clazz] as? T
     }
 
-    private inline fun <reified T : Any> ensureConfigurator(): T {
-        return (configurators[T::class.java] ?: T::class.java.newInstance().also {
-            configurators[T::class.java] = it
+    @Suppress("UNCHECKED_CAST")
+    private fun <T : Any> ensureConfigurator(clz: Class<T>): T {
+        return (configurators[clz] ?: clz.newInstance().also {
+            configurators[clz] = it
         }) as T
     }
 
     fun lifecycle(configBlock: ((AladdinLifecycleConfigurator) -> Unit)): AladdinConfigurator {
-        configBlock(ensureConfigurator())
+        configBlock(ensureConfigurator(AladdinLifecycleConfigurator::class.java))
         return this
     }
 
     fun view(configBlock: ((AladdinViewConfigurator) -> Unit)): AladdinConfigurator {
-        configBlock(ensureConfigurator())
+        configBlock(ensureConfigurator(AladdinViewConfigurator::class.java))
         return this
     }
 
     fun genie(configBlock: ((AladdinGenieConfigurator) -> Unit)): AladdinConfigurator {
-        configBlock(ensureConfigurator())
+        configBlock(ensureConfigurator(AladdinGenieConfigurator::class.java))
         return this
     }
 

@@ -29,7 +29,7 @@ class AladdinEntry(context: AladdinContext) : AladdinView() {
 
             setOnClickListener {
                 agent.dismiss()
-                Aladdin.findGenie<BoardGenie>()?.show()
+                Aladdin.findGenie(BoardGenie::class.java)?.show()
             }
         }
     }

@@ -153,7 +153,7 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
     fun hide() {
         selectedGenie = null
         agent.dismiss()
-        Aladdin.findGenie<EntryGenie>()?.show()
+        Aladdin.findGenie(EntryGenie::class.java)?.show()
     }
 
     override fun onTabSelected(position: Int, genie: AladdinViewGenie) {

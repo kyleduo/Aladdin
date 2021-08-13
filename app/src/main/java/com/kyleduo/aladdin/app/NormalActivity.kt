@@ -30,7 +30,7 @@ class NormalActivity : AppCompatActivity() {
             startActivity(Intent(this@NormalActivity, NormalActivity::class.java))
         }
 
-        Aladdin.findGenie<ActionsGenie>()?.let {
+        Aladdin.findGenie(ActionsGenie::class.java)?.let {
             it.register("showToast", "showToast", "Demo", this) { r ->
                 r.showToast()
             }
@@ -43,7 +43,7 @@ class NormalActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie<ActionsGenie>()?.unregister(
+        Aladdin.findGenie(ActionsGenie::class.java)?.unregister(
             "showToast",
             this
         )

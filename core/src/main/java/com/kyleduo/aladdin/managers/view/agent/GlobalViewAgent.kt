@@ -26,7 +26,7 @@ import com.kyleduo.aladdin.managers.view.ViewPositionStorage
  */
 class GlobalViewAgent(
     val context: AladdinContext,
-    val viewPositionStorage: ViewPositionStorage
+    private val viewPositionStorage: ViewPositionStorage
 ) : AladdinViewAgent, ViewDraggingHelper.OnViewSnappedListener, View.OnAttachStateChangeListener {
     private val windowManager: WindowManager =
         context.app.getSystemService(Context.WINDOW_SERVICE) as WindowManager
@@ -36,7 +36,9 @@ class GlobalViewAgent(
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             it.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
         } else {
-            it.type = WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY
+            // Using WindowManager.LayoutParams#TYPE_SYSTEM_ALERT type may can not receive touch
+            // event on some devices.
+            it.type = WindowManager.LayoutParams.TYPE_PHONE
         }
         it.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         it.format = PixelFormat.TRANSLUCENT
