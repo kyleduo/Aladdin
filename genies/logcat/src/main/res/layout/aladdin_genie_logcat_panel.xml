@@ -34,12 +34,25 @@
         android:text="@string/aladdin_regex_filter"
         android:textColor="@color/aladdin_textCaption"
         app:layout_constraintBottom_toBottomOf="@id/aladdin_logcat_level_selector"
-        app:layout_constraintEnd_toStartOf="@id/aladdin_logcat_regex_clear"
+        app:layout_constraintEnd_toStartOf="@id/aladdin_logcat_log_clear"
         app:layout_constraintStart_toEndOf="@id/aladdin_logcat_level_selector"
         app:layout_constraintTop_toTopOf="@id/aladdin_logcat_level_selector" />
 
-    <TextView
+    <ImageView
         android:id="@+id/aladdin_logcat_regex_clear"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:src="@drawable/aladdin_genie_logcat_clear_regex"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/aladdin_logcat_regex_label"
+        app:layout_constraintDimensionRatio="1"
+        app:layout_constraintEnd_toEndOf="@id/aladdin_logcat_regex_label"
+        app:layout_constraintTop_toTopOf="@id/aladdin_logcat_regex_label"
+        tools:ignore="ContentDescription"
+        tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/aladdin_logcat_log_clear"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"

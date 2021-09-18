@@ -6,6 +6,7 @@ import android.text.Spanned
 import android.text.style.ForegroundColorSpan
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
@@ -89,13 +90,16 @@ class LogcatGenie(
                     setText(R.string.aladdin_regex_filter)
                     setTextColor(context.resources.getColor(R.color.aladdin_textCaption))
                 }
+                binding.aladdinLogcatRegexClear.isVisible = false
             } else {
                 binding.aladdinLogcatRegexLabel.apply {
                     text = value.pattern
                     setTextColor(context.resources.getColor(R.color.aladdin_textBody))
                 }
+                binding.aladdinLogcatRegexClear.isVisible = true
             }
         }
+
     private val regexInputPanel by lazy {
         SimpleTextInputFloatingPanel(
             panelController,
@@ -134,11 +138,16 @@ class LogcatGenie(
                 this.onTextInputConfirmed("")
             }
 
+            binding.aladdinLogcatLogClear.setOnClickListener {
+                clearLog()
+            }
+
             filterLevels = filterLevels
         }
     }
 
     override fun onSelected() {
+        adapter.notifyDataSetChanged()
     }
 
     override fun onDeselected() {
@@ -223,6 +232,14 @@ class LogcatGenie(
         )
     }
 
+    private fun clearLog() {
+        filteredItems.clear()
+        allItems.clear()
+        if (panelController.isSelected(this)) {
+            adapter.notifyDataSetChanged()
+        }
+    }
+
     override fun onLogItem(item: LogItem) {
         if (allItems.isNotEmpty()) {
             val first = allItems.first
@@ -232,7 +249,9 @@ class LogcatGenie(
                 if (filteredItems.firstOrNull() == first) {
                     filteredItems[0] = merged
                 }
-                adapter.notifyItemChanged(0)
+                if (panelController.isSelected(this)) {
+                    adapter.notifyItemChanged(0)
+                }
                 return
             }
         }
@@ -254,10 +273,12 @@ class LogcatGenie(
 
         val isAtTop = layoutManager.findFirstVisibleItemPosition() == 0
 
-        if (newList) {
-            adapter.notifyDataSetChanged()
-        } else {
-            adapter.notifyItemInserted(0)
+        if (panelController.isSelected(this)) {
+            if (newList) {
+                adapter.notifyDataSetChanged()
+            } else {
+                adapter.notifyItemInserted(0)
+            }
         }
 
         if (isAtTop) {
