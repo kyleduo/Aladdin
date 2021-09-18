@@ -54,7 +54,12 @@ class OkHttpLoggerInterceptor(
 
             if (requestBody.contentLength() != -1L) {
                 if (requestHeaders.find { it.first == "Content-Length" } == null) {
-                    requestHeaders.add(Pair("Content-Type", requestBody.contentLength().toString()))
+                    requestHeaders.add(
+                        Pair(
+                            "Content-Length",
+                            requestBody.contentLength().toString()
+                        )
+                    )
                 }
             }
         }

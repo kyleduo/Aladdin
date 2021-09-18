@@ -2,4 +2,5 @@
 <resources>
     <string name="aladdin_input_history">Input History</string>
     <string name="aladdin_clear">CLEAR</string>
+    <string name="aladdin_confirm">Confirm</string>
 </resources>

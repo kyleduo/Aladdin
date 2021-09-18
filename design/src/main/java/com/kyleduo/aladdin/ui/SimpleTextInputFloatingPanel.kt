@@ -58,6 +58,10 @@ class SimpleTextInputFloatingPanel(
         binding.aladdinDesignSimpleTextInputHistoryClear.setOnClickListener {
             saveHistory(listOf())
         }
+        binding.aladdinDesignSimpleTextInputConfirm.setOnClickListener {
+            transferInputResult()
+            dismiss()
+        }
     }
 
     private var historyItems = listOf<String>()
@@ -105,8 +109,7 @@ class SimpleTextInputFloatingPanel(
         }, 100)
     }
 
-    override fun onDismiss() {
-        super.onDismiss()
+    private fun transferInputResult() {
         val text = binding.aladdinDesignSimpleTextInputInput.text.toString()
         if (text.isNotEmpty() && text !in historyItems) {
             historyItems = historyItems.toMutableList().also { it.add(0, text) }

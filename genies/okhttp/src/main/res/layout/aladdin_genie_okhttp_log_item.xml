@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/aladdin_design_pressable_item_background_color"
+    android:background="@drawable/aladdin_design_pressable_item_background"
     tools:layout_width="375dp">
 
     <TextView
