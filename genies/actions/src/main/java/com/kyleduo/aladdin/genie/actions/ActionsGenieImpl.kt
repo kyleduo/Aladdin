@@ -35,7 +35,7 @@ import java.util.*
 class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener {
     companion object {
 
-        private val TAG = ActionsGenieImpl::class.java.name
+        private val TAG = ActionsGenieImpl::class.java.simpleName
         private const val DEFAULT_GROUP_NAME = "--"
     }
 
