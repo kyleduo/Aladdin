@@ -43,6 +43,7 @@ dependencies {
     implementation "androidx.constraintlayout:constraintlayout:$ANDROID_X_CONSTRAINT_LAYOUT"
 
     implementation "com.drakeet.multitype:multitype:$MULTI_TYPE"
+    implementation "com.kyleduo.switchbutton:library:$SWITCH_BUTTON"
 
     implementation project(':design')
     implementation project(':core-api')

@@ -31,7 +31,8 @@ import java.util.*
 class LogcatGenie(
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
-    logItemPalette: LogItemPalette = DefaultLogItemPalette()
+    logItemPalette: LogItemPalette = DefaultLogItemPalette(),
+    defaultEnabled: Boolean = true
 ) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
     companion object {
         const val TAG = "LogcatGenie"
@@ -116,6 +117,8 @@ class LogcatGenie(
         }
     }
 
+    private var isEnabled: Boolean = defaultEnabled
+
     override fun createPanel(container: ViewGroup): View {
         return container.inflateView(R.layout.aladdin_genie_logcat_panel).also { view ->
             binding = AladdinGenieLogcatPanelBinding.bind(view)
@@ -142,6 +145,16 @@ class LogcatGenie(
                 clearLog()
             }
 
+            binding.aladdinLogcatSwitch.isChecked = isEnabled
+            binding.aladdinLogcatSwitch.setOnCheckedChangeListener { _, isChecked ->
+                isEnabled = isChecked
+                if (!isEnabled) {
+                    stop()
+                } else {
+                    start()
+                }
+            }
+
             filterLevels = filterLevels
         }
     }
@@ -157,7 +170,9 @@ class LogcatGenie(
     }
 
     override fun onStart() {
-        start()
+        if (isEnabled) {
+            start()
+        }
     }
 
     override fun onStop() {
