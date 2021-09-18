@@ -41,9 +41,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie(ActionsGenie::class.java)?.unregister(
-            "showToastInMain",
-            this
-        )
+        Aladdin.findGenie(ActionsGenie::class.java)?.discard(this)
     }
 }

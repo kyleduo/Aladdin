@@ -58,7 +58,7 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
     private val referenceMap: MutableMap<Int, WeakReference<*>> = mutableMapOf()
 
     /**
-     * receiver's class -> instance history [hash]
+     * receiver's class -> instance history hashCode()s
      */
     private val receiverCounter: MutableMap<Class<*>, MutableList<Int>> = mutableMapOf()
 
@@ -199,13 +199,18 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
         refreshActionsList()
     }
 
-    override fun unregister(key: String, receiver: Any) {
-        val ref = getReference(receiver, false) ?: return
-
-        val actions = actionsMap[ref] ?: return
-        actions.removeAll { it.key == key }
+    override fun unregister(key: String) {
+        actionsMap.values.forEach { actions ->
+            actions.removeAll { it.key == key }
+        }
 
         refreshActionsList()
+    }
+
+    override fun discard(receiver: Any) {
+        val ref = getReference(receiver, false) ?: return
+
+        discardReference(ref)
     }
 
     private fun <R : Any> getReference(instance: R): WeakReference<R> {

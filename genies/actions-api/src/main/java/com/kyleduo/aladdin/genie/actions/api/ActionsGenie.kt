@@ -28,5 +28,13 @@ interface ActionsGenie {
         action: (receiver: R) -> Unit
     )
 
-    fun unregister(key: String, receiver: Any)
+    /**
+     * Unregister an action with [key] as it's key.
+     */
+    fun unregister(key: String)
+
+    /**
+     * Discard actions bound with receiver.
+     */
+    fun discard(receiver: Any)
 }

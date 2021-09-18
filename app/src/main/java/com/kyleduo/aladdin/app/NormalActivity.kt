@@ -43,9 +43,6 @@ class NormalActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        Aladdin.findGenie(ActionsGenie::class.java)?.unregister(
-            "showToast",
-            this
-        )
+        Aladdin.findGenie(ActionsGenie::class.java)?.discard(this)
     }
 }
