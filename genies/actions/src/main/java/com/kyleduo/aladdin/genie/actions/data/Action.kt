@@ -12,5 +12,5 @@ class Action<R : Any>(
     val receiverClass: Class<*>,
     val receiverNo: Int,
     val reference: WeakReference<R>,
-    val action: (receiver: R) -> Unit
+    val action: R.() -> Unit
 )

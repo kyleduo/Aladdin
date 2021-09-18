@@ -23,12 +23,12 @@ class MainActivity : AppCompatActivity() {
                 "open activity",
                 "Demo",
                 this
-            ) { r ->
-                r.startActivity(Intent(r, NormalActivity::class.java))
+            ) {
+                startActivity(Intent(this, NormalActivity::class.java))
             }
 
-            it.register("goto OkHttpActivity", "open OkHttpActivity", "Demo", this) { r ->
-                r.startActivity(Intent(r, OkHttpActivity::class.java))
+            it.register("goto OkHttpActivity", "open OkHttpActivity", "Demo", this) {
+                startActivity(Intent(this, OkHttpActivity::class.java))
             }
         }
 

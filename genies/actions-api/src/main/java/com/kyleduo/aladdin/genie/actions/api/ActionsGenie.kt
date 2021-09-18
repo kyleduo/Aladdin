@@ -25,7 +25,7 @@ interface ActionsGenie {
         title: String,
         group: String,
         receiver: R,
-        action: (receiver: R) -> Unit
+        action: R.() -> Unit
     )
 
     /**

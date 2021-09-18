@@ -168,7 +168,7 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
         title: String,
         group: String,
         receiver: R,
-        action: (receiver: R) -> Unit
+        action: R.() -> Unit
     ) {
         val ref = getReference(receiver)
         val hash = receiver.hashCode()
@@ -309,7 +309,8 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
         if (ref == null) {
             scanDecayedReference()
         } else {
-            item.action(ref)
+            val action = item.action
+            ref.action()
         }
     }
 }

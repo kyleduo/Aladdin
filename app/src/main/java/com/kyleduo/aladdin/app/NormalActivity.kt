@@ -31,8 +31,8 @@ class NormalActivity : AppCompatActivity() {
         }
 
         Aladdin.findGenie(ActionsGenie::class.java)?.let {
-            it.register("showToast", "showToast", "Demo", this) { r ->
-                r.showToast()
+            it.register("showToast", "showToast", "Demo", this) {
+                showToast()
             }
         }
     }
