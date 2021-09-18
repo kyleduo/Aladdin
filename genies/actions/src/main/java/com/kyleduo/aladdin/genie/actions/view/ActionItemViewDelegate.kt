@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.drakeet.multitype.ItemViewDelegate
 import com.kyleduo.aladdin.genie.actions.R
@@ -48,10 +47,10 @@ class HookActionItemViewHolder(
         }
         if (action.reference.get() == NoReceiverRefHolder) {
             binding.aladdinGenieActionsActionItemContent.setBackgroundResource(R.drawable.aladdin_genie_actions_no_receiver_action_item_content_bg)
-            binding.aladdinGenieActionsActionItemReceiver.isVisible = false
+            binding.aladdinGenieActionsActionItemReceiver.text =
+                "[No Receiver]"
         } else {
             binding.aladdinGenieActionsActionItemContent.setBackgroundResource(R.drawable.aladdin_genie_actions_action_item_content_bg)
-            binding.aladdinGenieActionsActionItemReceiver.isVisible = true
             binding.aladdinGenieActionsActionItemReceiver.text =
                 "[${action.receiverClass.simpleName} #${action.receiverNo}]"
         }

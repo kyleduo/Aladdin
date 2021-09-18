@@ -1,7 +1,9 @@
 package com.kyleduo.aladdin.app
 
 import android.app.Application
+import android.util.Log
 import com.kyleduo.aladdin.api.Aladdin
+import com.kyleduo.aladdin.genie.actions.api.ActionsGenie
 import com.kyleduo.aladdin.genie.inspector.api.InfoProvider
 import com.kyleduo.aladdin.genie.inspector.api.InspectorGenie
 import com.kyleduo.aladdin.genie.inspector.api.data.InfoItem
@@ -34,6 +36,12 @@ class DemoApplication : Application(), InfoProvider {
                     return client as OkHttpClient
                 }
             })
+        }
+
+        Aladdin.withGenie(ActionsGenie::class.java) {
+            it.register("app_action", "No Receiver", "Demo") {
+                Log.d("DemoApplication", "No Receiver Action Executed.")
+            }
         }
     }
 

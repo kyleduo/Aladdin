@@ -4,7 +4,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import com.drakeet.multitype.MultiTypeAdapter
 import com.kyleduo.aladdin.api.manager.genie.AladdinViewGenie
 import com.kyleduo.aladdin.genie.actions.api.ActionsGenie
@@ -84,15 +84,29 @@ class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledLi
         }
     }
 
+    private val layoutManager by lazy {
+        GridLayoutManager(context.app, 2).also {
+            it.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    val item = adapter.items[position]
+                    return if (item is ActionGroupItem) {
+                        it.spanCount
+                    } else {
+                        1
+                    }
+                }
+            }
+        }
+    }
+
     override fun createPanel(container: ViewGroup): View {
         return LayoutInflater.from(container.context)
             .inflate(R.layout.aladdin_genie_actions_panel, container, false).also { view ->
                 binding = AladdinGenieActionsPanelBinding.bind(view)
-                binding.aladdinGenieActionsActionsList.also {
-                    it.adapter = this.adapter
-                    it.layoutManager =
-                        LinearLayoutManager(context.app, LinearLayoutManager.VERTICAL, false)
-                    it.addItemDecoration(SimpleOffsetDecoration(8.dp2px(), 8.dp2px()))
+                binding.aladdinGenieActionsActionsList.also { recyclerView ->
+                    recyclerView.adapter = this.adapter
+                    recyclerView.layoutManager = layoutManager
+                    recyclerView.addItemDecoration(SimpleOffsetDecoration(8.dp2px(), 8.dp2px(), 0))
                 }
             }
     }
