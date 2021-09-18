@@ -49,16 +49,19 @@ class AladdinViewManagerImpl(
         }
     }
 
-    private fun requestAlertWindowPermissionIfNeeded() {
+    private fun refreshRequestAlertWindowPermission() {
         if (mode == AladdinViewMode.Global) {
-            if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
+            if (PermissionUtils.hasAlertWindowPermission(context.app)) {
+                PermissionUtils.cancelRequestPermissionNotification(context.app)
+                rebindAgents()
+            } else {
                 Toast.makeText(
                     context.app,
                     "Need System Alert Window permission in Global mode.",
                     Toast.LENGTH_SHORT
                 ).show()
                 requestingPermission = true
-                PermissionUtils.requestAlertWindowPermission(context.app)
+                PermissionUtils.showRequestPermissionNotification(context.app)
             }
         }
     }
@@ -88,7 +91,7 @@ class AladdinViewManagerImpl(
             rebindAgents()
             onAppEnterBackground()
         } else {
-            requestAlertWindowPermissionIfNeeded()
+            refreshRequestAlertWindowPermission()
         }
 
         views.forEach {

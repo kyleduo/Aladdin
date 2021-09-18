@@ -15,6 +15,7 @@ import com.kyleduo.aladdin.api.manager.view.AladdinView
 import com.kyleduo.aladdin.api.manager.view.AladdinViewAgent
 import com.kyleduo.aladdin.managers.view.ViewDraggingHelper
 import com.kyleduo.aladdin.managers.view.ViewPositionStorage
+import com.kyleduo.aladdin.utils.PermissionUtils
 
 
 /**
@@ -143,17 +144,23 @@ class GlobalViewAgent(
     }
 
     override fun show() {
+        if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
+            return
+        }
         isShown = true
         if (isActive) {
             if (view.view.parent != null) {
                 windowManager.removeView(view.view)
             }
-            windowManager.addView(view.view, layoutParams)
+            safeAddView()
             windowManager
         }
     }
 
     override fun dismiss() {
+        if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
+            return
+        }
         isShown = false
         windowManager.removeView(view.view)
     }
@@ -165,6 +172,9 @@ class GlobalViewAgent(
     }
 
     override fun deactivate() {
+        if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
+            return
+        }
         if (view.view.parent != null) {
             isActive = false
             windowManager.removeView(view.view)
@@ -172,9 +182,13 @@ class GlobalViewAgent(
     }
 
     override fun activate() {
+        if (!PermissionUtils.hasAlertWindowPermission(context.app)) {
+            return
+        }
         isActive = true
         if (isShown && view.view.parent == null) {
-            windowManager.addView(view.view, layoutParams)
+            safeAddView()
+
         }
     }
 
@@ -187,5 +201,16 @@ class GlobalViewAgent(
     }
 
     override fun onViewDetachedFromWindow(v: View?) {
+    }
+
+    private fun safeAddView() {
+        try {
+            if (view.view.parent != null) {
+                windowManager.removeViewImmediate(view.view)
+            }
+            windowManager.addView(view.view, layoutParams)
+        } catch (e: WindowManager.BadTokenException) {
+            e.printStackTrace()
+        }
     }
 }
