@@ -15,11 +15,16 @@ class LogcatReader(
     callback: OnLogItemListener
 ) : Thread() {
 
+    companion object {
+        @Suppress("SpellCheckingInspection")
+        private const val LOGCAT_COMMAND = "logcat -v threadtime"
+    }
+
     private val callbackRef = WeakReference(callback)
     private val mainHandler = Handler(Looper.getMainLooper())
 
     override fun run() {
-        val proc = Runtime.getRuntime().exec("logcat")
+        val proc = Runtime.getRuntime().exec(LOGCAT_COMMAND)
 
         val source = proc.inputStream.bufferedReader()
 
