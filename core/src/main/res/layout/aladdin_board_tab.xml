@@ -10,6 +10,7 @@
     android:minHeight="24dp"
     android:paddingStart="8dp"
     android:paddingEnd="8dp"
+    android:textColor="@color/aladdin_textCaption"
     android:textSize="12dp"
     tools:ignore="SpUsage"
     tools:text="App Info">
