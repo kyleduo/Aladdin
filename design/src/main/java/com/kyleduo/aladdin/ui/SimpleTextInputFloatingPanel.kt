@@ -24,7 +24,7 @@ class SimpleTextInputFloatingPanel(
         private const val SP_NAME = "aladdin_input_history"
 
         private const val HISTORY_PREFIX = "history_"
-        private const val SEPERATER = "-.-|||"
+        private const val SEPARATER = "-.-|||"
     }
 
     override val contentLayoutResId: Int = R.layout.aladdin_design_simple_text_input_floating_panel
@@ -82,7 +82,7 @@ class SimpleTextInputFloatingPanel(
         return if (str.isNullOrEmpty()) {
             listOf()
         } else {
-            str.split(SEPERATER).toList()
+            str.split(SEPARATER).toList()
         }
     }
 
@@ -90,7 +90,7 @@ class SimpleTextInputFloatingPanel(
         if (history.isEmpty()) {
             sp.edit().remove(spKey).apply()
         } else {
-            val str = history.joinToString(SEPERATER)
+            val str = history.joinToString(SEPARATER)
             sp.edit().putString(spKey, str).apply()
         }
         historyItems = history
