@@ -212,6 +212,10 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
     }
 
     private fun onTextInputConfirmed(text: String) {
+        if (text.isEmpty()) {
+            return
+        }
+        
         if (!text.matches(proxyHostRegex)) {
             Log.e(TAG, "Proxy address config is not valid. $text")
             return
