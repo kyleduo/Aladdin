@@ -73,7 +73,10 @@ internal object HttpLogFormatter {
                 ForegroundColorSpan(context.resources.getColor(R.color.aladdin_textBody)),
                 Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
             )
-            if (url.query.isNotEmpty()) {
+            url.query?.let {
+                if (it.isEmpty()) {
+                    return@let
+                }
                 append(
                     "?" + url.query,
                     ForegroundColorSpan(context.resources.getColor(R.color.aladdin_textCaption)),
