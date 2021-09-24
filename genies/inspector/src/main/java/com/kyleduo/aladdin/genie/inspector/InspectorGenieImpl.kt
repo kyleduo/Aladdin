@@ -31,6 +31,7 @@ class InspectorGenieImpl : AladdinViewGenie(), InspectorGenie {
 
     override val title: String = "Inspector"
     override val apiClass: Class<*> = InspectorGenie::class.java
+    override val isMultipleSupported: Boolean = true
 
     private val infoProviders = mutableListOf<InfoProvider>()
 

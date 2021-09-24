@@ -22,6 +22,12 @@ abstract class AladdinGenie {
     lateinit var context: AladdinContext
 
     /**
+     * Whether support multiple genie instance or not.
+     * If so, multiple instance can be added to Aladdin and they are specified by a "key".
+     */
+    open val isMultipleSupported: Boolean = false
+
+    /**
      * Lifecycle callback for start.
      * This function would be invoked after Aladdin has been initialized properly.
      */

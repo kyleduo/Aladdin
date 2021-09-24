@@ -15,42 +15,61 @@ class AladdinGenieManagerImpl(
     configurator: AladdinGenieConfigurator?
 ) : AladdinGenieManager {
 
-    private val genies = mutableMapOf<Class<*>, AladdinGenie>()
+    private val genies = mutableMapOf<Class<*>, MutableMap<String, AladdinGenie>>()
 
     init {
         addGenie(EntryGenie())
         addGenie(BoardGenie())
 
         configurator?.genies?.forEach {
-            addGenie(it)
+            addGenie(it.first, it.second)
         }
     }
 
     override fun attach() {
-        genies.forEach {
-            it.value.context = context
+        genies.forEach { entry ->
+            entry.value.forEach {
+                it.value.context = context
+            }
         }
     }
 
     override fun ready() {
-        genies.forEach {
-            it.value.onStart()
+        genies.forEach { entry ->
+            entry.value.forEach {
+                it.value.onStart()
+            }
         }
     }
 
-    private fun addGenie(genie: AladdinGenie) {
-        if (genies[genie.apiClass] != null) {
-            throw IllegalStateException("Genie conflicted. [${genie.apiClass.canonicalName}] ")
+    private fun addGenie(genie: AladdinGenie, key: String? = null) {
+        val map = genies[genie.apiClass] ?: mutableMapOf<String, AladdinGenie>().also {
+            genies[genie.apiClass] = it
         }
-        genies[genie.apiClass] = genie
+        if (map.containsValue(genie)) {
+            throw IllegalStateException("Genie has been added. [${genie.apiClass.canonicalName}] ")
+        }
+        val realKey = key ?: genie.apiClass.canonicalName
+        if (!genie.isMultipleSupported) {
+            if (map.isNotEmpty()) {
+                throw IllegalStateException("Multiple instance is not supported for this Genie. [${genie.apiClass.canonicalName}] ")
+            }
+        } else {
+            if (map.containsKey(realKey)) {
+                throw IllegalStateException("The key of Genie is conflicted. [key: $key] [${genie.apiClass.canonicalName}] ")
+            }
+        }
+        map[realKey] = genie
     }
 
     @Suppress("UNCHECKED_CAST")
-    override fun <T> findGenie(clz: Class<T>): T? {
-        return genies[clz] as? T
+    override fun <T> findGenie(clz: Class<T>, key: String?): T? {
+        return genies[clz]?.let {
+            it[key ?: clz.canonicalName]
+        } as? T
     }
 
     override fun allGenies(): List<AladdinGenie> {
-        return genies.values.toList()
+        return genies.flatMap { it.value.values }.toList()
     }
 }

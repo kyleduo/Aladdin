@@ -7,15 +7,15 @@ import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
  */
 @Suppress("unused")
 class AladdinGenieConfigurator {
-    val genies = mutableListOf<AladdinGenie>()
+    val genies = mutableListOf<Pair<AladdinGenie, String?>>()
 
-    fun addGenie(genie: AladdinGenie): AladdinGenieConfigurator {
-        genies.add(genie)
+    fun addGenie(genie: AladdinGenie, key: String? = null): AladdinGenieConfigurator {
+        genies.add(genie to key)
         return this
     }
 
-    fun prependGenie(genie: AladdinGenie): AladdinGenieConfigurator {
-        genies.add(0, genie)
+    fun prependGenie(genie: AladdinGenie, key: String? = null): AladdinGenieConfigurator {
+        genies.add(0, genie to key)
         return this
     }
 }
