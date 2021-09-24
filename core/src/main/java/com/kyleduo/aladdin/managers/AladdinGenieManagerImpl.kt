@@ -1,6 +1,5 @@
 package com.kyleduo.aladdin.managers
 
-import android.util.Log
 import com.kyleduo.aladdin.api.AladdinContext
 import com.kyleduo.aladdin.api.config.AladdinGenieConfigurator
 import com.kyleduo.aladdin.api.manager.genie.AladdinGenie
@@ -34,7 +33,6 @@ class AladdinGenieManagerImpl(
     }
 
     override fun ready() {
-        Log.d("sssss", genies.toString())
         genies.forEach {
             it.value.onStart()
         }
