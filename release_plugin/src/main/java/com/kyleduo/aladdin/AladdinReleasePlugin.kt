@@ -1,5 +1,6 @@
 package com.kyleduo.aladdin
 
+import com.android.build.gradle.BaseExtension
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -9,6 +10,8 @@ import org.gradle.api.Project
  */
 class AladdinReleasePlugin : Plugin<Project> {
 
-    override fun apply(target: Project) {
+    override fun apply(project: Project) {
+        project.extensions.findByType(BaseExtension::class.java)
+            ?.registerTransform(AladdinReleaseTransform(project))
     }
 }
