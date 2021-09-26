@@ -16,7 +16,7 @@ abstract class AladdinGenie(
 
     companion object {
 
-        const val DEFAULT_KEY = "default"
+        const val DEFAULT_KEY = ""
     }
 
     /**
