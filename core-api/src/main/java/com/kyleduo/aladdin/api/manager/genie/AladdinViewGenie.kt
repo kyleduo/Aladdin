@@ -8,12 +8,13 @@ import android.view.ViewGroup
  *
  * @author kyleduo on 2021/5/25
  */
-abstract class AladdinViewGenie : AladdinGenie() {
-
+abstract class AladdinViewGenie(
     /**
      * title for this genie, which will be used for the panel
      */
-    abstract val title: String
+    val title: String,
+    key: String = DEFAULT_KEY
+) : AladdinGenie(key) {
 
     /**
      * Inject before the view is added to board

@@ -7,7 +7,17 @@ import com.kyleduo.aladdin.api.AladdinContext
  *
  * @author kyleduo on 2021/5/18
  */
-abstract class AladdinGenie {
+abstract class AladdinGenie(
+    /**
+     * Used to distinguish this Genie from the others with same class.
+     */
+    val key: String = DEFAULT_KEY
+) {
+
+    companion object {
+
+        const val DEFAULT_KEY = ""
+    }
 
     /**
      * If this Genie is accessible in runtime, since we do not want any implementations of Genies
@@ -20,6 +30,12 @@ abstract class AladdinGenie {
      * [AladdinContext] instance. Injected before [onStart]
      */
     lateinit var context: AladdinContext
+
+    /**
+     * Whether support multiple genie instance or not.
+     * If so, multiple instance can be added to Aladdin and they are specified by a "key".
+     */
+    open val isMultipleSupported: Boolean = false
 
     /**
      * Lifecycle callback for start.

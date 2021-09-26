@@ -39,23 +39,27 @@ object Aladdin {
                 .getDeclaredConstructor(AladdinConfigurator::class.java)
                 .newInstance(configurator) as? AladdinContext
         } catch (e: Exception) {
-            error("Fail to create AladdinContext ${e.message}")
+            throw IllegalStateException("Fail to create AladdinContext.", e)
         }
 
         if (context !is AladdinContext) {
-            error("Fail to create AladdinContext")
+            throw IllegalStateException("AladdinContext class is not match.")
         }
 
         this.context = context
         context.install()
     }
 
-    fun <Genie> findGenie(genieClass: Class<Genie>): Genie? {
-        return context?.genieManager?.findGenie(genieClass)
+    fun <Genie> findGenie(genieClass: Class<Genie>, key: String? = null): Genie? {
+        return context?.genieManager?.findGenie(genieClass, key)
     }
 
-    fun <Genie> withGenie(genieClass: Class<Genie>, action: ((Genie) -> Unit)) {
-        context?.genieManager?.findGenie(genieClass)?.let {
+    fun <Genie> withGenie(
+        genieClass: Class<Genie>,
+        key: String? = null,
+        action: ((Genie) -> Unit)
+    ) {
+        context?.genieManager?.findGenie(genieClass, key)?.let {
             action(it)
         }
     }

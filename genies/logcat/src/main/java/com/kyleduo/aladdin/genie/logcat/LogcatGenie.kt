@@ -29,18 +29,18 @@ import java.util.*
  * @author kyleduo on 2021/6/13
  */
 class LogcatGenie(
+    title: String = "Logcat",
     private val itemLimit: Int = 2000,
     private val blacklist: List<String> = listOf("ViewRootImpl"),
     logItemPalette: LogItemPalette = DefaultLogItemPalette(),
     defaultEnabled: Boolean = true
-) : AladdinViewGenie(), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
+) : AladdinViewGenie(title), OnLogItemListener, LevelFilterPanel.OnFilterLevelsSelectedListener {
     companion object {
         const val TAG = "LogcatGenie"
 
         private const val REGEX_FILTER_KEY = "logcat_regex_filter"
     }
 
-    override val title: String = "Logcat"
     override val apiClass: Class<*> = LogcatGenie::class.java
 
     private val logItemStyles = LogItemStyles(logItemPalette)

@@ -32,15 +32,18 @@ import java.util.*
  *
  * @author kyleduo on 2021/6/17
  */
-class ActionsGenieImpl : AladdinViewGenie(), ActionsGenie, OnReferenceRecycledListener {
+class ActionsGenieImpl(title: String = "Actions", key: String = DEFAULT_KEY) :
+    AladdinViewGenie(title, key), ActionsGenie,
+    OnReferenceRecycledListener {
+
     companion object {
 
         private val TAG = ActionsGenieImpl::class.java.simpleName
         private const val DEFAULT_GROUP_NAME = "--"
     }
 
-    override val title: String = "Actions"
     override val apiClass: Class<*> = ActionsGenie::class.java
+    override val isMultipleSupported: Boolean = true
 
     private lateinit var binding: AladdinGenieActionsPanelBinding
 
