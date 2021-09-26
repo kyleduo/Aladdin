@@ -85,7 +85,7 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
         }
     private var lastSelectedGenie: AladdinViewGenie? = null
 
-    // TODO: 2021/9/26 kyleduo maybe using to list is better
+    // TODO: 2021/9/26 kyleduo maybe using list is better
     private val genies = LinkedHashMap<String, AladdinViewGenie>()
 
     override fun onAgentBound() {
