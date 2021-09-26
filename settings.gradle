@@ -14,3 +14,5 @@ include ':genies:actions-api'
 include ':genies:logcat'
 include ':genies:okhttp'
 include ':genies:okhttp-api'
+
+include ':release_plugin'
