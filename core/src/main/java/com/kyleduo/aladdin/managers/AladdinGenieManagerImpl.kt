@@ -22,7 +22,7 @@ class AladdinGenieManagerImpl(
         addGenie(BoardGenie())
 
         configurator?.genies?.forEach {
-            addGenie(it.first, it.second)
+            addGenie(it)
         }
     }
 
@@ -42,21 +42,21 @@ class AladdinGenieManagerImpl(
         }
     }
 
-    private fun addGenie(genie: AladdinGenie, key: String? = null) {
+    private fun addGenie(genie: AladdinGenie) {
         val map = genies[genie.apiClass] ?: mutableMapOf<String, AladdinGenie>().also {
             genies[genie.apiClass] = it
         }
         if (map.containsValue(genie)) {
             throw IllegalStateException("Genie has been added. [${genie.apiClass.canonicalName}] ")
         }
-        val realKey = key ?: genie.apiClass.canonicalName
+        val realKey = genie.key
         if (!genie.isMultipleSupported) {
             if (map.isNotEmpty()) {
                 throw IllegalStateException("Multiple instance is not supported for this Genie. [${genie.apiClass.canonicalName}] ")
             }
         } else {
             if (map.containsKey(realKey)) {
-                throw IllegalStateException("The key of Genie is conflicted. [key: $key] [${genie.apiClass.canonicalName}] ")
+                throw IllegalStateException("The key of Genie is conflicted. [key: ${genie.key}] [${genie.apiClass.canonicalName}] ")
             }
         }
         map[realKey] = genie
@@ -65,7 +65,7 @@ class AladdinGenieManagerImpl(
     @Suppress("UNCHECKED_CAST")
     override fun <T> findGenie(clz: Class<T>, key: String?): T? {
         return genies[clz]?.let {
-            it[key ?: clz.canonicalName]
+            it[key ?: AladdinGenie.DEFAULT_KEY]
         } as? T
     }
 

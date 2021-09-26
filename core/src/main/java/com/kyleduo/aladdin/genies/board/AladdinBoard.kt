@@ -85,6 +85,7 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
         }
     private var lastSelectedGenie: AladdinViewGenie? = null
 
+    // TODO: 2021/9/26 kyleduo maybe using to list is better
     private val genies = LinkedHashMap<String, AladdinViewGenie>()
 
     override fun onAgentBound() {
@@ -143,7 +144,7 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
     fun addGenies(genies: List<AladdinGenie>) {
         for (genie in genies) {
             if (genie is AladdinViewGenie) {
-                this.genies[genie.key()] = genie
+                this.genies[genie.boardKey()] = genie
             }
         }
 
@@ -160,6 +161,8 @@ class AladdinBoard(val context: AladdinContext) : AladdinView(), OnTabSelectedLi
         selectedGenie = genie
     }
 
-    private fun AladdinViewGenie.key() = apiClass.canonicalName ?: apiClass.name
-    private fun AladdinViewGenie.panelTag() = "panel_${key()}"
+    private fun AladdinViewGenie.boardKey() =
+        "${apiClass.canonicalName ?: apiClass.name}-${this.key}"
+
+    private fun AladdinViewGenie.panelTag() = "panel_${boardKey()}"
 }

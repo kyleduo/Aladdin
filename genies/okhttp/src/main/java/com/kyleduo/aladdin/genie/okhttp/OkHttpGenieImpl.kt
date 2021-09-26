@@ -23,7 +23,7 @@ import java.util.*
 /**
  * @author kyleduo on 2021/6/30
  */
-class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
+class OkHttpGenieImpl(title: String = "OkHttp") : AladdinViewGenie(title), OkHttpGenie {
 
     companion object {
         private const val TAG = "OkHttpGenieImpl"
@@ -32,7 +32,6 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
         private val proxyHostRegex = Regex("^(((2(5[0-5]|[0-4]\\d))|[0-1]?\\d{1,2})\\.?){4}:\\d+$")
     }
 
-    override val title: String = "OkHttp"
     override val apiClass: Class<*> = OkHttpGenie::class.java
 
     private val providers = mutableSetOf<OkHttpClientProvider>()
@@ -215,7 +214,7 @@ class OkHttpGenieImpl : AladdinViewGenie(), OkHttpGenie {
         if (text.isEmpty()) {
             return
         }
-        
+
         if (!text.matches(proxyHostRegex)) {
             Log.e(TAG, "Proxy address config is not valid. $text")
             return

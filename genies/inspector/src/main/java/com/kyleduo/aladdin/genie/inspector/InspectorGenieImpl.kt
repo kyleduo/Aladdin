@@ -27,9 +27,9 @@ import com.kyleduo.aladdin.ui.dp2px
  *
  * @author kyleduo on 2021/6/11
  */
-class InspectorGenieImpl : AladdinViewGenie(), InspectorGenie {
+class InspectorGenieImpl(title: String = "Inspector", key: String = DEFAULT_KEY) :
+    AladdinViewGenie(title, key), InspectorGenie {
 
-    override val title: String = "Inspector"
     override val apiClass: Class<*> = InspectorGenie::class.java
     override val isMultipleSupported: Boolean = true
 

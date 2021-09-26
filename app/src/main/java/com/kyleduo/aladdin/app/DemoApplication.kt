@@ -43,6 +43,12 @@ class DemoApplication : Application(), InfoProvider {
                 Log.d("DemoApplication", "No Receiver Action Executed.")
             }
         }
+
+        Aladdin.withGenie(ActionsGenie::class.java, "a2") {
+            it.register("app_action", "No Receiver", "") {
+                Log.d("DemoApplication #2", "No Receiver Action Executed.")
+            }
+        }
     }
 
     private val random = Random(System.currentTimeMillis())

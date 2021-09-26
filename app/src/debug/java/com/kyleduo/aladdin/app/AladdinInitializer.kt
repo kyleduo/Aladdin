@@ -21,6 +21,7 @@ object AladdinInitializer {
                 it.addGenie(InspectorGenieImpl())
                     .addGenie(LogcatGenie())
                     .addGenie(ActionsGenieImpl())
+                    .addGenie(ActionsGenieImpl(title = "Actions #2", key = "a2"))
                     .addGenie(OkHttpGenieImpl())
             }
             .install()
