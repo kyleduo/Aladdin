@@ -8,7 +8,6 @@ localProp.load(new FileInputStream(file(rootProject.file("local.properties"))))
 
 android {
     compileSdkVersion 30
-    buildToolsVersion "30.0.2"
 
     signingConfigs {
         release {

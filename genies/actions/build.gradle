@@ -5,12 +5,10 @@ plugins {
 
 android {
     compileSdkVersion COMPILE_SDK as int
-    buildToolsVersion BUILD_TOOLS
     resourcePrefix RESOURCE_PREFIX
 
     defaultConfig {
         minSdkVersion MIN_SDK as int
-        versionName VERSION_NAME
 
         consumerProguardFiles "consumer-rules.pro"
     }
