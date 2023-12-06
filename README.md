@@ -4,6 +4,8 @@
 
 > If you ever wanna a magic lamp to help your daily development, here it is. Welcome Aladdin!
 
+[中文](README_ZH.md)
+
 Aladdin is more than a framework for Android developers to debug your App in a more efficient way. Aladdin is designed to be extendable. All specific features provided by Aladdin is a plugin of this framework. A feature is called `Genie`, who lives in the lamp, absolutely. Consumer can use pre-defined genies or develop your own genie for business specific purpose. Customised genie can work with orther genies as well.
 
 ## Demo
