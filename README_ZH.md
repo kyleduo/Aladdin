@@ -19,6 +19,9 @@ Aladdin不仅是一个可以帮Android开发者更高效地调试App的框架。
 ### Terms
 
 - **Genie**: Aladdin的功能单元。例如：`LogcatGenie`提供了在运行时检视App的logcat的能力。genie可以由独立的控件承载，也可以由BoardGenie实现的面板承载，作为其中的一个标签卡。
+- **Consumer API** layer: 用户可以直接使用的API。
+- **Extend API** layer: 用户实现`AladdinGenie`扩展Aladdin能力用到的API。
+- **Implementation** layer: Aladdin框架的实现。
 
 ### Components Explains
 
