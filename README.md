@@ -22,7 +22,7 @@ Here're screenshots of demo application. Consumer can have these features just o
 
 - **Genie**: Feature unit of Aladdin. For example, `LogcatGenie` provides ability to inspect app's logcat at runtime. Genie can has its own top-level float view or a panel view hosted by `BoardGenie`.
 - **Consumer API** layer: APIs that consumer can use to leverage Aladdin's ability.
-- **Extend API** layer: APIs that consuemr can use to implement customized `AladdinGenie`.
+- **Extension API** layer: APIs that consuemr can use to implement customized `AladdinGenie`.
 - **Implementation** layer: Implementation of Aladdin framework. 
 
 ### Components Explains
