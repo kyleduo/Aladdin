@@ -5,6 +5,7 @@ package com.kyleduo.aladdin.app
  */
 object AladdinInitializer {
 
+    @Suppress("UNUSED_PARAMETER")
     fun initialize(application: DemoApplication) {
         // no op
     }

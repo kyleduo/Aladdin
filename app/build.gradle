@@ -7,7 +7,7 @@ Properties localProp = new Properties()
 localProp.load(new FileInputStream(file(rootProject.file("local.properties"))))
 
 android {
-    compileSdkVersion 30
+    compileSdk 33
 
     signingConfigs {
         release {
@@ -21,7 +21,7 @@ android {
     defaultConfig {
         applicationId "com.kyleduo.aladdin.app"
         minSdkVersion 21
-        targetSdkVersion 30
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -39,7 +39,7 @@ android {
         release {
             minifyEnabled false
             signingConfig signingConfigs.release
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            proguardFiles 'proguard-rules.pro'
         }
     }
     compileOptions {
@@ -52,6 +52,7 @@ android {
     buildFeatures {
         viewBinding = true
     }
+    namespace 'com.kyleduo.aladdin.app'
 }
 
 dependencies {
